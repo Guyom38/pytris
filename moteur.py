@@ -28,27 +28,40 @@ class CMoteur():
         self.Controle = None
         self.Mecanique = None
 
-        self.initialiser()
+  
 
     def initialiser(self):
+        self.Pieces = CPieces(self, False)
+        self.PiecesAide = CPieces(self, True)
         self.grille = CGrille(self)
         self.Partie = CParties(self)
-        self.Pieces = CPieces(self)
         self.Controle = CControle(self, self.idManette)
         self.Mecanique = CMecanique(self)
-
         self.Partie.demarrer()
-        
+
+    def gestion_piece_aide(self):
+        if self.Partie.aide:
+            self.PiecesAide.pieceSelect = self.Pieces.pieceSelect
+            self.PiecesAide.pieceRotation = self.Pieces.pieceRotation
+            self.PiecesAide.pieceX = self.Pieces.pieceX
+            
+            self.Mecanique.faire_descendre_a_fond_la_piece(True)
+            self.Pieces.afficher_piece(False)  
+              
     def afficher(self):
         self.Controle.gestion_manette()
         self.Mecanique.gravite()
-
+        #self.gestion_piece_aide()
+        
         self.grille.afficher()
-        self.Pieces.afficher_piece()      
+        self.Pieces.afficher_piece(True)   
+           
         self.Pieces.afficher_piece_suivante()  
 
         self.Partie.afficher_message()
         self.Partie.afficher_score()
+        
+    
 
 
 

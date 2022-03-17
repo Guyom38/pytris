@@ -14,6 +14,7 @@ class CPieces():
     pieces_couleurs["L"] = (18, 105, 232)
     pieces_couleurs["J"] = (98, 52, 15)
     pieces_couleurs["T"] = (0, 105, 0)
+    pieces_couleurs["#"] = (128, 128, 128)
 
     pieces = {}
     pieces["O"] = [( (0, 0, 0, 0), \
@@ -99,7 +100,7 @@ class CPieces():
                      (0, 0, 1, 0), \
                      (0, 0, 0, 0) )]
 
-    def __init__(self, moteur):
+    def __init__(self, moteur, simulation):
         print("        + PIECES")
         self.Moteur = moteur
 
@@ -108,20 +109,29 @@ class CPieces():
         self.pieceSuivante = None
         self.pieceX, self.pieceY = -1, -1
 
-    def afficher_piece(self):
+        self.simulation = simulation
+        
+    def afficher_piece(self, simulation):
+        
         piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
-        couleur = CPieces.pieces_couleurs[self.pieceSelect]
+        if not simulation:
+            couleur = CPieces.pieces_couleurs[self.pieceSelect]
+            pieceX, pieceY = self.pieceX, self.pieceY
+        else:
+            couleur = CPieces.pieces_couleurs[self.pieceSelect]
+            pieceX, pieceY = self.Moteur.PiecesAide.pieceX, self.Moteur.PiecesAide.pieceY
+          
         t = VAR.TAILLE
 
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
-                    pX, pY =x+self.pieceX, y+self.pieceY
+                    pX, pY =x+pieceX, y+ pieceY
                     if pY >= 0:
                         if VAR.mode_bmp:
-                            VAR.fenetre.blit(VAR.IMAGES[self.pieceSelect][1], (self.grille.offX + ((pX)*t), self.grille.offY + (pY*t)))
+                            VAR.fenetre.blit(VAR.IMAGES[self.pieceSelect][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)))
                         else:
-                            pygame.draw.rect(VAR.fenetre, couleur, (self.grille.offX + ((pX)*t), self.grille.offY + (pY*t), t, t), 0)
+                            pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t), t, t), 0)
 
     def afficher_piece_suivante(self):
         piece = CPieces.pieces[self.pieceSuivante][0]
@@ -131,7 +141,7 @@ class CPieces():
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
-                    pX, pY = self.grille.offX + (x*t), self.grille.offY + (y*t) - 120
+                    pX, pY = self.Moteur.grille.offX + (x*t), self.Moteur.grille.offY + (y*t) - 120
                     if VAR.mode_bmp:
                         VAR.fenetre.blit(VAR.IMAGES[self.pieceSuivante][0], (pX, pY))
                     else:
@@ -162,19 +172,18 @@ class CPieces():
             if self.pieceRotation < 0:
                 self.pieceRotation = len(CPieces.pieces[self.pieceSelect]) -1
 
-        if self.MOTEUR.PIECES.controle_choque_piece():
+        if self.Moteur.Mecanique.controle_choque_piece(self):
             self.pieceRotation = ancRot
         else:
             pygame.mixer.Sound.play(VAR.AUDIOS["rotation"])
 
     def controle_deplacement_lateral(self, valeur):
+        if valeur == 0: return False
+      
         ancX, ancY = self.pieceX, self.pieceY
         self.pieceX +=valeur
-        if self.MOTEUR.PIECES.controle_choque_piece():
+        if self.Moteur.Mecanique.controle_choque_piece(self):
             self.pieceX, self.pieceY = ancX, ancY
             return True
         return False
 
-    def faire_descendre_a_fond_la_piece(self):
-        while self.faire_descendre_la_piece():
-            pass

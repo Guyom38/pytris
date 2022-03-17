@@ -18,11 +18,11 @@ def afficher_fond():
         VAR.idFond +=1
         if VAR.idFond > len(VAR.IMG_FOND) -1: VAR.idFond = 0
 
-def afficher_les_joueurs():
+def afficher_tetris():
     liste_scores = []
     for i in range(VAR.nbJoueurs):
         VAR.tetris_joueurs[i].afficher()    
-        liste_scores.append((VAR.tetris_joueurs[i].score, i))
+        liste_scores.append((VAR.tetris_joueurs[i].Partie.score, i))
     
     rang = VAR.nbJoueurs
     liste_triee = sorted(liste_scores)
@@ -41,59 +41,61 @@ def afficher_temps():
     hauteur_barre = int(VAR.RESOLUTION[1] * 0.05)
     pX = int((VAR.RESOLUTION[0] - largeur_barre) / 2)
     pY = VAR.RESOLUTION[1] - hauteur_barre - 20
-    temps = CParties.temps_restant()
-    if temps <0: temps = 0
+    temps = CParties.temps_ecoule()
+    if temps <=0: temps = 0
     barre = (largeur_barre / VAR.duree_partie) * temps
     
     pygame.draw.rect(VAR.fenetre, couleur_fond_grille, (pX, pY, largeur_barre, hauteur_barre),0)
     pygame.draw.rect(VAR.fenetre, (128,128,128,200), (pX, pY, barre, hauteur_barre),0)
     pygame.draw.rect(VAR.fenetre, couleur_contour_grille, (pX, pY, largeur_barre, hauteur_barre),4)
     
-    image_temps = ecritures[40].render("TEMPS  " + FCT.format_temps(VAR.duree_partie - temps), True, (255,255,255,255)) 
-    VAR.fenetre.blit(image_temps, (int((VAR.RESOLUTION[0] - image_temps.get_width()) /2), pY+4))
-
+    image_temps = ecritures[40].render("TEMPS  " + FCT.format_temps((VAR.duree_partie - temps) // 1000) , True, (255,255,255,255)) 
+    VAR.fenetre.blit(image_temps, ((VAR.RESOLUTION[0] - image_temps.get_width()) // 2, pY+((hauteur_barre-image_temps.get_height()) //2)))
 
 
 
 
 
 def gestion_fps():
-    global cycle, fps, fps_cpt
 
-    if pygame.time.get_ticks() - cycle > 1000:
-        fps = fps_cpt
-        fps_cpt = 0
-        cycle = pygame.time.get_ticks()
-        fps_cpt +=1
+    if pygame.time.get_ticks() - VAR.fps_cycle > 1000:
+        VAR.fps = VAR.fps_cpt
+        VAR.fps_cpt = 0
+        VAR.fps_cycle = pygame.time.get_ticks()
+    VAR.fps_cpt +=1
 
-    image_score = ecritures[20].render("FPS : " + str(fps), True, (255,255,255,255)) 
+    image_score = ecritures[20].render("FPS : " + str(VAR.fps), True, (255,255,255,255)) 
     VAR.fenetre.blit(image_score, (0, 0))
 
 def rendu():
-    global horloge
+    gestion_fps()
     
     pygame.display.update()
-    gestion_fps()
-    horloge.tick(60)
+    VAR.horloge.tick(0)
 
-
+def gestion_musique():
+    if VAR.partie_demarree:
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.play()
+    else:
+        pygame.mixer.music.stop()
+        
 def jeu_PyTris():
-    global horloge,cycle, fps, fps_cpt
-
     CInit.initialiser()
 
-    horloge = pygame.time.Clock()
-    cycle, fps, fps_cpt = 0,0,0
-
+    VAR.horloge = pygame.time.Clock()
+  
     VAR.boucle = True
     while VAR.boucle:
         CControle.capture_evements_utilisateurs()
+        gestion_musique()
         
         afficher_fond()
-        afficher_les_joueurs()
+        afficher_tetris()
         afficher_temps()
         
         CControle.controle_fermeture_fenetre()
+        CParties.gestion_malediction()
         CParties.controle_fin_de_partie()
 
         rendu()

@@ -34,7 +34,7 @@ class CControle():
         largeur_grilles = (VAR.nbManettes +j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX) -VAR.ECARTX
         hauteur = (VAR.DIMENSION[1] * VAR.TAILLE)
         offsetX = int((VAR.RESOLUTION[0] - largeur_grilles) /2)
-        offsetY = int((VAR.RESOLUTION[1] - hauteur) /2 ) + 50
+        offsetY = int((VAR.RESOLUTION[1] - hauteur -  int(VAR.RESOLUTION[1] * 0.05)) /2 ) + 50 
         
         x = 0
         
@@ -42,13 +42,13 @@ class CControle():
 
         if VAR.joueur_clavier:
             VAR.tetris_joueurs[0] = moteur.CMoteur(0, (offsetX+x, offsetY), -1)
-            VAR.tetris_joueurs[0].demarrer()
+            VAR.tetris_joueurs[0].initialiser()
             j = 1
 
         for i in range(VAR.nbManettes):
             x = (i+j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX)
             VAR.tetris_joueurs[i+j] = moteur.CMoteur(i+j, (offsetX+x, offsetY), i)
-            #VAR.tetris_joueurs[i+j].demarrer()
+            VAR.tetris_joueurs[i+j].initialiser()
         
         
         VAR.nbJoueurs = len(VAR.tetris_joueurs)
@@ -67,24 +67,38 @@ class CControle():
 
         self.Moteur = moteur
         self.manetteId = idManette
-
+        self.cyclePoseRapide = pygame.time.get_ticks()
+        
+        self.direction = 0
+        self.chute = False
+        self.cycleDirection = pygame.time.get_ticks()
+       
     def gestion_manette(self):
         Partie = self.Moteur.Partie
 
+        if pygame.time.get_ticks() - self.cycleDirection > vitesseDeplacement:
+            self.Moteur.Pieces.controle_deplacement_lateral(self.direction)
+            if self.chute:
+                self.Moteur.Mecanique.faire_descendre_la_piece(False)
+            self.cycleDirection = pygame.time.get_ticks()
+        
         for event in VAR.evenements:
             if self.manetteId == -1 and VAR.joueur_clavier:
                 if event.type == KEYDOWN:  
                     if not (self.pause or not self.actif):
                         if event.key == K_DOWN: 
-                            self.faire_descendre_la_piece()
+                            self.Moteur.Mecanique.faire_descendre_la_piece()
                         elif event.key == K_LEFT: 
-                            self.controle_deplacement_lateral(-1)
+                            self.Moteur.Pieces.controle_deplacement_lateral(-1)
                         elif event.key == K_RIGHT: 
-                            self.controle_deplacement_lateral(1)
+                            self.Moteur.Pieces.controle_deplacement_lateral(1)
                         elif event.key == K_UP: 
-                            self.faire_descendre_a_fond_la_piece()
+                            if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
+                                self.cyclePoseRapide = pygame.time.get_ticks()
+                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece()
+                                
                         elif event.key == K_SPACE:
-                            self.faire_tourner_la_piece(True)
+                            self.Moteur.Pieces.faire_tourner_la_piece(True)
 
                     if event.key == 13:
                         if Partie.mort == True:
@@ -116,19 +130,32 @@ class CControle():
             elif not (Partie.pause or not self.Moteur.actif):
                 if event.type == pygame.JOYBUTTONDOWN:
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_L) == 1:
-                        self.faire_tourner_la_piece(False)
+                        self.Moteur.Pieces.faire_tourner_la_piece(False)
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_R) == 1:
-                        self.faire_tourner_la_piece(True)
+                        self.Moteur.Pieces.faire_tourner_la_piece(True)
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_B) == 1:
-                        self.faire_descendre_a_fond_la_piece()
+                        if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
+                                self.cyclePoseRapide = pygame.time.get_ticks()
+                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(False)
+                        
                 elif event.type == pygame.JOYAXISMOTION:
                     
                     if event.joy == self.manetteId:
-                        if event.axis == 0 and event.value > 0.9:
-                            self.controle_deplacement_lateral(1)
-                        elif event.axis == 0 and event.value < -0.9:
-                            self.controle_deplacement_lateral(-1)
-                        elif event.axis == 1 and event.value > 0.9:
-                            self.faire_descendre_la_piece()
+                        if event.axis == 0:
+                            if event.value > 0.9:
+                                self.direction = 1
+                                #self.Moteur.Pieces.controle_deplacement_lateral(1)
+                            elif event.value < -0.9:
+                                self.direction = -1
+                                #self.Moteur.Pieces.controle_deplacement_lateral(-1)
+                            else:
+                                self.direction = 0
+                        elif event.axis == 1:
+                            if event.value > 0.9:
+                                self.chute = True
+                            else:
+                                self.chute = False
                         #elif event.axis == 1 and event.value < -0.9: #HAUT
                             #self.faire_descendre_a_fond_la_piece()
+                            
+                

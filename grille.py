@@ -27,10 +27,12 @@ class CGrille():
         t = VAR.TAILLE
         self.image = FCT.image_vide((self.dimX * t)+40, (self.dimY * t)+140)
         
-        
+        # --- Cadre piece Suivante
         pygame.draw.rect(self.image, self.couleur_fond_grille, (5, 5, 100, 100),0)
         pygame.draw.rect(self.image, self.couleur_contour_grille, (5, 5, 100, 100),4)
         
+        # --- Grille 
+        pygame.draw.rect(self.image, (28,28,28,200), (20, 120, (self.dimX * t), (self.dimY * t)),0)
         pygame.draw.rect(self.image, self.couleur_contour_grille, (5, 105, (self.dimX * t)+30, (self.dimY * t)+30),4)
         for y in range(self.dimY):
             for x in range(self.dimX):
@@ -62,3 +64,6 @@ class CGrille():
                     else:
                         pygame.draw.rect(VAR.fenetre, CPieces.pieces_couleurs[self.zones[x][y]], (pX, pY, t, t), 0)
                         pygame.draw.rect(VAR.fenetre, self.couleur_contour_grille, (pX, pY, t, t), 1)
+                        
+        if VAR.pouvoirId == self.Moteur.id:
+            pygame.draw.rect(VAR.fenetre, (200, 200, 200, 200), (self.offX-5, self.offY+ (self.dimY * t) +20, (self.dimX * t)+10, 10),0)

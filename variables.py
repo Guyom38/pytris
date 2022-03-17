@@ -1,7 +1,7 @@
 from pygame.locals import *
 
-RESOLUTION = (1280, 768)
-MODE_ECRAN = DOUBLEBUF
+RESOLUTION = (1600, 900) #(1920, 1080)
+MODE_ECRAN = DOUBLEBUF #FULLSCREEN
 DIMENSION = (10, 20)
 TAILLE = 32
 ECARTX = 50
@@ -15,6 +15,8 @@ nbManettes = 0
 manettes = {}
 nbBoutons = 0
 tetris_joueurs = {}
+poseRapideDelais = 300
+vitesseDeplacement = 100
 
 fonts = {}
 ecritures = {}
@@ -23,7 +25,7 @@ idFond = 0
 IMG_FOND = []
 
 
-fond = False
+fond = True
 mode_bmp = True
 musique = True
 joueur_clavier = False
@@ -33,9 +35,13 @@ AUDIOS = {}
 IMAGES = {}
 
 cycle_partie = 0
-duree_partie = 180000
+duree_partie = 5*60000
 fin_partie = False
 partie_demarree = False
+
+pouvoirId = 0
+pouvoirCycle = 0
+pouvoirDelais = 7000
 
 
 class CBouton:
@@ -47,3 +53,10 @@ class CBouton:
     B_R = 5
     B_START = 9
     B_SELECT = 8
+
+horloge = None
+cycle = 0
+fps = 0
+fps_cpt = 0
+fps_cycle = 0
+
