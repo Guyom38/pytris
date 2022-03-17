@@ -79,7 +79,7 @@ class CControle():
         if pygame.time.get_ticks() - self.cycleDirection > vitesseDeplacement:
             self.Moteur.Pieces.controle_deplacement_lateral(self.direction)
             if self.chute:
-                self.Moteur.Mecanique.faire_descendre_la_piece(False)
+                self.Moteur.Mecanique.faire_descendre_la_piece(self.Moteur.Pieces)
             self.cycleDirection = pygame.time.get_ticks()
         
         for event in VAR.evenements:
@@ -87,7 +87,7 @@ class CControle():
                 if event.type == KEYDOWN:  
                     if not (self.pause or not self.actif):
                         if event.key == K_DOWN: 
-                            self.Moteur.Mecanique.faire_descendre_la_piece()
+                            self.Moteur.Mecanique.faire_descendre_la_piece(self.Moteur.Pieces)
                         elif event.key == K_LEFT: 
                             self.Moteur.Pieces.controle_deplacement_lateral(-1)
                         elif event.key == K_RIGHT: 
@@ -95,7 +95,7 @@ class CControle():
                         elif event.key == K_UP: 
                             if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
                                 self.cyclePoseRapide = pygame.time.get_ticks()
-                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece()
+                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
                                 
                         elif event.key == K_SPACE:
                             self.Moteur.Pieces.faire_tourner_la_piece(True)
@@ -136,7 +136,7 @@ class CControle():
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_B) == 1:
                         if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
                                 self.cyclePoseRapide = pygame.time.get_ticks()
-                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(False)
+                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
                         
                 elif event.type == pygame.JOYAXISMOTION:
                     

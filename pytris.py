@@ -6,17 +6,21 @@ from partie import *
 from init import *
 from controles import *
 
+
 import variables as VAR
 
 
            
 def afficher_fond():
+    
     if not VAR.fond:
         VAR.fenetre.fill((96,96,96))
     else:
         VAR.fenetre.blit(VAR.IMG_FOND[VAR.idFond], (0,0), (0,0,VAR.RESOLUTION[0], VAR.RESOLUTION[1]))
-        VAR.idFond +=1
-        if VAR.idFond > len(VAR.IMG_FOND) -1: VAR.idFond = 0
+        if pygame.time.get_ticks() - VAR.fondVideo_cycle > VAR.fondVideo_frequence:
+            VAR.idFond +=1
+            if VAR.idFond > len(VAR.IMG_FOND) -1: VAR.idFond = 0
+            VAR.fondVideo_cycle = pygame.time.get_ticks()
 
 def afficher_tetris():
     liste_scores = []
@@ -75,14 +79,12 @@ def rendu():
 
 def gestion_musique():
     if VAR.partie_demarree:
-        if not pygame.mixer.music.get_busy():
-            pygame.mixer.music.play()
+        FCT.jouer_musique()
     else:
-        pygame.mixer.music.stop()
+        FCT.arreter_musique()
         
 def jeu_PyTris():
     CInit.initialiser()
-
     VAR.horloge = pygame.time.Clock()
   
     VAR.boucle = True

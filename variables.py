@@ -1,6 +1,6 @@
 from pygame.locals import *
 
-RESOLUTION = (1600, 900) #(1920, 1080)
+RESOLUTION = (1600, 950) #(1920, 1080)
 MODE_ECRAN = DOUBLEBUF #FULLSCREEN
 DIMENSION = (10, 20)
 TAILLE = 32
@@ -25,11 +25,13 @@ idFond = 0
 IMG_FOND = []
 
 
-fond = True
+fond = False
 mode_bmp = True
+audio = True
 musique = True
 joueur_clavier = False
 
+nbLignesNiveauSuivant = 10
 
 AUDIOS = {}
 IMAGES = {}
@@ -43,7 +45,7 @@ pouvoirId = 0
 pouvoirCycle = 0
 pouvoirDelais = 7000
 
-
+limitePiecesQuiSeSuivent = 3
 class CBouton:
     B_X = 0
     B_A = 1
@@ -59,4 +61,8 @@ cycle = 0
 fps = 0
 fps_cpt = 0
 fps_cycle = 0
+
+
+fondVideo_cycle = 0
+fondVideo_frequence =  35
 

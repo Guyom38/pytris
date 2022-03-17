@@ -21,8 +21,9 @@ class CInit():
         pygame.display.set_caption("PyTris")
         
 
-
-        VAR.fenetre.blit(pygame.image.load("fonds\\titre.jpg"), (0,0))
+        titre = pygame.image.load("images\\titre.jpg")
+        titre = pygame.transform.scale(titre, VAR.RESOLUTION)
+        VAR.fenetre.blit(titre, (0,0))
         pygame.display.flip()
 
         CInit.initialiser_ecritures()
@@ -35,7 +36,7 @@ class CInit():
     def initialiser_musique():
         if musique:
             pygame.mixer.init()
-            pygame.mixer.music.load("audios\\music00.mp3")
+            pygame.mixer.music.load("audios\\music02.m4a")
             
 
             VAR.AUDIOS["fixe"] = pygame.mixer.Sound("audios\\fall.wav")
@@ -43,7 +44,7 @@ class CInit():
             VAR.AUDIOS["rotation"] = pygame.mixer.Sound("audios\\selection.wav")
 
     def initialiser_decors():   
-        imgTmp = pygame.image.load("blocs.png")
+        imgTmp = pygame.image.load("images\\blocs.png")
         VAR.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
         VAR.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
         VAR.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))

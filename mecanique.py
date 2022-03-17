@@ -12,34 +12,32 @@ class CMecanique():
     
     def __init__(self, moteur):
         print("        + MECANIQUE")
-        self.Moteur = moteur
 
-    def faire_descendre_la_piece(self, simulation):
-        if not simulation:
-            ancY = self.Moteur.Pieces.pieceY
-            self.Moteur.Pieces.pieceY +=1
-            if self.controle_choque_piece(self.Moteur.Pieces):
-                self.Moteur.Pieces.pieceY = ancY
-                if self.Moteur.Pieces.pieceY != -1:
+        self.Moteur = moteur
+        self.lignesADetruire = []
+     
+
+    def faire_descendre_la_piece(self, piece):
+
+        ancY = piece.pieceY
+        piece.pieceY +=1
+        if self.controle_choque_piece(piece):
+            piece.pieceY = ancY
+
+            if not piece.simulation:
+                if piece.pieceY != -2:
                     self.fixer_piece_sur_la_grille()
                 else:
+                    
+                    self.Moteur.Animation.meurt()
                     self.Moteur.Partie.meurt()
                 
-                return False
-            return True
-        
-        else:
-            
-            ancY = self.Moteur.PiecesAide.pieceY
-            self.Moteur.PiecesAide.pieceY +=1
-            if self.controle_choque_piece(self.Moteur.PiecesAide):
-                self.Moteur.PiecesAide.pieceY = ancY
+            return False
+        return True
+      
     
-                return False
-            return True            
-    
-    def faire_descendre_a_fond_la_piece(self, simulation):
-        while self.faire_descendre_la_piece(simulation):
+    def faire_descendre_a_fond_la_piece(self, piece):
+        while self.faire_descendre_la_piece(piece):
             pass
         
     def controle_choque_piece(self, piece):
@@ -48,7 +46,10 @@ class CMecanique():
                 if CPieces.pieces[piece.pieceSelect][piece.pieceRotation][x][y] == 1:
                     pX, pY = piece.pieceX + x, piece.pieceY + y
                     if pX >= 0 and pX < VAR.DIMENSION[0] and pY < VAR.DIMENSION[1]:
-                        if self.Moteur.grille.zones[pX][pY] != "": return True
+                        if pY < 0: 
+                            return False
+                        elif self.Moteur.grille.zones[pX][pY] != "": 
+                            return True
                     else:
                         return True
         return False
@@ -62,7 +63,7 @@ class CMecanique():
                     if pX >= 0 and pX < VAR.DIMENSION[0] and pY >= 0 and pY < VAR.DIMENSION[1]:
                         self.Moteur.grille.zones[pX][pY] = self.Moteur.Pieces.pieceSelect
 
-        pygame.mixer.Sound.play(VAR.AUDIOS["fixe"])
+        FCT.jouer_son("fixe")
 
         self.rechercher_de_lignes()
         self.Moteur.Pieces.tirer_nouvelle_piece()
@@ -72,7 +73,7 @@ class CMecanique():
         if self.Moteur.Partie.pause or not self.Moteur.actif: return None
 
         if pygame.time.get_ticks() - self.Moteur.Partie.cycle > self.Moteur.Partie.vitesse:
-            self.faire_descendre_la_piece(False)
+            self.faire_descendre_la_piece(self.Moteur.Pieces)
             self.Moteur.Partie.cycle = pygame.time.get_ticks()
 
     def verifie_la_ligne(self, ligne):
@@ -115,19 +116,16 @@ class CMecanique():
                         self.ajoute_score_lignes(bloc_de_lignes_cpt)
                         bloc_traite = False
                         bloc_de_lignes_cpt = 0
-                        print("BLOC : " + str(bloc_de_lignes_cpt))
-                        
                 bloc_de_lignes_ref = y
                 
         if bloc_traite and bloc_de_lignes_cpt > 0:
             self.ajoute_score_lignes(bloc_de_lignes_cpt)
-            print("FIN BLOC : " + str(bloc_de_lignes_cpt))
-       
         
         if len(liste_lignes) > 0:
-            self.detruire_lignes(liste_lignes)
-            print(("A SUPPRIMER", liste_lignes))
-            self.balance_les_lignes(len(liste_lignes))
+            #self.detruire_lignes(liste_lignes)
+            #self.balance_les_lignes(len(liste_lignes))
+            self.lignesADetruire = liste_lignes
+            self.Moteur.Animation.destLignesActif = True
     
     def balance_les_lignes(self, nbLignes):
         if self.Moteur.id == VAR.pouvoirId:                 # --- Si le joueur a le pouvoir, il balance a tout le monde
@@ -156,4 +154,4 @@ class CMecanique():
                 if y < VAR.DIMENSION[1]:
                     self.Moteur.grille.zones[x][y] = self.Moteur.grille.zones[x][y-1]
 
-            pygame.mixer.Sound.play(VAR.AUDIOS["ligne"])
+            FCT.jouer_son("ligne")

@@ -3,6 +3,8 @@ import pygame
 from pygame.locals import *
 
 import variables as VAR
+import fonctions as FCT
+
 import random
 
 class CPieces():
@@ -109,29 +111,27 @@ class CPieces():
         self.pieceSuivante = None
         self.pieceX, self.pieceY = -1, -1
 
+        self.pieceRepetition = 0
         self.simulation = simulation
-        
-    def afficher_piece(self, simulation):
-        
-        piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
-        if not simulation:
-            couleur = CPieces.pieces_couleurs[self.pieceSelect]
-            pieceX, pieceY = self.pieceX, self.pieceY
-        else:
-            couleur = CPieces.pieces_couleurs[self.pieceSelect]
-            pieceX, pieceY = self.Moteur.PiecesAide.pieceX, self.Moteur.PiecesAide.pieceY
-          
+      
+    def afficher_piece(self):
         t = VAR.TAILLE
+        piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
+        couleur = CPieces.pieces_couleurs[FCT.iif(self.simulation, "#", self.pieceSelect)]
+
+        if self.simulation:
+            print((self.pieceX, self.pieceY, " => ", self.Moteur.Pieces.pieceX, self.Moteur.Pieces.pieceY))
 
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
-                    pX, pY =x+pieceX, y+ pieceY
+                    pX, pY =x+self.pieceX, y+ self.pieceY
                     if pY >= 0:
                         if VAR.mode_bmp:
                             VAR.fenetre.blit(VAR.IMAGES[self.pieceSelect][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)))
                         else:
                             pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t), t, t), 0)
+
 
     def afficher_piece_suivante(self):
         piece = CPieces.pieces[self.pieceSuivante][0]
@@ -147,11 +147,26 @@ class CPieces():
                     else:
                         pygame.draw.rect(VAR.fenetre, couleur, (pX, pY , t, t), 0)
 
+
+    def hasard(self, forceDifference = ""):
+        self.pieceSuivante = random.choice(["O", "I", "S", "Z", "L", "J", "T"])
+
+        if self.pieceSelect == self.pieceSuivante:
+            self.pieceRepetition += 1
+        else:
+            self.pieceRepetition = 0
+
+        if self.pieceRepetition > (VAR.limitePiecesQuiSeSuivent+1) or (forceDifference == self.pieceSuivante):
+            self.hasard(self.pieceSuivante)
+            self.pieceRepetition = 0
+
+
     def tirer_nouvelle_piece(self):
         self.pieceSelect = self.pieceSuivante
-        self.pieceSuivante = random.choice(["O", "I", "S", "Z", "L", "J", "T"])
+        self.hasard()
+        
         self.pieceX = int( ( VAR.DIMENSION[0]-2 ) / 2 )
-        self.pieceY = -1
+        self.pieceY = -3
         self.pieceRotation = 0
 
     
@@ -175,7 +190,7 @@ class CPieces():
         if self.Moteur.Mecanique.controle_choque_piece(self):
             self.pieceRotation = ancRot
         else:
-            pygame.mixer.Sound.play(VAR.AUDIOS["rotation"])
+            FCT.jouer_son("rotation")
 
     def controle_deplacement_lateral(self, valeur):
         if valeur == 0: return False

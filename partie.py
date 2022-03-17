@@ -35,7 +35,7 @@ class CParties():
         self.nbLignes = 0
         self.niveau = 0
         self.rang = 0
-        self.aide = True
+        self.aide = False
         self.ligneNiveau = 0
         self.pause = False
         self.mort = False
@@ -43,6 +43,7 @@ class CParties():
         self.vitesse = 500
 
         VAR.cycle_partie = -1
+        self.memoireDuTemps = 0
         
     def demarrer(self):
         self.Moteur.actif = False
@@ -76,10 +77,11 @@ class CParties():
         
     def verifie_changement_de_niveau(self):
         self.ligneNiveau +=1
-        if self.ligneNiveau == 10:
+        if self.ligneNiveau == VAR.nbLignesNiveauSuivant:
             self.niveau +=1
             self.vitesse -= 50
             self.ligneNiveau = 0
+            self.Moteur.Animation.nivSupActif = True
 
     def meurt(self):
         self.Moteur.actif = False
@@ -94,3 +96,15 @@ class CParties():
         self.vitesse = 500
         self.nbLignes = 0
         self.Moteur.grille = CGrille(self.Moteur)
+        self.Moteur.Pieces.tirer_nouvelle_piece()
+        self.Moteur.Mecanique.lignesADetruire = []
+
+
+    def fige_le_temps(self):
+        self.memoireDuTemps = (pygame.time.get_ticks() - self.Moteur.Partie.cycle)
+        print(("AV : ", pygame.time.get_ticks(), self.Moteur.Partie.cycle, self.memoireDuTemps))
+
+    def libere_le_temps(self):
+         self.Moteur.Partie.cycle = (pygame.time.get_ticks() + self.memoireDuTemps)
+         print(("AP : ", pygame.time.get_ticks(), self.Moteur.Partie.cycle, self.memoireDuTemps))
+

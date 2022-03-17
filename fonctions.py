@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 import time
+import variables as VAR
 
 def GenereMat2D(dimX, dimY, valeurDefaut):
     return [[valeurDefaut for x in range(dimY)] for i in range(dimX)]
@@ -29,3 +30,25 @@ def convert(seconds):
     seconds %= 60
       
     return "%d:%02d:%02d" % (hour, minutes, seconds) 
+
+def iif(condition, vrai, faux):
+    if condition:
+        return vrai
+    else:
+        return faux
+
+
+# --- DEPENDANTE DU JEU
+def jouer_musique():
+    if VAR.audio and VAR.musique:
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.play()
+
+def arreter_musique():
+    if VAR.audio and VAR.musique:
+        pygame.mixer.music.stop()
+
+
+def jouer_son(son):
+    if VAR.audio:
+        pygame.mixer.Sound.play(VAR.AUDIOS[son])
