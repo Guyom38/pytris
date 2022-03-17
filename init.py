@@ -6,7 +6,7 @@ from moteur import *
 from partie import *
 from controles import *
 
-import time
+import time, os
 import variables as VAR
 
 class CInit():
@@ -36,13 +36,19 @@ class CInit():
     def initialiser_musique():
         if musique:
             pygame.mixer.init()
-            pygame.mixer.music.load("audios\\music02.m4a")
+            fichier = random.choice(os.listdir("audios\\musics"))
+            FCT.charger_musique(fichier)
             
 
             VAR.AUDIOS["fixe"] = pygame.mixer.Sound("audios\\fall.wav")
-            VAR.AUDIOS["ligne"] = pygame.mixer.Sound("audios\\line.wav")
-            VAR.AUDIOS["rotation"] = pygame.mixer.Sound("audios\\selection.wav")
+            VAR.AUDIOS["ligne"] = pygame.mixer.Sound("audios\\full_line.wav")
+            VAR.AUDIOS["rotation"] = pygame.mixer.Sound("audios\\rotate_block.wav")
+            VAR.AUDIOS["tetris"] = pygame.mixer.Sound("audios\\tetris.wav")
+            VAR.AUDIOS["game_over"] = pygame.mixer.Sound("audios\\game_over.wav")
+            VAR.AUDIOS["level_up"] = pygame.mixer.Sound("audios\\level_up.wav")
+            VAR.AUDIOS["block"] = pygame.mixer.Sound("audios\\place_block.wav")
 
+    
     def initialiser_decors():   
         imgTmp = pygame.image.load("images\\blocs.png")
         VAR.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
@@ -59,20 +65,38 @@ class CInit():
     def initialiser_fond():
         if not fond: return 
 
-        for i in range(102):
-            id = str(i)
-            if i<10:
-                id = "00" + id
-            elif i<100:
-                id = "0" + id
+        VAR.IMG_FOND = []
 
-            tmpImage = pygame.image.load("fonds\\darkCinematic_"+ id + ".jpg")
-            tmpImage = pygame.transform.scale(tmpImage, (VAR.RESOLUTION[0], VAR.RESOLUTION[1]))
-            VAR.IMG_FOND.append(tmpImage)
+        i = 0
+        dossiers = os.listdir("fonds")
+        #for dossier in dossiers:
+        if 1 == 1:
+            dossier = random.choice(dossiers)
+            fichiers = os.listdir("fonds\\"+dossier)
+            print("FOND : " + dossier)
+            for fichier in fichiers:
+                tmpImage = pygame.image.load("fonds\\"+dossier+"\\"+fichier)
+                tmpImage = pygame.transform.scale(tmpImage, (VAR.RESOLUTION[0], VAR.RESOLUTION[1]))
+                VAR.IMG_FOND.append(tmpImage)   
+                barre = (VAR.RESOLUTION[0] / (len(fichiers))) * i
+                i += 1
+                
+                pygame.draw.rect(VAR.fenetre, (255,255,0,255), (0, VAR.RESOLUTION[1]-30, barre, 30), 0)
+                pygame.display.flip()
+       # input("kk")
+       # for i in range(102):
+       #     id = str(i)
+        #    if i<10:
+        #        id = "00" + id
+        #    elif i<100:
+        #        id = "0" + id
 
-            barre = (VAR.RESOLUTION[0] / 100) * i
-            pygame.draw.rect(VAR.fenetre, (255,255,0,255), (0, VAR.RESOLUTION[1]-30, barre, 30), 0)
-            pygame.display.flip()
+        #    tmpImage = pygame.image.load("fonds\\darkCinematic_"+ id + ".jpg")
+        #    tmpImage = pygame.transform.scale(tmpImage, (VAR.RESOLUTION[0], VAR.RESOLUTION[1]))
+        #    VAR.IMG_FOND.append(tmpImage)
+
+            
+
 
     def initialiser_ecritures():
         for taille in (10, 20, 30, 40, 50, 60, 80):

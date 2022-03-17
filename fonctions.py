@@ -44,6 +44,10 @@ def jouer_musique():
         if not pygame.mixer.music.get_busy():
             pygame.mixer.music.play()
 
+def charger_musique(fichier):
+        pygame.mixer.music.load("audios\\musics\\" + fichier)
+
+
 def arreter_musique():
     if VAR.audio and VAR.musique:
         pygame.mixer.music.stop()

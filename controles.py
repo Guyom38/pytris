@@ -105,7 +105,7 @@ class CControle():
                             Partie.game_over()
                             
                         elif self.actif == False:
-                            VAR.partie_demarree = True
+                            #VAR.partie_demarree = True
                             if VAR.cycle_partie == -1:
                                 VAR.cycle_partie = pygame.time.get_ticks()
                             self.Moteur.actif = True
@@ -117,10 +117,11 @@ class CControle():
                         Partie.game_over()
                         
                     elif self.Moteur.actif == False:
-                        VAR.partie_demarree = True
+                        #VAR.partie_demarree = True
                         if VAR.cycle_partie == -1:
                             VAR.cycle_partie = pygame.time.get_ticks()
                         self.Moteur.actif = True
+
                     else:
                         Partie.pause = not Partie.pause
                         

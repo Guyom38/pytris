@@ -31,6 +31,7 @@ class CMecanique():
                     
                     self.Moteur.Animation.meurt()
                     self.Moteur.Partie.meurt()
+                    FCT.jouer_son("game_over")
                 
             return False
         return True
@@ -63,7 +64,7 @@ class CMecanique():
                     if pX >= 0 and pX < VAR.DIMENSION[0] and pY >= 0 and pY < VAR.DIMENSION[1]:
                         self.Moteur.grille.zones[pX][pY] = self.Moteur.Pieces.pieceSelect
 
-        FCT.jouer_son("fixe")
+        FCT.jouer_son("block")
 
         self.rechercher_de_lignes()
         self.Moteur.Pieces.tirer_nouvelle_piece()
@@ -94,6 +95,7 @@ class CMecanique():
             self.Moteur.Partie.score += 300 * (self.Moteur.Partie.niveau + 1)
         elif nbLignes == 4:
             self.Moteur.Partie.score += 1200 * (self.Moteur.Partie.niveau + 1)
+            FCT.jouer_son("tetris")
 
     def rechercher_de_lignes(self):
         liste_lignes = []

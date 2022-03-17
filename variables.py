@@ -25,7 +25,7 @@ idFond = 0
 IMG_FOND = []
 
 
-fond = False
+fond = True
 mode_bmp = True
 audio = True
 musique = True

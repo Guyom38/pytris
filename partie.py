@@ -82,6 +82,7 @@ class CParties():
             self.vitesse -= 50
             self.ligneNiveau = 0
             self.Moteur.Animation.nivSupActif = True
+            FCT.jouer_son("level_up")
 
     def meurt(self):
         self.Moteur.actif = False
@@ -102,9 +103,7 @@ class CParties():
 
     def fige_le_temps(self):
         self.memoireDuTemps = (pygame.time.get_ticks() - self.Moteur.Partie.cycle)
-        print(("AV : ", pygame.time.get_ticks(), self.Moteur.Partie.cycle, self.memoireDuTemps))
-
+ 
     def libere_le_temps(self):
          self.Moteur.Partie.cycle = (pygame.time.get_ticks() + self.memoireDuTemps)
-         print(("AP : ", pygame.time.get_ticks(), self.Moteur.Partie.cycle, self.memoireDuTemps))
-
+     

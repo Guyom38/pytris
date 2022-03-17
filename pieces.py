@@ -115,6 +115,8 @@ class CPieces():
         self.simulation = simulation
       
     def afficher_piece(self):
+        if self.Moteur.Partie.mort: return 0
+
         t = VAR.TAILLE
         piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
         couleur = CPieces.pieces_couleurs[FCT.iif(self.simulation, "#", self.pieceSelect)]
@@ -134,6 +136,8 @@ class CPieces():
 
 
     def afficher_piece_suivante(self):
+        if self.Moteur.Partie.mort: return 0
+
         piece = CPieces.pieces[self.pieceSuivante][0]
         couleur = CPieces.pieces_couleurs[self.pieceSuivante]
         t = VAR.TAILLE

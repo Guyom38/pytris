@@ -32,7 +32,7 @@ class CGrille():
         pygame.draw.rect(self.image, self.couleur_contour_grille, (5, 5, 100, 100),4)
         
         # --- Grille 
-        pygame.draw.rect(self.image, (28,28,28,200), (20, 120, (self.dimX * t), (self.dimY * t)),0)
+        pygame.draw.rect(self.image, (28,28,28,230), (20, 120, (self.dimX * t), (self.dimY * t)),0)
         pygame.draw.rect(self.image, self.couleur_contour_grille, (5, 105, (self.dimX * t)+30, (self.dimY * t)+30),4)
         for y in range(self.dimY):
             for x in range(self.dimX):

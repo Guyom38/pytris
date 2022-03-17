@@ -5,10 +5,21 @@ from moteur import *
 from partie import *
 from init import *
 from controles import *
-
+import highscore as HS
 
 import variables as VAR
 
+def surveille_demarrage():
+    if not VAR.partie_demarree:
+        pret = False
+        for i, joueur in VAR.tetris_joueurs.items():
+            if joueur.actif == True: pret = True
+
+        if pret:
+            for i, joueur in VAR.tetris_joueurs.items():
+                joueur.actif == True
+
+        VAR.partie_demarree = True
 
            
 def afficher_fond():
@@ -89,7 +100,10 @@ def jeu_PyTris():
   
     VAR.boucle = True
     while VAR.boucle:
+
+
         CControle.capture_evements_utilisateurs()
+        surveille_demarrage()
         gestion_musique()
         
         afficher_fond()
@@ -100,6 +114,7 @@ def jeu_PyTris():
         CParties.gestion_malediction()
         CParties.controle_fin_de_partie()
 
+        #HS.afficher_highscore()
         rendu()
     pygame.quit() 
 
