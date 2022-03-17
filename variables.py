@@ -1,10 +1,10 @@
 from pygame.locals import *
 
-RESOLUTION = (1600, 950) #(1920, 1080)
-MODE_ECRAN = DOUBLEBUF #FULLSCREEN
+RESOLUTION = ((1600, 950),(1920, 1080))[1]
+MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[1]
 DIMENSION = (10, 20)
-TAILLE = 32
-ECARTX = 50
+TAILLE = 20
+ECARTX = 40
 
 fenetre = None
 evenements = None
@@ -31,7 +31,7 @@ audio = True
 musique = True
 joueur_clavier = False
 
-nbLignesNiveauSuivant = 10
+nbLignesNiveauSuivant = 1
 
 AUDIOS = {}
 IMAGES = {}

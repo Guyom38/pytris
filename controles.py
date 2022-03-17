@@ -6,7 +6,7 @@ import moteur
 
 import variables as VAR
 from variables import *
-
+from grille import *
 
 class CControle():
     def initialiser_manettes():
@@ -18,40 +18,41 @@ class CControle():
         for idManette in range(VAR.nbManettes):
             VAR.manettes[idManette] = pygame.joystick.Joystick(idManette) 
             VAR.manettes[idManette].init()
+            
+            print("Manette #" + str(idManette) + " => " + VAR.manettes[idManette].get_name() + " => "+ VAR.manettes[idManette].get_guid())
         VAR.nbBoutons = VAR.manettes[0].get_numbuttons()
+        
+        CControle.initialiser_les_dimensions()
 
-    def initialiser_les_joueurs():
+    def initialiser_les_dimensions():
         j = 0
         if VAR.joueur_clavier: j = 1
 
-        if VAR.nbManettes+j == 5: VAR.TAILLE, VAR.ECARTX = 32, 50
-        if VAR.nbManettes+j == 4: VAR.TAILLE, VAR.ECARTX = 32, 80
-        if VAR.nbManettes+j == 3: VAR.TAILLE, VAR.ECARTX = 32, 120
-        if VAR.nbManettes+j == 2: VAR.TAILLE, VAR.ECARTX = 32, 200
-        if VAR.nbManettes+j == 1: VAR.TAILLE, VAR.ECARTX = 32, 0
-
-
-        largeur_grilles = (VAR.nbManettes +j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX) -VAR.ECARTX
-        hauteur = (VAR.DIMENSION[1] * VAR.TAILLE)
-        offsetX = int((VAR.RESOLUTION[0] - largeur_grilles) /2)
-        offsetY = int((VAR.RESOLUTION[1] - hauteur -  int(VAR.RESOLUTION[1] * 0.05)) /2 ) + 50 
+        if VAR.nbManettes+j == 9: VAR.TAILLE, VAR.ECARTX = 18, 33
+        if VAR.nbManettes+j == 8: VAR.TAILLE, VAR.ECARTX = 20, 40
+        if VAR.nbManettes+j == 7: VAR.TAILLE, VAR.ECARTX = 23, 45
+        if VAR.nbManettes+j == 6: VAR.TAILLE, VAR.ECARTX = 25, 70        
+        if VAR.nbManettes+j == 5: VAR.TAILLE, VAR.ECARTX = 30, 84        
+        if VAR.nbManettes+j == 4: VAR.TAILLE, VAR.ECARTX = 32, 80        
+        if VAR.nbManettes+j == 3: VAR.TAILLE, VAR.ECARTX = 32, 120        
+        if VAR.nbManettes+j == 2: VAR.TAILLE, VAR.ECARTX = 32, 300
+        if VAR.nbManettes+j == 1: VAR.TAILLE, VAR.ECARTX = 38, 0
         
-        x = 0
-        
+    def initialiser_les_joueurs():
+        j = 0
+        if VAR.joueur_clavier: j = 1        
+                
         VAR.tetris_joueurs = {}
-
         if VAR.joueur_clavier:
-            VAR.tetris_joueurs[0] = moteur.CMoteur(0, (offsetX+x, offsetY), -1)
+            VAR.tetris_joueurs[0] = moteur.CMoteur(0, -1)
             VAR.tetris_joueurs[0].initialiser()
-            j = 1
 
         for i in range(VAR.nbManettes):
-            x = (i+j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX)
-            VAR.tetris_joueurs[i+j] = moteur.CMoteur(i+j, (offsetX+x, offsetY), i)
+            VAR.tetris_joueurs[i+j] = moteur.CMoteur(i+j, i)
             VAR.tetris_joueurs[i+j].initialiser()
         
-        
         VAR.nbJoueurs = len(VAR.tetris_joueurs)
+        
 
     def capture_evements_utilisateurs():
         VAR.evenements = pygame.event.get()

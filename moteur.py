@@ -15,13 +15,16 @@ from variables import *
 
 
 class CMoteur():
-    def __init__(self, id, location, idManette):
+    def __init__(self, id, idManette):
         print("    + Moteur # " + str(id))
 
         self.id = id
-        self.idManette = idManette
-        self.location = location
         
+        alpha = 60
+        self.couleur = ((210,0,0,alpha),(173,212,0,alpha),(212,194,0,alpha),(210,140,0,alpha),(0,106,203,alpha),(0,212,57,alpha),(0,188,210,alpha),(245,130,244,alpha),(20,81,16,alpha) )[id]
+        
+        self.idManette = idManette
+
         self.actif = False
         self.grille = None
 

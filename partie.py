@@ -68,6 +68,9 @@ class CParties():
     def afficher_score(self): 
         y=50
         for texte in ("Score : " + str(self.score), "Lignes : "+str(self.nbLignes), "Niveau : " + str(self.niveau)) :
+            image = VAR.ecritures[20].render(texte, True, (0,0,0,255)) 
+            VAR.fenetre.blit(image, (self.Moteur.grille.offX +98, self.Moteur.grille.offY - y-2))
+            
             image = VAR.ecritures[20].render(texte, True, (255,255,255,255)) 
             VAR.fenetre.blit(image, (self.Moteur.grille.offX +100, self.Moteur.grille.offY - y))
             y += image.get_height() +5

@@ -49,18 +49,31 @@ class CInit():
             VAR.AUDIOS["block"] = pygame.mixer.Sound("audios\\place_block.wav")
 
     
-    def initialiser_decors():   
-        imgTmp = pygame.image.load("images\\blocs.png")
-        VAR.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["L"] = (FCT.image_decoupe(imgTmp, 3, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 3, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["J"] = (FCT.image_decoupe(imgTmp, 4, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 4, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["S"] = (FCT.image_decoupe(imgTmp, 5, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 5, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["I"] = (FCT.image_decoupe(imgTmp, 6, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 6, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        VAR.IMAGES["#"] = (FCT.image_decoupe(imgTmp, 7, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 7, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-        
-        VAR.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2), FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2))
+    def initialiser_decors():  
+        if VAR.TAILLE >= 25: 
+            imgTmp = pygame.image.load("images\\blocs.png")
+            VAR.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["L"] = (FCT.image_decoupe(imgTmp, 3, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 3, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["J"] = (FCT.image_decoupe(imgTmp, 4, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 4, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["S"] = (FCT.image_decoupe(imgTmp, 5, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 5, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["I"] = (FCT.image_decoupe(imgTmp, 6, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 6, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["#"] = (FCT.image_decoupe(imgTmp, 7, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 7, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            
+            VAR.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2), FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2))
+        else:
+            imgTmp = pygame.image.load("images\\blocs-mini.png")
+            VAR.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["L"] = (FCT.image_decoupe(imgTmp, 3, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 3, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["J"] = (FCT.image_decoupe(imgTmp, 4, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 4, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["S"] = (FCT.image_decoupe(imgTmp, 5, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 5, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["I"] = (FCT.image_decoupe(imgTmp, 6, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 6, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            VAR.IMAGES["#"] = (FCT.image_decoupe(imgTmp, 7, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 7, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            
+            VAR.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 22, 22, VAR.TAILLE+2, VAR.TAILLE+2), FCT.image_decoupe(imgTmp, 8, 1, 22, 22, VAR.TAILLE+2, VAR.TAILLE+2))
 
     def initialiser_fond():
         if not fond: return 
@@ -83,17 +96,6 @@ class CInit():
                 
                 pygame.draw.rect(VAR.fenetre, (255,255,0,255), (0, VAR.RESOLUTION[1]-30, barre, 30), 0)
                 pygame.display.flip()
-       # input("kk")
-       # for i in range(102):
-       #     id = str(i)
-        #    if i<10:
-        #        id = "00" + id
-        #    elif i<100:
-        #        id = "0" + id
-
-        #    tmpImage = pygame.image.load("fonds\\darkCinematic_"+ id + ".jpg")
-        #    tmpImage = pygame.transform.scale(tmpImage, (VAR.RESOLUTION[0], VAR.RESOLUTION[1]))
-        #    VAR.IMG_FOND.append(tmpImage)
 
             
 

@@ -42,7 +42,7 @@ def iif(condition, vrai, faux):
 def jouer_musique():
     if VAR.audio and VAR.musique:
         if not pygame.mixer.music.get_busy():
-            pygame.mixer.music.play()
+            pygame.mixer.music.play(-1)
 
 def charger_musique(fichier):
         pygame.mixer.music.load("audios\\musics\\" + fichier)

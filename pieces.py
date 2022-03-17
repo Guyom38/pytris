@@ -141,11 +141,11 @@ class CPieces():
         piece = CPieces.pieces[self.pieceSuivante][0]
         couleur = CPieces.pieces_couleurs[self.pieceSuivante]
         t = VAR.TAILLE
-
+        dim = VAR.TAILLE * 5
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
-                    pX, pY = self.Moteur.grille.offX + (x*t), self.Moteur.grille.offY + (y*t) - 120
+                    pX, pY = self.Moteur.grille.offX + (x*t), self.Moteur.grille.offY + (y*t) - dim -5
                     if VAR.mode_bmp:
                         VAR.fenetre.blit(VAR.IMAGES[self.pieceSuivante][0], (pX, pY))
                     else:
