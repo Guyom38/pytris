@@ -16,7 +16,7 @@ class CPieces():
     pieces_couleurs["L"] = (18, 105, 232)
     pieces_couleurs["J"] = (98, 52, 15)
     pieces_couleurs["T"] = (0, 105, 0)
-    pieces_couleurs["#"] = (128, 128, 128)
+    pieces_couleurs["#"] = (128, 128, 128, 200)
 
     pieces = {}
     pieces["O"] = [( (0, 0, 0, 0), \
@@ -120,17 +120,15 @@ class CPieces():
         t = VAR.TAILLE
         piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
         couleur = CPieces.pieces_couleurs[FCT.iif(self.simulation, "#", self.pieceSelect)]
-
-        if self.simulation:
-            print((self.pieceX, self.pieceY, " => ", self.Moteur.Pieces.pieceX, self.Moteur.Pieces.pieceY))
-
+        pImg = FCT.iif(self.simulation, "#", self.pieceSelect)
+        
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
                     pX, pY =x+self.pieceX, y+ self.pieceY
                     if pY >= 0:
                         if VAR.mode_bmp:
-                            VAR.fenetre.blit(VAR.IMAGES[self.pieceSelect][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)))
+                            VAR.fenetre.blit(VAR.IMAGES[pImg][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)))
                         else:
                             pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t), t, t), 0)
 

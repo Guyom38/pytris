@@ -38,6 +38,8 @@ class CControle():
         if VAR.nbManettes+j == 2: VAR.TAILLE, VAR.ECARTX = 32, 300
         if VAR.nbManettes+j == 1: VAR.TAILLE, VAR.ECARTX = 38, 0
         
+        if VAR.MODE_ECRAN == DOUBLEBUF: VAR.TAILLE, VAR.ECARTX = 20, 80
+
     def initialiser_les_joueurs():
         j = 0
         if VAR.joueur_clavier: j = 1        
@@ -114,6 +116,9 @@ class CControle():
                             Partie.pause = not Partie.pause
 
             elif VAR.manettes[self.manetteId].get_button(CBouton.B_START) == 1:
+                    if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
+                        self.cyclePoseRapide = pygame.time.get_ticks()
+
                     if Partie.mort == True:
                         Partie.game_over()
                         

@@ -52,17 +52,18 @@ class CMoteur():
             self.PiecesAide.pieceSelect = self.Pieces.pieceSelect
             self.PiecesAide.pieceRotation = self.Pieces.pieceRotation
             self.PiecesAide.pieceX = self.Pieces.pieceX
-            
+            self.PiecesAide.pieceY = -2
             self.Mecanique.faire_descendre_a_fond_la_piece(self.PiecesAide)
             self.PiecesAide.afficher_piece()  
               
     def afficher(self):
         self.Controle.gestion_manette()
         self.Mecanique.gravite()
-        self.gestion_piece_aide()
-
+        
         
         self.grille.afficher()
+        self.gestion_piece_aide()
+
         self.Pieces.afficher_piece()   
         self.Pieces.afficher_piece_suivante()  
 
