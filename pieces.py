@@ -143,7 +143,7 @@ class CPieces():
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
-                    pX, pY = self.Moteur.grille.offX + (x*t), self.Moteur.grille.offY + (y*t) - dim -5
+                    pX, pY = self.Moteur.grille.offX + (x*t) - VAR.TAILLE, self.Moteur.grille.offY + (y*t) - dim -5
                     if VAR.mode_bmp:
                         VAR.fenetre.blit(VAR.IMAGES[self.pieceSuivante][0], (pX, pY))
                     else:

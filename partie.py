@@ -58,24 +58,23 @@ class CParties():
             if self.mort: texte = "REJOUER, PRESSEZ START"
             
 
-            image_pause = VAR.ecritures[20].render(texte, True, (255,255,255,255)) 
+            image_pause = VAR.ecritures[VAR.TAILLE_ECRITURE].render(texte, True, (255,255,255,255)) 
             largeur, hauteur = (VAR.DIMENSION[0] * VAR.TAILLE), (VAR.DIMENSION[1] * VAR.TAILLE)
             cX, cY = self.Moteur.grille.offX + ((largeur - image_pause.get_width())/2) , self.Moteur.grille.offY + int((hauteur - image_pause.get_height()) /2 )
-            pygame.draw.rect(VAR.fenetre, (0,0,0,255), (self.Moteur.grille.offX, cY-10, largeur, image_pause.get_height()+20), 0)
-            pygame.draw.rect(VAR.fenetre, (64,64,64,255), (self.Moteur.grille.offX, cY-10, largeur, image_pause.get_height()+20), 2)
+            
+            couleur = self.Moteur.couleur
+            pygame.draw.rect(VAR.fenetre, (0,0,0,255), (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 0)
+            pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 2)
             VAR.fenetre.blit(image_pause, (cX, cY))
     
     def afficher_score(self): 
-        y=50
-        for texte in ("Score : " + str(self.score), "Lignes : "+str(self.nbLignes), "Niveau : " + str(self.niveau)) :
-            image = VAR.ecritures[20].render(texte, True, (0,0,0,255)) 
-            VAR.fenetre.blit(image, (self.Moteur.grille.offX +98, self.Moteur.grille.offY - y-2))
-            
-            image = VAR.ecritures[20].render(texte, True, (255,255,255,255)) 
-            VAR.fenetre.blit(image, (self.Moteur.grille.offX +100, self.Moteur.grille.offY - y))
-            y += image.get_height() +5
+        y=(VAR.TAILLE * 3)
+        for texte in ("Lignes : "+str(self.nbLignes), "Niveau : " + str(self.niveau), "Score : " + str(self.score)) :
+            image = VAR.ecritures[VAR.TAILLE_ECRITURE].render(texte, True, (255,255,255,255)) 
+            VAR.fenetre.blit(image, (self.Moteur.grille.offX + (VAR.TAILLE * 3), self.Moteur.grille.offY - y))
+            y += image.get_height() 
         
-        image_rang = VAR.ecritures[80].render(str(self.rang), True, (255,255,255,255)) 
+        image_rang = VAR.ecritures[VAR.TAILLE_ECRITURE * 3].render(str(self.rang), True, (255,255,255,255)) 
         VAR.fenetre.blit(image_rang, (self.Moteur.grille.offX + (VAR.DIMENSION[0] * VAR.TAILLE) - image_rang.get_width(), self.Moteur.grille.offY - (image_rang.get_height()+20)))
         
     def verifie_changement_de_niveau(self):

@@ -62,22 +62,30 @@ class CAnimation:
         self.nivSupAlpha = 255
 
     def afficher_animation_niveau_superieur(self):
-        if self.nivSupActif and self.anime:
+        if self.nivSupActif:
             largeur, hauteur = (VAR.DIMENSION[0] * VAR.TAILLE), (VAR.DIMENSION[1] * VAR.TAILLE)
+
             image = FCT.image_vide(largeur, 60)
             image.fill((16, 16, 16, self.nivSupAlpha))
-            pygame.draw.rect(VAR.fenetre, (0,0,0,self.nivSupAlpha), (0, 0, image.get_width(), image.get_height()), 2)
+
+            couleur =  (self.Moteur.couleur[0],  self.Moteur.couleur[1],  self.Moteur.couleur[2], self.nivSupAlpha)
+            pygame.draw.rect(image, couleur, (0, 0, image.get_width(), image.get_height()), 4)
+            
+            image_texte = VAR.ecritures[20].render("NIVEAU " + str(self.Moteur.Partie.niveau), True, (255,255,255,self.nivSupAlpha))
+
+            pX = (image.get_width() - image_texte.get_width()) // 2
+            pY = (image.get_height() - image_texte.get_height()) // 2
+            image.blit(image_texte, (pX, pY))
 
             pX = (largeur - image.get_width()) // 2
-            pY = (60 - image.get_height()) // 2
+            pY = (hauteur - image.get_height()) // 2
+            VAR.fenetre.blit(image, (self.Moteur.grille.offX, self.Moteur.grille.offY+ pY ))
 
-            image.blit(VAR.ecritures[20].render("NIVEAU SUPERIEUR", True, (255,255,255,self.nivSupAlpha)), (pX, pY))
-            VAR.fenetre.blit(image, (self.Moteur.grille.offX, self.Moteur.grille.offY+ ((VAR.DIMENSION[1] - hauteur) //2) ))
-
-            self.nivSupAlpha -= 1
-            if self.nivSupAlpha <= 0:
-                self.nivSupAlpha = 255
-                self.niv_sup = False        
+            if self.anime:
+                self.nivSupAlpha -= 8
+                if self.nivSupAlpha <= 10:
+                    self.nivSupAlpha = 255
+                    self.nivSupActif = False        
 
 # -------------------------------------------------------- ANIMATION DESTRUCTION DE LIGNE
     def init_destruction_de_lignes(self):

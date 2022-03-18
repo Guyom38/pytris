@@ -16,14 +16,12 @@ class CGrille():
         hauteur = (VAR.DIMENSION[1] * VAR.TAILLE)
         
         offsetX = (VAR.RESOLUTION[0] - largeur_grilles) //2
-        offsetY = ((VAR.RESOLUTION[1] - hauteur -  int(VAR.RESOLUTION[1] * 0.05)) //2 ) + 50 
+        offsetY = ((VAR.RESOLUTION[1] - hauteur -  int(VAR.RESOLUTION[1] * 0.05)) //2 )  
         
          
         return (offsetX, offsetY)
     
     def __init__(self, moteur):
-        print("        + GRILLE")
-
         self.Moteur = moteur
 
         self.offX, self.offY = (0, 0)
@@ -51,12 +49,13 @@ class CGrille():
         t = VAR.TAILLE
         dim = VAR.TAILLE * 5
         self.image = FCT.image_vide((self.dimX * t)+40, (self.dimY * t)+40+ (dim*2))
+        #self.image = FCT.image_vide((self.dimX * t)+40, VAR.RESOLUTION[1])
         
         # --- Cadre piece Suivante
         
         pygame.draw.rect(self.image, self.Moteur.couleur, (5, 5, (self.dimX * t)+30, dim),0)
         pygame.draw.rect(self.image, self.Moteur.couleur, (5, 5 + (self.dimY * t)+dim+30, (self.dimX * t)+30, dim),0)
-        #pygame.draw.rect(self.image, self.couleur_contour_grille, (5, 5, dim, dim),4)
+
         
         # --- Grille 
         pygame.draw.rect(self.image, (40,40,40,230), (20, 20 + dim, (self.dimX * t)+2, (self.dimY * t)+2),0)

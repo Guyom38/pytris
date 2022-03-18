@@ -62,7 +62,7 @@ def afficher_temps():
     
     pygame.draw.rect(VAR.fenetre, couleur_fond_grille, (pX, pY, largeur_barre, hauteur_barre),0)
     pygame.draw.rect(VAR.fenetre, (128,128,128,200), (pX, pY, barre, hauteur_barre),0)
-    pygame.draw.rect(VAR.fenetre, couleur_contour_grille, (pX, pY, largeur_barre, hauteur_barre),4)
+    pygame.draw.rect(VAR.fenetre, couleur_contour_grille, (pX, pY, largeur_barre, hauteur_barre),2)
     
     image_temps = ecritures[40].render("TEMPS  " + FCT.format_temps((VAR.duree_partie - temps) // 1000) , True, (255,255,255,255)) 
     VAR.fenetre.blit(image_temps, ((VAR.RESOLUTION[0] - image_temps.get_width()) // 2, pY+((hauteur_barre-image_temps.get_height()) //2)))
