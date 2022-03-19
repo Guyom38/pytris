@@ -3,6 +3,8 @@ from grille import *
 import fonctions as FCT
 import random
 
+from mecanique import CMecanique
+
 class CParties():
     def controle_fin_de_partie():
         if VAR.partie_demarree:
@@ -15,11 +17,13 @@ class CParties():
     def temps_ecoule():
         return pygame.time.get_ticks() - VAR.cycle_partie
 
-    def gestion_malediction():
-        if pygame.time.get_ticks() - VAR.pouvoirCycle > VAR.pouvoirDelais:
-            VAR.pouvoirId +=1
-            if VAR.pouvoirId > VAR.nbJoueurs -1: VAR.pouvoirId = 0
-            VAR.pouvoirCycle = pygame.time.get_ticks()
+    def gestion_malediction(force = False):
+        if VAR.nbJoueurs > 1 and CMecanique.nbJoueursActifs() > 1:
+            if (pygame.time.get_ticks() - VAR.pouvoirCycle > VAR.pouvoirDelais) or force:
+                VAR.pouvoirId +=1
+                if VAR.pouvoirId > VAR.nbJoueurs -1: VAR.pouvoirId = 0
+                if not VAR.tetris_joueurs[VAR.pouvoirId].actif: CParties.gestion_malediction()
+                VAR.pouvoirCycle = pygame.time.get_ticks()
 
 # -----------------------------------------------------------------------------------------------------------
 # -
@@ -45,11 +49,12 @@ class CParties():
         VAR.cycle_partie = -1
         self.memoireDuTemps = 0
         
+        
     def demarrer(self):
         self.Moteur.actif = False
-        
         self.Moteur.Pieces.pieceSuivante = random.choice(["O", "I", "S", "Z", "L", "J", "T"])
         self.Moteur.Pieces.tirer_nouvelle_piece()
+        
         
     def afficher_message(self):
         if self.pause or not self.Moteur.actif or self.mort:
@@ -75,7 +80,7 @@ class CParties():
             y += image.get_height() 
         
         image_rang = VAR.ecritures[VAR.TAILLE_ECRITURE * 3].render(str(self.rang), True, (255,255,255,255)) 
-        VAR.fenetre.blit(image_rang, (self.Moteur.grille.offX + (VAR.DIMENSION[0] * VAR.TAILLE) - image_rang.get_width(), self.Moteur.grille.offY - (image_rang.get_height()+20)))
+        VAR.fenetre.blit(image_rang, (self.Moteur.grille.offX + (VAR.DIMENSION[0] * VAR.TAILLE) - image_rang.get_width(), self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE)+VAR.TAILLE))
         
     def verifie_changement_de_niveau(self):
         self.ligneNiveau +=1
@@ -92,7 +97,7 @@ class CParties():
 
     
         
-    def game_over(self):
+    def redemarre(self):
         self.Moteur.actif = True
         self.mort = False
         self.score = 0
@@ -101,6 +106,8 @@ class CParties():
         self.Moteur.grille = CGrille(self.Moteur)
         self.Moteur.Pieces.tirer_nouvelle_piece()
         self.Moteur.Mecanique.lignesADetruire = []
+        self.Moteur.Mecanique.lignesAjouter = 0
+        self.Moteur.Avatar.changer_expression ("NORMAL")
 
 
     def fige_le_temps(self):

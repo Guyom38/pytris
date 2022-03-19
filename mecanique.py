@@ -8,7 +8,11 @@ from pieces import *
 import random
 
 class CMecanique():
-    
+    def nbJoueursActifs():
+        nb = 0
+        for i, j in VAR.tetris_joueurs.items():
+            if j.actif and not j.Partie.mort: nb +=1
+        return nb
     
     def __init__(self, moteur):
         print("        + MECANIQUE")
@@ -29,7 +33,7 @@ class CMecanique():
                 if piece.pieceY != -2:
                     self.fixer_piece_sur_la_grille()
                 else:
-                    
+                    self.Moteur.Avatar.changer_expression ("MORT")
                     self.Moteur.Animation.meurt()
                     self.Moteur.Partie.meurt()
                     FCT.jouer_son("game_over")
@@ -134,6 +138,7 @@ class CMecanique():
             for id, joueur in VAR.tetris_joueurs.items():
                 #if joueur.id != self.Moteur.id: joueur.Mecanique.ajoute_des_lignes(nbLignes)  
                 if joueur.id != self.Moteur.id: joueur.Mecanique.lignesAjouter += nbLignes 
+                
         
         else:                                               # --- Si un autre joueur a le pouvoir, il recoit la malediction
             #VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.ajoute_des_lignes(nbLignes)    
@@ -141,10 +146,11 @@ class CMecanique():
     
     def traitement_des_lignes_a_ajouter(self):
         if self.lignesAjouter > 0:
-            VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.ajoute_des_lignes(self.lignesAjouter)    
+            self.Moteur.Mecanique.ajoute_des_lignes(self.lignesAjouter)    
             self.lignesAjouter = 0
                                   
     def ajoute_des_lignes(self, nbLignes):
+        #self.changer_expression("ENERVE")
         for i in range(nbLignes):
             for y in range(1, VAR.DIMENSION[1]):
                 for x in range(VAR.DIMENSION[0]): self.Moteur.grille.zones[x][y-1] = self.Moteur.grille.zones[x][y]

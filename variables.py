@@ -1,7 +1,7 @@
 from pygame.locals import *
 
-RESOLUTION = ((1280, 800),(1920, 1080))[0]
-MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[0]
+RESOLUTION = ((1280, 800),(1920, 1080))[1]
+MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[1]
 DIMENSION = (10, 20)
 TAILLE = 20
 TAILLE_ECRITURE = 20
@@ -9,7 +9,7 @@ ECARTX = 40
 
 fenetre = None
 evenements = None
-avatar = None
+
 
 nbJoueurs = 0
 boucle = True
@@ -18,8 +18,8 @@ nbManettes = 0
 manettes = {}
 nbBoutons = 0
 tetris_joueurs = {}
-poseRapideDelais = 300
-vitesseDeplacement = 100
+poseRapideDelais = 200
+vitesseDeplacement = 50
 
 fonts = {}
 ecritures = {}
@@ -28,7 +28,7 @@ idFond = 0
 IMG_FOND = []
 
 
-fond = False
+fond = True
 mode_bmp = True
 audio = True
 musique = True
@@ -68,4 +68,5 @@ animation_cpt = 0
 
 fondVideo_cycle = 0
 fondVideo_frequence =  35
+
 

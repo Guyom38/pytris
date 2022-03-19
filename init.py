@@ -5,8 +5,9 @@ from pygame.locals import *
 from moteur import *
 from partie import *
 from controles import *
+from avatars import *
 
-import time, os
+import os
 import variables as VAR
 
 from avatars import *
@@ -32,11 +33,13 @@ class CInit():
         CInit.initialiser_ecritures()
         CControle.initialiser_manettes()
         CInit.initialiser_decors()
+        CAvatars.chargement_fichiers_sprites()
         CInit.initialiser_fond()
         CInit.initialiser_musique()
         CControle.initialiser_les_joueurs()
+        
 
-        VAR.avatar = CAvatars()
+        
         
     def initialiser_musique():
         if musique:

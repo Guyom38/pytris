@@ -120,13 +120,15 @@ class CControle():
                         self.cyclePoseRapide = pygame.time.get_ticks()
 
                     if Partie.mort == True:
-                        Partie.game_over()
+                        
+                        Partie.redemarre()
                         
                     elif self.Moteur.actif == False:
                         #VAR.partie_demarree = True
                         if VAR.cycle_partie == -1:
                             VAR.cycle_partie = pygame.time.get_ticks()
                         self.Moteur.actif = True
+                        self.Moteur.Avatar.changer_expression ("NORMAL")
 
                     else:
                         Partie.pause = not Partie.pause
@@ -139,6 +141,8 @@ class CControle():
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_L) == 1:
                         self.Moteur.Pieces.faire_tourner_la_piece(False)
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_R) == 1:
+                        self.Moteur.Pieces.faire_tourner_la_piece(True)
+                    if VAR.manettes[self.manetteId].get_button(CBouton.B_A) == 1:
                         self.Moteur.Pieces.faire_tourner_la_piece(True)
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_B) == 1:
                         if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 

@@ -86,7 +86,7 @@ class CGrille():
             #pygame.draw.rect(VAR.fenetre, (200, 200, 200, 100), (self.offX-5, self.offY+ (self.dimY * t) +20, (self.dimX * t)+10, 10),0)
             pX, pY, dimX, dimY = self.offX-15, 0, (self.dimX * t)+30, VAR.RESOLUTION[1]
             image_pouvoir = FCT.image_vide(dimX, dimY)
-            pygame.draw.rect(image_pouvoir, (32, 32, 32, 100), (0, 0, dimX, dimY ),0)
+            pygame.draw.rect(image_pouvoir, (32, 32, 32, 150), (0, 0, dimX, dimY ),0)
             VAR.fenetre.blit(image_pouvoir, (pX, pY))
 
         
