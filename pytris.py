@@ -8,6 +8,7 @@ from controles import *
 import highscore as HS
 
 import variables as VAR
+import avatars
 
 def surveille_demarrage():
     if not VAR.partie_demarree:
@@ -77,9 +78,10 @@ def gestion_fps():
         VAR.fps = VAR.fps_cpt
         VAR.fps_cpt = 0
         VAR.fps_cycle = pygame.time.get_ticks()
+        
     VAR.fps_cpt +=1
-
-    image_score = ecritures[20].render("FPS : " + str(VAR.fps), True, (255,255,255,255)) 
+  
+    image_score = ecritures[VAR.TAILLE_ECRITURE].render("FPS : " + str(VAR.fps), True, (255,255,255,255)) 
     VAR.fenetre.blit(image_score, (0, 0))
 
 def rendu():

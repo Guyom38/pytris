@@ -1,1 +1,9 @@
-#https://graphicriver.net/item/character-design-pack/33202710
+import pygame
+from pygame.locals import *
+
+import time
+import variables as VAR
+
+import avatars
+
+input("kk")

@@ -27,6 +27,7 @@ class CAnimation:
         if pygame.time.get_ticks() - self.cycle > self.frequence:
             self.anime = True
             self.cpt += 1
+            VAR.animation_cpt += 1
             self.cycle = pygame.time.get_ticks()
 
     def afficher(self):

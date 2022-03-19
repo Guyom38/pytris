@@ -9,6 +9,9 @@ from controles import *
 import time, os
 import variables as VAR
 
+from avatars import *
+
+
 class CInit():
     def initialiser():
         print("+ TETRIS")
@@ -33,6 +36,8 @@ class CInit():
         CInit.initialiser_musique()
         CControle.initialiser_les_joueurs()
 
+        VAR.avatar = CAvatars()
+        
     def initialiser_musique():
         if musique:
             pygame.mixer.init()

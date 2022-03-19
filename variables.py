@@ -9,6 +9,8 @@ ECARTX = 40
 
 fenetre = None
 evenements = None
+avatar = None
+
 nbJoueurs = 0
 boucle = True
 
@@ -26,13 +28,13 @@ idFond = 0
 IMG_FOND = []
 
 
-fond = True
+fond = False
 mode_bmp = True
 audio = True
 musique = True
 joueur_clavier = False
 
-nbLignesNiveauSuivant = 1
+nbLignesNiveauSuivant = 10
 
 AUDIOS = {}
 IMAGES = {}
@@ -62,7 +64,7 @@ cycle = 0
 fps = 0
 fps_cpt = 0
 fps_cycle = 0
-
+animation_cpt = 0
 
 fondVideo_cycle = 0
 fondVideo_frequence =  35

@@ -70,6 +70,9 @@ class CMoteur():
         self.Animation.afficher()
         self.Partie.afficher_message()
         self.Partie.afficher_score()
+        
+        if self.id == 1:
+            VAR.avatar.afficher(self.grille.offX, self.grille.offY + (VAR.TAILLE * VAR.DIMENSION[1]) - (VAR.TAILLE*4))
 
         
     

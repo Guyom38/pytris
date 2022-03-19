@@ -15,6 +15,7 @@ class CMecanique():
 
         self.Moteur = moteur
         self.lignesADetruire = []
+        self.lignesAjouter = 0
      
 
     def faire_descendre_la_piece(self, piece):
@@ -75,6 +76,7 @@ class CMecanique():
 
         if pygame.time.get_ticks() - self.Moteur.Partie.cycle > self.Moteur.Partie.vitesse:
             self.faire_descendre_la_piece(self.Moteur.Pieces)
+            self.traitement_des_lignes_a_ajouter()
             self.Moteur.Partie.cycle = pygame.time.get_ticks()
 
     def verifie_la_ligne(self, ligne):
@@ -124,19 +126,24 @@ class CMecanique():
             self.ajoute_score_lignes(bloc_de_lignes_cpt)
         
         if len(liste_lignes) > 0:
-            #self.detruire_lignes(liste_lignes)
-            #self.balance_les_lignes(len(liste_lignes))
             self.lignesADetruire = liste_lignes
             self.Moteur.Animation.destLignesActif = True
     
     def balance_les_lignes(self, nbLignes):
         if self.Moteur.id == VAR.pouvoirId:                 # --- Si le joueur a le pouvoir, il balance a tout le monde
             for id, joueur in VAR.tetris_joueurs.items():
-                if joueur.id != self.Moteur.id: joueur.Mecanique.ajoute_des_lignes(nbLignes)  
+                #if joueur.id != self.Moteur.id: joueur.Mecanique.ajoute_des_lignes(nbLignes)  
+                if joueur.id != self.Moteur.id: joueur.Mecanique.lignesAjouter += nbLignes 
         
         else:                                               # --- Si un autre joueur a le pouvoir, il recoit la malediction
-            VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.ajoute_des_lignes(nbLignes)    
-                          
+            #VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.ajoute_des_lignes(nbLignes)    
+            VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
+    
+    def traitement_des_lignes_a_ajouter(self):
+        if self.lignesAjouter > 0:
+            VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.ajoute_des_lignes(self.lignesAjouter)    
+            self.lignesAjouter = 0
+                                  
     def ajoute_des_lignes(self, nbLignes):
         for i in range(nbLignes):
             for y in range(1, VAR.DIMENSION[1]):
