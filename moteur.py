@@ -69,9 +69,8 @@ class CMoteur():
               
     def afficher(self):
         self.Controle.gestion_manette()
-        self.Mecanique.gravite()
-        
-        
+        self.Mecanique.gestion_mecanique_du_jeu()
+                
         self.grille.afficher()
         self.gestion_piece_aide()
 
@@ -82,7 +81,9 @@ class CMoteur():
         self.Partie.afficher_message()
         self.Partie.afficher_score()
         
-        self.Avatar.afficher(self.grille.offX , self.grille.offY + (VAR.TAILLE * VAR.DIMENSION[1]) )
+        pX = self.grille.offX + self.grille.cadreBas[0] - 20
+        pY = self.grille.offY + self.grille.cadreBas[1] - (VAR.TAILLE * 6) - 20
+        self.Avatar.afficher(pX, pY )
 
         
     

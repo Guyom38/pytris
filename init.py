@@ -32,6 +32,17 @@ class CInit():
 
         CInit.initialiser_ecritures()
         CControle.initialiser_manettes()
+        
+         
+
+        ecriture = int((150 / 720) * VAR.RESOLUTION[1]) 
+        pX = int((510 / 1920) * VAR.RESOLUTION[0]) + 30
+        pY = int((700 / 1080) * VAR.RESOLUTION[1]) 
+        
+        VAR.ecritures[200] = pygame.font.SysFont('arial black', ecriture)   
+        VAR.fenetre.blit(VAR.ecritures[200].render("x" + str(VAR.nbManettes), True, (0,0,0,255)) , (pX-20, pY+20))
+        VAR.fenetre.blit(VAR.ecritures[200].render("x" + str(VAR.nbManettes), True, (255,255,255,255)) , (pX, pY))
+   
         CInit.initialiser_decors()
         CAvatars.chargement_fichiers_sprites()
         CInit.initialiser_fond()
@@ -109,5 +120,5 @@ class CInit():
 
 
     def initialiser_ecritures():
-        for taille in (10, 20, 30, 40, 50, 60, 80):
+        for taille in (10, 20, 30, 40, 50, 60, 80, 100, 120):
             VAR.ecritures[taille] = pygame.font.SysFont('arial', taille)    

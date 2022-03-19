@@ -17,8 +17,7 @@ class CGrille():
         
         offsetX = (VAR.RESOLUTION[0] - largeur_grilles) //2
         offsetY = ((VAR.RESOLUTION[1] - hauteur -  int(VAR.RESOLUTION[1] * 0.05)) //2 )  
-        
-         
+                 
         return (offsetX, offsetY)
     
     def __init__(self, moteur):
@@ -34,6 +33,9 @@ class CGrille():
         
         self.image = None
         self.calcul_offsets()
+        
+        self.cadreHaut = (0, 0, 0, 0)
+        self.cadreBas = (0, 0, 0, 0)
     
     def calcul_offsets(self):
         offX, offY = CGrille.calcul_offSets_Global()
@@ -53,9 +55,12 @@ class CGrille():
         
         # --- Cadre piece Suivante
         
-        pygame.draw.rect(self.image, self.Moteur.couleur, (5, 5, (self.dimX * t)+30, dim),0)
-        pygame.draw.rect(self.image, self.Moteur.couleur, (5, 5 + (self.dimY * t)+dim+30, (self.dimX * t)+30, dim),0)
-
+        self.cadreHaut = [5, 5, (self.dimX * t)+30, dim]
+        self.cadreBas = [5, 5 + (self.dimY * t)+dim+30, (self.dimX * t)+30, dim]
+        pygame.draw.rect(self.image, self.Moteur.couleur, self.cadreHaut,0)
+        pygame.draw.rect(self.image, self.Moteur.couleur, self.cadreBas ,0)
+        
+   
         
         # --- Grille 
         pygame.draw.rect(self.image, (40,40,40,230), (20, 20 + dim, (self.dimX * t)+2, (self.dimY * t)+2),0)
@@ -73,6 +78,13 @@ class CGrille():
                     pygame.draw.rect(self.image, self.couleur_cellule, (pX+20, pY+20+dim, t, t), 1)
                     
       
+    def afficher_lignes_en_attente_detre_ajoutees(self):
+        if self.Moteur.Mecanique.lignesAjouter == 0: return
+        if self.Moteur.Mecanique.lignesAjouter > VAR.limiteLignesEnAttente: self.Moteur.Mecanique.lignesAjouter = VAR.limiteLignesEnAttente
+        
+        for i in range(self.Moteur.Mecanique.lignesAjouter):
+            VAR.fenetre.blit(VAR.IMAGES["#"][0], (self.offX + (VAR.DIMENSION[0] * VAR.TAILLE) + 4, self.offY + (i * (VAR.TAILLE + 4))))
+        
         
     def afficher(self):
                 
@@ -103,4 +115,6 @@ class CGrille():
                     else:
                         pygame.draw.rect(VAR.fenetre, CPieces.pieces_couleurs[self.zones[x][y]], (pX, pY, t, t), 0)
                         pygame.draw.rect(VAR.fenetre, self.couleur_contour_grille, (pX, pY, t, t), 1)
+                        
+        self.afficher_lignes_en_attente_detre_ajoutees()
                         

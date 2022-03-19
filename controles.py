@@ -75,16 +75,45 @@ class CControle():
         self.direction = 0
         self.chute = False
         self.cycleDirection = pygame.time.get_ticks()
-       
-    def gestion_manette(self):
-        Partie = self.Moteur.Partie
+    
+    
+    
+    def action_chute(self):
+        self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
+    
+    def action_start(self):
+        if self.Moteur.Partie.mort == True:
+            self.Moteur.Partie.redemarre()
+                        
+        elif self.Moteur.actif == False:
+            if VAR.cycle_partie == -1:
+                VAR.cycle_partie = pygame.time.get_ticks()
+                VAR.fin_partie = False
+            self.Moteur.actif = True
+            self.Moteur.Avatar.changer_expression ("NORMAL", -1)
 
+        else:
+            self.Moteur.Partie.pause = not self.Moteur.Partie.pause
+    
+    def action_select(self):
+        self.Moteur.Partie.aide = not self.Moteur.Partie.aide
+
+    def action_rotation(self, sens):
+        self.Moteur.Pieces.faire_tourner_la_piece(sens)
+    
+    
+    
+    def actions(self):
         if pygame.time.get_ticks() - self.cycleDirection > vitesseDeplacement:
             self.Moteur.Pieces.controle_deplacement_lateral(self.direction)
             if self.chute:
                 self.Moteur.Mecanique.faire_descendre_la_piece(self.Moteur.Pieces)
             self.cycleDirection = pygame.time.get_ticks()
-        
+            
+            
+    def gestion_manette(self):
+        Partie = self.Moteur.Partie
+
         for event in VAR.evenements:
             if self.manetteId == -1 and VAR.joueur_clavier:
                 if event.type == KEYDOWN:  
@@ -98,43 +127,19 @@ class CControle():
                         elif event.key == K_UP: 
                             if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
                                 self.cyclePoseRapide = pygame.time.get_ticks()
-                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
-                                
+                                self.action_chute()
                         elif event.key == K_SPACE:
-                            self.Moteur.Pieces.faire_tourner_la_piece(True)
+                            self.action_rotation(True)
 
                     if event.key == 13:
-                        if Partie.mort == True:
-                            Partie.game_over()
-                            
-                        elif self.actif == False:
-                            #VAR.partie_demarree = True
-                            if VAR.cycle_partie == -1:
-                                VAR.cycle_partie = pygame.time.get_ticks()
-                            self.Moteur.actif = True
-                        else:
-                            Partie.pause = not Partie.pause
+                        self.action_start()
 
             elif VAR.manettes[self.manetteId].get_button(CBouton.B_START) == 1:
                     if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
                         self.cyclePoseRapide = pygame.time.get_ticks()
-
-                    if Partie.mort == True:
-                        
-                        Partie.redemarre()
-                        
-                    elif self.Moteur.actif == False:
-                        #VAR.partie_demarree = True
-                        if VAR.cycle_partie == -1:
-                            VAR.cycle_partie = pygame.time.get_ticks()
-                        self.Moteur.actif = True
-                        self.Moteur.Avatar.changer_expression ("NORMAL")
-
-                    else:
-                        Partie.pause = not Partie.pause
-                        
+                        self.action_start()
             elif VAR.manettes[self.manetteId].get_button(CBouton.B_SELECT) == 1:
-                    Partie.aide = not Partie.aide
+                    self.action_select()
 
             elif not (Partie.pause or not self.Moteur.actif):
                 if event.type == pygame.JOYBUTTONDOWN:
@@ -146,19 +151,16 @@ class CControle():
                         self.Moteur.Pieces.faire_tourner_la_piece(True)
                     if VAR.manettes[self.manetteId].get_button(CBouton.B_B) == 1:
                         if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
-                                self.cyclePoseRapide = pygame.time.get_ticks()
-                                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
+                            self.cyclePoseRapide = pygame.time.get_ticks()
+                            self.action_chute()
                         
                 elif event.type == pygame.JOYAXISMOTION:
-                    
                     if event.joy == self.manetteId:
                         if event.axis == 0:
                             if event.value > 0.9:
                                 self.direction = 1
-                                #self.Moteur.Pieces.controle_deplacement_lateral(1)
                             elif event.value < -0.9:
                                 self.direction = -1
-                                #self.Moteur.Pieces.controle_deplacement_lateral(-1)
                             else:
                                 self.direction = 0
                         elif event.axis == 1:
@@ -166,7 +168,6 @@ class CControle():
                                 self.chute = True
                             else:
                                 self.chute = False
-                        #elif event.axis == 1 and event.value < -0.9: #HAUT
-                            #self.faire_descendre_a_fond_la_piece()
                             
+        self.actions()
                 

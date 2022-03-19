@@ -5,13 +5,12 @@ from moteur import *
 from partie import *
 from init import *
 from controles import *
-import highscore as HS
-
+ 
 import variables as VAR
 import avatars
 
 def surveille_demarrage():
-    if not VAR.partie_demarree:
+    if not VAR.partie_demarree and not VAR.fin_partie:
         pret = False
         for i, joueur in VAR.tetris_joueurs.items():
             if joueur.actif == True: pret = True
@@ -20,7 +19,7 @@ def surveille_demarrage():
             for i, joueur in VAR.tetris_joueurs.items():
                 joueur.actif == True
 
-        VAR.partie_demarree = True
+            VAR.partie_demarree = True
 
            
 def afficher_fond():
@@ -47,7 +46,7 @@ def afficher_tetris():
         rang-=1
 
 def afficher_temps():
-    if not VAR.partie_demarree: return
+    if not VAR.partie_demarree or VAR.fin_partie: return
 
     couleur_fond_grille = (28, 28, 28, 200)
     couleur_cellule = (16,16,16,255)
@@ -91,7 +90,7 @@ def rendu():
     VAR.horloge.tick(0)
 
 def gestion_musique():
-    if VAR.partie_demarree:
+    if VAR.partie_demarree :
         FCT.jouer_musique()
     else:
         FCT.arreter_musique()
@@ -105,7 +104,7 @@ def jeu_PyTris():
 
 
         CControle.capture_evements_utilisateurs()
-        surveille_demarrage()
+        
         gestion_musique()
         
         afficher_fond()
@@ -114,9 +113,12 @@ def jeu_PyTris():
         
         CControle.controle_fermeture_fenetre()
         CParties.gestion_malediction()
+        
+        surveille_demarrage()
         CParties.controle_fin_de_partie()
 
         #HS.afficher_highscore()
+        
         rendu()
     pygame.quit() 
 

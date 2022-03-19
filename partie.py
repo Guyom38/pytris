@@ -7,11 +7,16 @@ from mecanique import CMecanique
 
 class CParties():
     def controle_fin_de_partie():
-        if VAR.partie_demarree:
+        if VAR.partie_demarree and not VAR.fin_partie:
             if VAR.duree_partie - CParties.temps_ecoule() <= 0:
-                pygame.mixer.music.stop()
+                VAR.partie_demarree = False
+                VAR.fin_partie = True
+                FCT.arreter_musique()
+                
                 for i in range(VAR.nbJoueurs):
+                    VAR.tetris_joueurs[i].actif == False
                     VAR.tetris_joueurs[i].mort = True
+                    VAR.tetris_joueurs[i].Mecanique.gestion_game_over()
                 VAR.cycle_partie = -1
 
     def temps_ecoule():
@@ -54,6 +59,7 @@ class CParties():
         self.Moteur.actif = False
         self.Moteur.Pieces.pieceSuivante = random.choice(["O", "I", "S", "Z", "L", "J", "T"])
         self.Moteur.Pieces.tirer_nouvelle_piece()
+        VAR.partie_demarree = False
         
         
     def afficher_message(self):
@@ -79,8 +85,10 @@ class CParties():
             VAR.fenetre.blit(image, (self.Moteur.grille.offX + (VAR.TAILLE * 3), self.Moteur.grille.offY - y))
             y += image.get_height() 
         
-        image_rang = VAR.ecritures[VAR.TAILLE_ECRITURE * 3].render(str(self.rang), True, (255,255,255,255)) 
-        VAR.fenetre.blit(image_rang, (self.Moteur.grille.offX + (VAR.DIMENSION[0] * VAR.TAILLE) - image_rang.get_width(), self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE)+VAR.TAILLE))
+        image_rang = VAR.ecritures[VAR.TAILLE_ECRITURE * 5].render(str(self.rang), True, (255,255,255,255)) 
+        pX = self.Moteur.grille.offX + (VAR.DIMENSION[0] * VAR.TAILLE) - image_rang.get_width()
+        pY = self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) -  ((self.Moteur.grille.cadreBas[3] -image_rang.get_height()) //2)
+        VAR.fenetre.blit(image_rang, (pX, pY))
         
     def verifie_changement_de_niveau(self):
         self.ligneNiveau +=1
@@ -98,7 +106,7 @@ class CParties():
     
         
     def redemarre(self):
-        self.Moteur.actif = True
+        self.Moteur.actif = False
         self.mort = False
         self.score = 0
         self.vitesse = 500
@@ -107,7 +115,7 @@ class CParties():
         self.Moteur.Pieces.tirer_nouvelle_piece()
         self.Moteur.Mecanique.lignesADetruire = []
         self.Moteur.Mecanique.lignesAjouter = 0
-        self.Moteur.Avatar.changer_expression ("NORMAL")
+        self.Moteur.Avatar.changer_expression ("NORMAL", -1)
 
 
     def fige_le_temps(self):

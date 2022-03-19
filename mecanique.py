@@ -20,7 +20,13 @@ class CMecanique():
         self.Moteur = moteur
         self.lignesADetruire = []
         self.lignesAjouter = 0
-     
+    
+    def gestion_game_over(self):
+        if self.verifier_game_over() and self.Moteur.actif:
+            self.Moteur.Avatar.changer_expression ("MORT", -1)
+            self.Moteur.Animation.meurt()
+            self.Moteur.Partie.meurt()
+            FCT.jouer_son("game_over")
 
     def faire_descendre_la_piece(self, piece):
 
@@ -30,21 +36,22 @@ class CMecanique():
             piece.pieceY = ancY
 
             if not piece.simulation:
-                if piece.pieceY != -2:
-                    self.fixer_piece_sur_la_grille()
-                else:
-                    self.Moteur.Avatar.changer_expression ("MORT")
-                    self.Moteur.Animation.meurt()
-                    self.Moteur.Partie.meurt()
-                    FCT.jouer_son("game_over")
+                self.fixer_piece_sur_la_grille()
                 
             return False
         return True
-      
     
+   
+                    
+    def verifier_game_over(self):
+        for x in range(VAR.DIMENSION[0]):
+            if self.Moteur.grille.zones[x][0] != "": return True
+        return False
+        
     def faire_descendre_a_fond_la_piece(self, piece):
         while self.faire_descendre_la_piece(piece):
             pass
+        self.Moteur.Avatar.changer_expression ("CONCENTRE", 200)
         
     def controle_choque_piece(self, piece):
         for y in range(4):
@@ -53,7 +60,8 @@ class CMecanique():
                     pX, pY = piece.pieceX + x, piece.pieceY + y
                     if pX >= 0 and pX < VAR.DIMENSION[0] and pY < VAR.DIMENSION[1]:
                         if pY < 0: 
-                            return False
+                            #return False
+                            pass
                         elif self.Moteur.grille.zones[pX][pY] != "": 
                             return True
                     else:
@@ -75,13 +83,21 @@ class CMecanique():
         self.Moteur.Pieces.tirer_nouvelle_piece()
 
     
-    def gravite(self):
+    def gestion_mecanique_du_jeu(self):
         if self.Moteur.Partie.pause or not self.Moteur.actif: return None
 
+        self.traitement_des_lignes_a_ajouter()
+        self.gravite()        
+        self.gestion_game_over()
+    
+            
+    def gravite(self):
         if pygame.time.get_ticks() - self.Moteur.Partie.cycle > self.Moteur.Partie.vitesse:
             self.faire_descendre_la_piece(self.Moteur.Pieces)
-            self.traitement_des_lignes_a_ajouter()
+            
             self.Moteur.Partie.cycle = pygame.time.get_ticks()
+            
+        
 
     def verifie_la_ligne(self, ligne):
         cpt = 0
@@ -136,21 +152,25 @@ class CMecanique():
     def balance_les_lignes(self, nbLignes):
         if self.Moteur.id == VAR.pouvoirId:                 # --- Si le joueur a le pouvoir, il balance a tout le monde
             for id, joueur in VAR.tetris_joueurs.items():
-                #if joueur.id != self.Moteur.id: joueur.Mecanique.ajoute_des_lignes(nbLignes)  
-                if joueur.id != self.Moteur.id: joueur.Mecanique.lignesAjouter += nbLignes 
-                
-        
+                if VAR.tetris_joueurs[joueur.id].actif:  
+                    if joueur.id != self.Moteur.id: joueur.Mecanique.lignesAjouter += nbLignes 
+         
         else:                                               # --- Si un autre joueur a le pouvoir, il recoit la malediction
-            #VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.ajoute_des_lignes(nbLignes)    
-            VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
+            if VAR.tetris_joueurs[VAR.pouvoirId].actif:  
+                VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
+    
     
     def traitement_des_lignes_a_ajouter(self):
         if self.lignesAjouter > 0:
-            self.Moteur.Mecanique.ajoute_des_lignes(self.lignesAjouter)    
-            self.lignesAjouter = 0
+            if pygame.time.get_ticks() - VAR.limiteLignesCycle > VAR.limiteLignesFrequence:
+                VAR.limiteLignesCycle = pygame.time.get_ticks()
+                      
+                nbLignesMax = FCT.iif(self.lignesAjouter > VAR.limiteLignesMax, VAR.limiteLignesMax,self.lignesAjouter)
+                self.Moteur.Mecanique.ajoute_des_lignes(nbLignesMax)    
+                self.lignesAjouter -= nbLignesMax
                                   
     def ajoute_des_lignes(self, nbLignes):
-        #self.changer_expression("ENERVE")
+        self.Moteur.Avatar.changer_expression("ENERVE", 500)
         for i in range(nbLignes):
             for y in range(1, VAR.DIMENSION[1]):
                 for x in range(VAR.DIMENSION[0]): self.Moteur.grille.zones[x][y-1] = self.Moteur.grille.zones[x][y]

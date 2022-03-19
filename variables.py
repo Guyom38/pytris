@@ -1,7 +1,7 @@
 from pygame.locals import *
 
-RESOLUTION = ((1280, 800),(1920, 1080))[1]
-MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[1]
+RESOLUTION = ((1280, 800),(1920, 1080))[0]
+MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[0]
 DIMENSION = (10, 20)
 TAILLE = 20
 TAILLE_ECRITURE = 20
@@ -40,7 +40,7 @@ AUDIOS = {}
 IMAGES = {}
 
 cycle_partie = 0
-duree_partie = 5*60000
+duree_partie = 5000
 fin_partie = False
 partie_demarree = False
 
@@ -69,4 +69,28 @@ animation_cpt = 0
 fondVideo_cycle = 0
 fondVideo_frequence =  35
 
+limiteLignesEnAttente = 8
+limiteLignesMax = 3
+limiteLignesCycle = 0
+limiteLignesFrequence = 10000
+
+
+
+def joueurs_actifs():
+    for i, joueur in tetris_joueurs.items():
+        if joueur.actif: return True
+    return False
+
+def partie_en_cours():
+    return (partie_demarree or not fin_partie)
+
+def partie_en_pause():
+    for i, joueur in tetris_joueurs.items():
+        if not joueur.pause: return False
+    return True 
+
+def partie_terminee():
+    for i, joueur in tetris_joueurs.items():
+        if not joueur.mort: return False
+    return True
 

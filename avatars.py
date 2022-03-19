@@ -79,10 +79,10 @@ class CAvatars:
         self.expression_actif = {"yeux" : False, "bouche" : False}
         self.expression_liste = {"yeux" : [], "bouche" : []}
         self.expression_id = {"yeux" : 0, "bouche" : 0}
-        self.expression_cycle = {"yeux" : 0, "bouche" : 0}
-        self.expression_frequence = {"yeux" : 0, "bouche" : 0}    
-        
-        self.ratioX, self.ratioY = 0.2, 0.2
+        self.expression_cycle = {"global" : 0, "yeux" : 0, "bouche" : 0}
+        self.expression_frequence = {"global" : 0, "yeux" : 0, "bouche" : 0}    
+
+        self.ratioX, self.ratioY = VAR.TAILLE * 0.007, VAR.TAILLE * 0.007
         self.initialiser()
                       
         
@@ -104,7 +104,7 @@ class CAvatars:
         
         couleur = self.Moteur.id +1
         if couleur < 10: couleur = "0" + str(couleur)
-        self.ratioX, self.ratioY = 0.2, 0.15+random.randint(0, 15) / 1000
+        self.ratioY += (random.randint(0, 15) / 1000)
         self.charger_personnage(random.choice(("01", "02", "03", "04", "05", "06")), couleur, \
                                 random.choice(CAvatars.LISTE_CHEVEUX), random.choice(CAvatars.LISTE_CILS), random.choice(CAvatars.LISTE_BARBES), \
                                 (self.ratioX, self.ratioY))
@@ -113,13 +113,18 @@ class CAvatars:
         
     
     def remet_expression_precedent(self):
-        self.changer_expression(self.expressionOld)
+        self.changer_expression(self.expressionOld, -1)
         
-    def changer_expression(self, expression):
+    def changer_expression(self, expression, delais):
+        self.expression_cycle["global"] = pygame.time.get_ticks()
+        self.expression_frequence["global"] = delais
+        
         self.expressionOld = self.expression
         self.expression = expression
         self.expression_liste = {"yeux" : CAvatars.COLLECTION["yeux"][self.expression], \
                                  "bouche" : CAvatars.COLLECTION["bouche"][self.expression]}
+        
+       
         
         
     def charger_expression(self):
@@ -188,7 +193,7 @@ class CAvatars:
             
             
             #VAR.fenetre.blit(image, (xP, yP))
-            self.image.blit(image, (element[2], element[3]))
+            self.image.blit(image, (xP, yP))
             
         
 
@@ -196,10 +201,18 @@ class CAvatars:
     def afficher(self, x, y):
         if self.Moteur.actif:
             if VAR.pouvoirId == self.Moteur.id:
-                if self.expression != "POUVOIR": self.changer_expression("POUVOIR")
+                if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
             elif self.expression == "POUVOIR" :
                 if self.expressionOld == "POUVOIR": self.expressionOld = "NORMAL"
                 self.remet_expression_precedent()
+            
+            if self.expression_cycle["global"] > 0 and self.expression_cycle["global"] != -1:
+                if pygame.time.get_ticks() - self.expression_cycle["global"] > self.expression_frequence["global"]:
+                    self.expression_cycle["global"] = 0
+                    self.remet_expression_precedent()
+                    
+                
+        
         
         
         # --- Rythme d'animation du flip
