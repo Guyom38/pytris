@@ -5,7 +5,8 @@ from moteur import *
 from partie import *
 from init import *
 from controles import *
- 
+from highscore import * 
+
 import variables as VAR
 import avatars
 
@@ -13,17 +14,15 @@ def surveille_demarrage():
     if not VAR.partie_demarree and not VAR.fin_partie:
         pret = False
         for i, joueur in VAR.tetris_joueurs.items():
-            if joueur.actif == True: pret = True
+            if joueur.actif: pret = True
 
         if pret:
             for i, joueur in VAR.tetris_joueurs.items():
                 joueur.actif == True
-
             VAR.partie_demarree = True
 
            
 def afficher_fond():
-    
     if not VAR.fond:
         VAR.fenetre.fill((96,96,96))
     else:
@@ -32,6 +31,7 @@ def afficher_fond():
             VAR.idFond +=1
             if VAR.idFond > len(VAR.IMG_FOND) -1: VAR.idFond = 0
             VAR.fondVideo_cycle = pygame.time.get_ticks()
+            
 
 def afficher_tetris():
     liste_scores = []
@@ -46,10 +46,9 @@ def afficher_tetris():
         rang-=1
 
 def afficher_temps():
-    if not VAR.partie_demarree or VAR.fin_partie: return
+    if not VAR.partie_en_cours(): return
 
     couleur_fond_grille = (28, 28, 28, 200)
-    couleur_cellule = (16,16,16,255)
     couleur_contour_grille = (128,128,128,200)
 
     largeur_barre = int(VAR.RESOLUTION[0] * 0.66)
@@ -72,16 +71,15 @@ def afficher_temps():
 
 
 def gestion_fps():
-
     if pygame.time.get_ticks() - VAR.fps_cycle > 1000:
         VAR.fps = VAR.fps_cpt
         VAR.fps_cpt = 0
         VAR.fps_cycle = pygame.time.get_ticks()
-        
     VAR.fps_cpt +=1
   
     image_score = ecritures[VAR.TAILLE_ECRITURE].render("FPS : " + str(VAR.fps), True, (255,255,255,255)) 
     VAR.fenetre.blit(image_score, (0, 0))
+
 
 def rendu():
     gestion_fps()
@@ -89,36 +87,44 @@ def rendu():
     pygame.display.update()
     VAR.horloge.tick(0)
 
+
 def gestion_musique():
-    if VAR.partie_demarree :
+    if VAR.partie_en_cours():
         FCT.jouer_musique()
     else:
         FCT.arreter_musique()
         
+        
+def gestion_manettes_minimum():
+    for i, joueur in VAR.tetris_joueurs.items():
+        joueur.Controle.gestion_evenements()
+          
+          
 def jeu_PyTris():
     CInit.initialiser()
     VAR.horloge = pygame.time.Clock()
   
     VAR.boucle = True
     while VAR.boucle:
-
-
         CControle.capture_evements_utilisateurs()
+        CControle.controle_fermeture_fenetre()
         
         gestion_musique()
-        
         afficher_fond()
-        afficher_tetris()
-        afficher_temps()
         
-        CControle.controle_fermeture_fenetre()
-        CParties.gestion_malediction()
+        if VAR.mode == VAR.MODE_SCORE:
+            CHighscore.afficher()
+            gestion_manettes_minimum()
+            
+        elif VAR.MODE_JEU:
+            afficher_tetris()
+            afficher_temps()
+                        
+            CParties.gestion_malediction()
+            CParties.controle_fin_de_partie()
         
-        surveille_demarrage()
-        CParties.controle_fin_de_partie()
-
-        #HS.afficher_highscore()
-        
+            surveille_demarrage()
+  
         rendu()
     pygame.quit() 
 

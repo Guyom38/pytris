@@ -4,7 +4,7 @@ from pygame.locals import *
 import time, os
 import variables as VAR
 import fonctions as FCT
-
+from grille import *
 
 import csv, math, random
 
@@ -190,15 +190,27 @@ class CAvatars:
             xP = x + element[2]
             yP = y + element[3]
             image = element[1]
-            
-            
-            #VAR.fenetre.blit(image, (xP, yP))
+
             self.image.blit(image, (xP, yP))
             
         
 
+    def dessiner(self, x, y):
+        self.image = FCT.image_vide(680 * self.ratioX, 720 * self.ratioY)
+        self.afficher_membres((self.bras_gauche, self.pied_gauche, self.corps, self.pied_droit, self.bras_droit), 0, 0 )
+        
+        # --- Animation et affichage des différents élements de la tete   
+        yP = (math.cos(self.animation_cpt) * 1) 
+        self.afficher_membres((self.tete, self.oreille, self.yeux, self.cheveux, self.cils, self.barbe, self.bouche, self.nez), 0, yP)
+        
+        if self.animation_flip:
+            self.image = pygame.transform.flip(self.image, True, False) 
             
-    def afficher(self, x, y):
+        
+        VAR.fenetre.blit(self.image, (x, y))
+        
+             
+    def afficher(self):
         if self.Moteur.actif:
             if VAR.pouvoirId == self.Moteur.id:
                 if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
@@ -239,20 +251,14 @@ class CAvatars:
         
         # --- Les mets au meme niveau
         
-        self.image = FCT.image_vide(680 * self.ratioX, 720 * self.ratioY)
+        
+        x = self.Moteur.grille.offX + self.Moteur.grille.cadreBas[0] - VAR.marge
+        y = self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + self.Moteur.grille.cadreBas[3] + VAR.marge
         # --- Affichage des différents élements du corps   
         
-        self.afficher_membres((self.bras_gauche, self.pied_gauche, self.corps, self.pied_droit, self.bras_droit), 0, 0 )
+        self.offY = self.pied_droit[3] + self.pied_droit[1].get_height() 
+        self.dessiner(x, y - self.offY)
         
-        # --- Animation et affichage des différents élements de la tete   
-        yP = (math.cos(self.animation_cpt) * 1) 
-        self.afficher_membres((self.tete, self.oreille, self.yeux, self.cheveux, self.cils, self.barbe, self.bouche, self.nez), 0, yP)
-        
-        if self.animation_flip:
-            self.image = pygame.transform.flip(self.image, True, False) 
-            
-        self.offY = self.pied_droit[3] + self.pied_droit[1].get_height() - 110
-        VAR.fenetre.blit(self.image, (x, y- self.offY))
         
         
 

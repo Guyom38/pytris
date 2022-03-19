@@ -15,8 +15,6 @@ class CMecanique():
         return nb
     
     def __init__(self, moteur):
-        print("        + MECANIQUE")
-
         self.Moteur = moteur
         self.lignesADetruire = []
         self.lignesAjouter = 0
@@ -29,14 +27,12 @@ class CMecanique():
             FCT.jouer_son("game_over")
 
     def faire_descendre_la_piece(self, piece):
-
         ancY = piece.pieceY
         piece.pieceY +=1
         if self.controle_choque_piece(piece):
             piece.pieceY = ancY
 
-            if not piece.simulation:
-                self.fixer_piece_sur_la_grille()
+            if not piece.simulation: self.fixer_piece_sur_la_grille()
                 
             return False
         return True
@@ -69,7 +65,6 @@ class CMecanique():
         return False
 
     def fixer_piece_sur_la_grille(self):
-
         for y in range(4):
             for x in range(4):
                 if CPieces.pieces[self.Moteur.Pieces.pieceSelect][self.Moteur.Pieces.pieceRotation][x][y] == 1:
@@ -78,13 +73,12 @@ class CMecanique():
                         self.Moteur.grille.zones[pX][pY] = self.Moteur.Pieces.pieceSelect
 
         FCT.jouer_son("block")
-
         self.rechercher_de_lignes()
         self.Moteur.Pieces.tirer_nouvelle_piece()
 
     
     def gestion_mecanique_du_jeu(self):
-        if self.Moteur.Partie.pause or not self.Moteur.actif: return None
+        if not VAR.partie_en_cours() or self.Moteur.Partie.pause or not self.Moteur.actif: return None
 
         self.traitement_des_lignes_a_ajouter()
         self.gravite()        
@@ -94,7 +88,6 @@ class CMecanique():
     def gravite(self):
         if pygame.time.get_ticks() - self.Moteur.Partie.cycle > self.Moteur.Partie.vitesse:
             self.faire_descendre_la_piece(self.Moteur.Pieces)
-            
             self.Moteur.Partie.cycle = pygame.time.get_ticks()
             
         

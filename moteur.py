@@ -16,8 +16,6 @@ from variables import *
 
 class CMoteur():
     def __init__(self, id, idManette):
-        print("    + Moteur # " + str(id))
-
         self.id = id
         
         alpha = 60
@@ -68,7 +66,7 @@ class CMoteur():
             self.PiecesAide.afficher_piece()  
               
     def afficher(self):
-        self.Controle.gestion_manette()
+        self.Controle.gestion_evenements()
         self.Mecanique.gestion_mecanique_du_jeu()
                 
         self.grille.afficher()
@@ -81,9 +79,8 @@ class CMoteur():
         self.Partie.afficher_message()
         self.Partie.afficher_score()
         
-        pX = self.grille.offX + self.grille.cadreBas[0] - 20
-        pY = self.grille.offY + self.grille.cadreBas[1] - (VAR.TAILLE * 6) - 20
-        self.Avatar.afficher(pX, pY )
+        
+        self.Avatar.afficher()
 
         
     
