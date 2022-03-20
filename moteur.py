@@ -17,6 +17,7 @@ from variables import *
 class CMoteur():
     def __init__(self, id, idManette):
         self.id = id
+        self.nom = ""
         
         alpha = 60
         self.couleur = ((232,147,15,alpha), \

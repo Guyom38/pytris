@@ -98,7 +98,7 @@ limiteLignesFrequence = 10000
 
 marge = 20
 
-
+pp = False # recharge les classes
         
         
 def joueurs_actifs():
@@ -124,3 +124,5 @@ def partie_terminee():
         if not joueur.Partie.mort: return False
     return True
 
+        
+   

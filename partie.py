@@ -45,7 +45,7 @@ class CParties():
         self.Moteur = moteur
 
         self.score = 0
-        self.nom = ""
+        
         self.nbLignes = 0
         self.niveau = 0
         self.rang = 0
@@ -62,6 +62,8 @@ class CParties():
     def partie_arretee(self):
         return self.pause or not self.Moteur.actif or self.mort  
     
+  
+        
     def demarrer(self):
         
             
@@ -72,18 +74,14 @@ class CParties():
         self.Moteur.Pieces.pieceSuivante = random.choice(["O", "I", "S", "Z", "L", "J", "T"])
         self.Moteur.Pieces.tirer_nouvelle_piece()
         
-        VAR.cycle_partie = pygame.time.get_ticks()
-        VAR.fin_partie = False
+        #VAR.cycle_partie = pygame.time.get_ticks()
+        
         
         
     def redemarre(self):
+        
         self.demarrer()
-         
-        CInit.initialiser_fond()
-        CInit.initialiser_musique()
-        CControle.initialiser_les_joueurs()
-        
-        
+          
         self.score = 0
         self.vitesse = 500
         self.nbLignes = 0
@@ -92,7 +90,7 @@ class CParties():
         self.Moteur.Mecanique.lignesADetruire = []
         self.Moteur.Mecanique.lignesAjouter = 0
         self.Moteur.Avatar.changer_expression ("NORMAL", -1)
-        VAR.cycle_partie == -1
+        
         self.Moteur.actif = True
 
         
@@ -167,7 +165,7 @@ class CParties():
         pY = self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + ((self.Moteur.grille.cadreBas[3] - image_rang.get_height()) //2) + VAR.marge
         VAR.fenetre.blit(image_rang, (pX, pY))
         
-        image_nom = VAR.ecritures[30].render(self.nom, True, (255,255,255,255)) 
+        image_nom = VAR.ecritures[30].render(self.Moteur.nom, True, (255,255,255,255)) 
         VAR.fenetre.blit(image_nom, (self.Moteur.grille.offX + self.Moteur.Avatar.maxX, pY + VAR.marge))
        
 

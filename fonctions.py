@@ -4,6 +4,7 @@ from pygame.locals import *
 import time, os, random
 import variables as VAR
 
+
 def GenereMat2D(dimX, dimY, valeurDefaut):
     return [[valeurDefaut for x in range(dimY)] for i in range(dimX)]
 
@@ -69,4 +70,4 @@ def changer_de_mode(x):
     elif x == VAR.MODE_SCORE:
         charger_musique("score.mp3")
     else:
-        arreter_musique()        
+        arreter_musique()   

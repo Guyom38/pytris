@@ -67,7 +67,7 @@ class CSalon:
             etiquettes = []
             if joueur.actif:
                 etiquettes.append(VAR.ecritures[30].render("Je suis prêt(e) !", True, (0,255,0,255)))
-            etiquettes.append(VAR.ecritures[30].render(joueur.Partie.nom, True, (255,255,255,255)))
+            etiquettes.append(VAR.ecritures[30].render(joueur.nom, True, (255,255,255,255)))
                         
             pygame.draw.rect(VAR.fenetre, joueur.couleur, (pX + joueur.Avatar.salonX +20, pY + joueur.Avatar.salonY -30, etiquettes[0].get_width() + 40, (etiquettes[0].get_height() * len(etiquettes))), 0)
             

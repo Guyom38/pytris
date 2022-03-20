@@ -127,6 +127,7 @@ def compte_a_rebours_partie():
             VAR.fenetre.blit(image_temps, (pX, pY))
               
 def jeu_PyTris():
+    print("jeuPytris")
     CInit.initialiser()
     VAR.horloge = pygame.time.Clock()
     
@@ -138,6 +139,7 @@ def jeu_PyTris():
         gestion_musique()
         afficher_fond()
         
+        
         if VAR.mode == VAR.MODE_SCORE:
             CHighscore.afficher()
             gestion_manettes_minimum()
@@ -148,6 +150,20 @@ def jeu_PyTris():
             
                 
         elif VAR.MODE_JEU:
+            
+            if VAR.pp:
+                
+                CInit.initialiser_fond()
+                CInit.initialiser_musique()
+                #CControle.initialiser_les_joueurs()
+                
+                j = 0
+                for i in range(VAR.nbManettes):                                        
+                    VAR.tetris_joueurs[i+j].initialiser(False)
+                VAR.cycle_partie == -1
+                VAR.fin_partie = False  
+                VAR.pp = False
+                
             afficher_tetris()
             afficher_temps()
                         

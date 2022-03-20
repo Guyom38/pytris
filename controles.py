@@ -50,12 +50,12 @@ class CControle():
         if VAR.joueur_clavier:
             VAR.tetris_joueurs[0] = moteur.CMoteur(0, -1)
             VAR.tetris_joueurs[0].initialiser(True)
-            VAR.tetris_joueurs[0].Partie.nom = VAR.LISTE_NOMS[0]
+            VAR.tetris_joueurs[0].nom = VAR.LISTE_NOMS[0]
 
         for i in range(VAR.nbManettes):
             VAR.tetris_joueurs[i+j] = moteur.CMoteur(i+j, i)
             VAR.tetris_joueurs[i+j].initialiser(True)
-            VAR.tetris_joueurs[i+j].Partie.nom = VAR.LISTE_NOMS[i+j]
+            VAR.tetris_joueurs[i+j].nom = VAR.LISTE_NOMS[i+j]
 
             barre = (200 / VAR.nbManettes) * i
             pygame.draw.rect(VAR.fenetre, (255,255,0,255), (0, VAR.RESOLUTION[1]-30, barre, 30), 0)
@@ -108,9 +108,9 @@ class CControle():
                 self.Moteur.Partie.pause = not self.Moteur.Partie.pause
                 
         elif VAR.mode == VAR.MODE_SCORE:
-            for i, joueur in VAR.tetris_joueurs.items():
-                joueur.Partie.redemarre()
-                
+            #for i, joueur in VAR.tetris_joueurs.items():
+            #    joueur.Partie.redemarre()
+            VAR.pp = True    
            
             FCT.changer_de_mode(VAR.MODE_JEU)
             VAR.partie_demarree = False

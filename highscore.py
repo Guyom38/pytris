@@ -70,7 +70,7 @@ class CHighscore():
         VAR.fenetre.blit(cadre, (cX, y))
         
         x = 0
-        for titreTxt, info, largeur in (("Rang", joueur.Partie.rang, 1), ("Nom", joueur.Partie.nom, 15) , ("Niveau", joueur.Partie.niveau, 30), ("Nb. Lignes", joueur.Partie.nbLignes, 10), ("Score : ", joueur.Partie.score, 20)):
+        for titreTxt, info, largeur in (("Rang", joueur.Partie.rang, 1), ("Nom", joueur.nom, 15) , ("Niveau", joueur.Partie.niveau, 30), ("Nb. Lignes", joueur.Partie.nbLignes, 10), ("Score : ", joueur.Partie.score, 20)):
             x += ((VAR.RESOLUTION[0] / 100) * largeur)
             
             # --- Titre

@@ -105,6 +105,7 @@ class CPieces():
                      (0, 0, 0, 0) )]
 
     def __init__(self, moteur, simulation):
+
         self.Moteur = moteur
 
         self.pieceSelect = None

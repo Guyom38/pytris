@@ -45,6 +45,7 @@ class CInit():
    
         CInit.initialiser_decors()
         CAvatars.chargement_fichiers_sprites()
+         
         CInit.initialiser_fond()
         CInit.initialiser_musique()
         CControle.initialiser_les_joueurs()
