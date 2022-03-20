@@ -5,12 +5,15 @@ from moteur import *
 from partie import *
 from init import *
 from controles import *
+
 from highscore import * 
+from salon import *
 
 import variables as VAR
 import avatars
 
 def surveille_demarrage():
+    
     if not VAR.partie_demarree and not VAR.fin_partie:
         pret = False
         for i, joueur in VAR.tetris_joueurs.items():
@@ -42,7 +45,7 @@ def afficher_tetris():
     rang = VAR.nbJoueurs
     liste_triee = sorted(liste_scores)
     for score,i in liste_triee:
-        VAR.tetris_joueurs[i].rang = rang
+        VAR.tetris_joueurs[i].Partie.rang = rang
         rang-=1
 
 def afficher_temps():
@@ -63,7 +66,7 @@ def afficher_temps():
     pygame.draw.rect(VAR.fenetre, (128,128,128,200), (pX, pY, barre, hauteur_barre),0)
     pygame.draw.rect(VAR.fenetre, couleur_contour_grille, (pX, pY, largeur_barre, hauteur_barre),2)
     
-    image_temps = ecritures[40].render("TEMPS  " + FCT.format_temps((VAR.duree_partie - temps) // 1000) , True, (255,255,255,255)) 
+    image_temps = ecritures[40].render("TEMPS  RESTANT   " + FCT.format_temps((VAR.duree_partie - temps) // 1000) , True, (255,255,255,255)) 
     VAR.fenetre.blit(image_temps, ((VAR.RESOLUTION[0] - image_temps.get_width()) // 2, pY+((hauteur_barre-image_temps.get_height()) //2)))
 
 
@@ -89,21 +92,44 @@ def rendu():
 
 
 def gestion_musique():
-    if VAR.partie_en_cours():
+    #if VAR.partie_en_cours() or V:
         FCT.jouer_musique()
-    else:
-        FCT.arreter_musique()
+    #else:
+    #    FCT.arreter_musique()
         
         
 def gestion_manettes_minimum():
     for i, joueur in VAR.tetris_joueurs.items():
         joueur.Controle.gestion_evenements()
           
-          
+
+
+def compte_a_rebours_partie():
+    if not VAR.partie_demarree:
+        if VAR.compteARebours_cycle == -1:
+            VAR.compteARebours_cycle = pygame.time.get_ticks()
+            
+        if pygame.time.get_ticks() - VAR.compteARebours_cycle > VAR.compteARebours_Delais:
+            VAR.partie_demarree = True
+            VAR.cycle_partie = pygame.time.get_ticks()
+            VAR.compteARebours_cycle = -1
+            
+            for i, joueur in VAR.tetris_joueurs.items():
+                joueur.actif = True
+            
+        else:
+            
+            reste = (VAR.compteARebours_Delais // 1000) - (pygame.time.get_ticks() - VAR.compteARebours_cycle) // 1000
+            image_temps = ecritures[200].render(str(reste), True, (0,0,0,255)) 
+            pX, pY = (VAR.RESOLUTION[0] - image_temps.get_width()) //2, (VAR.RESOLUTION[1] - image_temps.get_height()) //2
+            VAR.fenetre.blit(image_temps, (pX-10, pY+10))
+            image_temps = ecritures[200].render(str(reste), True, (255,255,255,255)) 
+            VAR.fenetre.blit(image_temps, (pX, pY))
+              
 def jeu_PyTris():
     CInit.initialiser()
     VAR.horloge = pygame.time.Clock()
-  
+    
     VAR.boucle = True
     while VAR.boucle:
         CControle.capture_evements_utilisateurs()
@@ -115,15 +141,21 @@ def jeu_PyTris():
         if VAR.mode == VAR.MODE_SCORE:
             CHighscore.afficher()
             gestion_manettes_minimum()
+        
+        elif VAR.mode == VAR.MODE_SALON:
+            CSalon.afficher()
             
+            
+                
         elif VAR.MODE_JEU:
             afficher_tetris()
             afficher_temps()
                         
             CParties.gestion_malediction()
             CParties.controle_fin_de_partie()
-        
-            surveille_demarrage()
+
+            compte_a_rebours_partie()
+            #surveille_demarrage()
   
         rendu()
     pygame.quit() 

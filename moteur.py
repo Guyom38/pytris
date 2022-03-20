@@ -42,7 +42,7 @@ class CMoteur():
         self.Animation = None
         self.Avatar = None
 
-    def initialiser(self):
+    def initialiser(self, nouveau_perso = True):
         self.Pieces = CPieces(self, False)
         self.PiecesAide = CPieces(self, True)
         self.grille = CGrille(self)
@@ -50,7 +50,8 @@ class CMoteur():
         self.Controle = CControle(self, self.idManette)
         self.Mecanique = CMecanique(self)
         self.Animation = CAnimation(self)
-        self.Avatar = CAvatars(self)
+        if nouveau_perso:
+            self.Avatar = CAvatars(self)
         
         self.Partie.demarrer()
 

@@ -49,6 +49,8 @@ class CInit():
         CInit.initialiser_musique()
         CControle.initialiser_les_joueurs()
         
+        FCT.charger_musique("attente.mp3")
+        
 
         
         
@@ -56,7 +58,7 @@ class CInit():
         if musique:
             pygame.mixer.init()
             fichier = random.choice(os.listdir("audios\\musics"))
-            FCT.charger_musique(fichier)
+            FCT.charger_musique("musics\\" + fichier)
             
 
             VAR.AUDIOS["fixe"] = pygame.mixer.Sound("audios\\fall.wav")
@@ -98,6 +100,7 @@ class CInit():
         if not fond: return 
 
         VAR.IMG_FOND = []
+        VAR.idFond = 0
 
         i = 0
         dossiers = os.listdir("fonds")
@@ -110,7 +113,7 @@ class CInit():
                 tmpImage = pygame.image.load("fonds\\"+dossier+"\\"+fichier)
                 tmpImage = pygame.transform.scale(tmpImage, (VAR.RESOLUTION[0], VAR.RESOLUTION[1]))
                 VAR.IMG_FOND.append(tmpImage)   
-                barre = (VAR.RESOLUTION[0] / (len(fichiers))) * i
+                barre = ((VAR.RESOLUTION[0]-200) / (len(fichiers))) * i
                 i += 1
                 
                 pygame.draw.rect(VAR.fenetre, (255,255,0,255), (0, VAR.RESOLUTION[1]-30, barre, 30), 0)
@@ -120,5 +123,5 @@ class CInit():
 
 
     def initialiser_ecritures():
-        for taille in (10, 20, 30, 40, 50, 60, 80, 100, 120):
+        for taille in (10, 20, 30, 40, 50, 60, 80, 100, 120, 200):
             VAR.ecritures[taille] = pygame.font.SysFont('arial', taille)    

@@ -17,10 +17,19 @@ class CHighscore():
        
         CHighscore.afficher_cadre_fond()
         CHighscore.afficher_titre()
+        
+        liste_scores = []
+        for i in range(VAR.nbJoueurs):
+            liste_scores.append((VAR.tetris_joueurs[i].Partie.score, i))
+
+        liste_triee = sorted(liste_scores, reverse=True)
+
         u = 0
-        for i, joueur in VAR.tetris_joueurs.items():
-            CHighscore.afficher_joueur(joueur, u)
+        for score, i in liste_triee:
+            CHighscore.afficher_joueur(VAR.tetris_joueurs[i], u)
             u += 1
+            
+            
         CHighscore.afficher_message()
 
     def afficher_cadre_fond():
@@ -61,7 +70,7 @@ class CHighscore():
         VAR.fenetre.blit(cadre, (cX, y))
         
         x = 0
-        for titreTxt, info, largeur in (("Rang", joueur.rang, 1), ("Nom", joueur.Partie.nom, 15) , ("Niveau", joueur.Partie.niveau, 30), ("Nb. Lignes", joueur.Partie.nbLignes, 10), ("Score : ", joueur.Partie.score, 20)):
+        for titreTxt, info, largeur in (("Rang", joueur.Partie.rang, 1), ("Nom", joueur.Partie.nom, 15) , ("Niveau", joueur.Partie.niveau, 30), ("Nb. Lignes", joueur.Partie.nbLignes, 10), ("Score : ", joueur.Partie.score, 20)):
             x += ((VAR.RESOLUTION[0] / 100) * largeur)
             
             # --- Titre

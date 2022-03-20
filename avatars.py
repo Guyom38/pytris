@@ -11,8 +11,8 @@ import csv, math, random
 class CAvatars:
     DONNEES = {}
     LISTE_FICHIER = {}
-    COLLECTION = {"yeux" :   {"MORT" : ["15"], "NORMAL" : ["03"], "CONTENT" : ["27"], "ENERVE" : ["17"], "CONCENTRE" : ["18"], "EPUISE" : ["25"], "DORT" : ["14"], "POUVOIR" : ["16"]}, \
-                  "bouche" : {"MORT" : ["50"], "NORMAL" : ["55"], "CONTENT" : ["20"], "ENERVE" : ["33"], "CONCENTRE" : ["07"], "EPUISE" : ["24"], "DORT" : ["10"], "POUVOIR" : ["33"]}}
+    COLLECTION = {"yeux" :   {"MORT" : ["15"], "NORMAL" : ["03"], "CONTENT" : ["27"], "ENERVE" : ["17"], "CONCENTRE" : ["18"], "EPUISE" : ["25"], "DORT" : ["14"], "POUVOIR" : ["16"], "BISOUS" : ["33"]}, \
+                  "bouche" : {"MORT" : ["50"], "NORMAL" : ["55"], "CONTENT" : ["20"], "ENERVE" : ["33"], "CONCENTRE" : ["07"], "EPUISE" : ["24"], "DORT" : ["18"], "POUVOIR" : ["33"], "BISOUS" : ["10"]}}
    
     LISTE_CHEVEUX = []
     LISTE_BARBES = []
@@ -83,11 +83,10 @@ class CAvatars:
         self.expression_frequence = {"global" : 0, "yeux" : 0, "bouche" : 0}    
 
         self.ratioX, self.ratioY = VAR.TAILLE * 0.007, VAR.TAILLE * 0.007
-        self.initialiser()
-                      
+        self.maxX, self.maxY = 0, 0
         
+        self.salonX, self.salonY = 0, 0
         
-    def initialiser(self):
         liste_corps = []
         for i in range(1, 33):
             if i<10:
@@ -101,19 +100,15 @@ class CAvatars:
                 liste_poiles.append("0"+str(i))
             else:
                 liste_poiles.append(str(i))
-        
-        couleur = self.Moteur.id +1
-        if couleur < 10: couleur = "0" + str(couleur)
-        self.ratioY += (random.randint(0, 15) / 1000)
-        self.charger_personnage(random.choice(("01", "02", "03", "04", "05", "06")), couleur, \
-                                random.choice(CAvatars.LISTE_CHEVEUX), random.choice(CAvatars.LISTE_CILS), random.choice(CAvatars.LISTE_BARBES), \
-                                (self.ratioX, self.ratioY))
-        self.charger_expression()  
-        
+
+        self.ratioY += (random.randint(0, 15) / 1000)       
+        self.charger_personnage()
+            
         
     
     def remet_expression_precedent(self):
         self.changer_expression(self.expressionOld, -1)
+        
         
     def changer_expression(self, expression, delais):
         self.expression_cycle["global"] = pygame.time.get_ticks()
@@ -133,13 +128,19 @@ class CAvatars:
         self.expression_id = {"yeux" : 0, "bouche" : 0}
         self.expression_frequence = {"yeux" : 5000, "bouche" : 7000}
         
-        
-        
-    
-    
+   
        
-    def charger_personnage(self, couleurCorps, couleurPoiles, cheveux, cils, barbe, ratio):
+    def charger_personnage(self, couleurCorps = "", couleurPoiles = "", cheveux = "", cils = "", barbe = "", ratio = ""):
+        couleur = self.Moteur.id +1
+        if couleur < 10: couleur = "0" + str(couleur)
         
+        if couleurCorps == "":   couleurCorps = random.choice(("01", "02", "03", "04", "05", "06"))
+        if couleurPoiles == "":  couleurPoiles = couleur
+        if cheveux == "": cheveux = random.choice(CAvatars.LISTE_CHEVEUX)
+        if cils == "": cils = random.choice(CAvatars.LISTE_CILS)
+        if barbe == "": barbe = random.choice(CAvatars.LISTE_BARBES)
+        if ratio == "": ratio = (self.ratioX, self.ratioY)
+                                
         # --- COMMUN
         self.yeux = {"yeux" : {}}
         for i in os.listdir(self.chemin + "\\yeux\\"):
@@ -165,7 +166,8 @@ class CAvatars:
                 
         self.cils = CAvatars.charger_textures(couleurPoiles, "cils", cils, ratio)
         self.barbe = CAvatars.charger_textures(couleurPoiles, "barbes", barbe, ratio)
-      
+        
+        self.charger_expression()  
  
         
     
@@ -191,7 +193,12 @@ class CAvatars:
             yP = y + element[3]
             image = element[1]
 
+
             self.image.blit(image, (xP, yP))
+            maxX, maxY = xP + image.get_width(), yP + image.get_height()
+            if maxX > self.maxX: self.maxX = maxX
+            if maxY > self.maxY: self.maxY = maxY
+            
             
         
 
@@ -209,35 +216,34 @@ class CAvatars:
         
         VAR.fenetre.blit(self.image, (x, y))
         
-             
-    def afficher(self):
-        if self.Moteur.actif:
-            if VAR.pouvoirId == self.Moteur.id:
-                if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
-            elif self.expression == "POUVOIR" :
-                if self.expressionOld == "POUVOIR": self.expressionOld = "NORMAL"
-                self.remet_expression_precedent()
-            
-            if self.expression_cycle["global"] > 0 and self.expression_cycle["global"] != -1:
-                if pygame.time.get_ticks() - self.expression_cycle["global"] > self.expression_frequence["global"]:
-                    self.expression_cycle["global"] = 0
-                    self.remet_expression_precedent()
-                    
+    
+    def gestion_pouvoir(self):
+        if VAR.pouvoirId == self.Moteur.id:
+            if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
+        elif self.expression == "POUVOIR" :
+            if self.expressionOld == "POUVOIR": self.expressionOld = "NORMAL"
+            self.remet_expression_precedent()         
+    
+    def gestion_expression(self):
+        if self.expression_cycle["global"] > 0 and self.expression_cycle["global"] != -1:
+            if pygame.time.get_ticks() - self.expression_cycle["global"] > self.expression_frequence["global"]:
+                self.expression_cycle["global"] = 0
+                self.remet_expression_precedent()    
                 
-        
-        
-        
-        # --- Rythme d'animation du flip
+    def gestion_sens(self):
+         # --- Rythme d'animation du flip
         if pygame.time.get_ticks() - self.animation_flip_cycle > self.animation_flip_frequence:
             self.animation_flip = not self.animation_flip
             self.animation_flip_frequence = random.randint(2000, 30000)
             self.animation_flip_cycle = pygame.time.get_ticks()
-
+     
+    def gestion_animation(self):
         # --- Rythme d'animation
         if pygame.time.get_ticks() - self.animation_cycle > self.animation_frequence:
             self.animation_cpt +=1
             self.animation_cycle = pygame.time.get_ticks()
-        
+    
+    def gestion_visage(self):
         # --- Changement d'expressions du visage
         for element in ("yeux", "bouche"):
             if pygame.time.get_ticks() - self.expression_cycle[element] > FCT.iif(self.expression_actif, self.expression_frequence[element], 300):
@@ -248,10 +254,20 @@ class CAvatars:
                     if self.expression_id[element] > len(self.expression_liste[element])-1: self.expression_id[element] = 0
                     
                 self.expression_cycle[element] = pygame.time.get_ticks()
-        
+    
+    def gestion_personnage(self):
+        if self.Moteur.actif:
+            self.gestion_pouvoir()
+            self.gestion_expression()
+            self.gestion_sens()
+            self.gestion_animation()
+            self.gestion_visage()    
+    
+                                         
+    def afficher(self):
+        self.gestion_personnage()
+
         # --- Les mets au meme niveau
-        
-        
         x = self.Moteur.grille.offX + self.Moteur.grille.cadreBas[0] - VAR.marge
         y = self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + self.Moteur.grille.cadreBas[3] + VAR.marge
         # --- Affichage des différents élements du corps   

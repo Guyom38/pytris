@@ -56,7 +56,6 @@ class CGrille():
     def dessiner_grille(self):
         t = VAR.TAILLE
         grilleDimX, grilleDimY, dimCadre = self.dimX * t, self.dimY * t, VAR.TAILLE * 4
-                
         self.image = FCT.image_vide(grilleDimX + self.margesDim, grilleDimY + (dimCadre*2) + self.margesDim)
         
         # --- Cadre piece Suivante

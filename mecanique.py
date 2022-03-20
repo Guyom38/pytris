@@ -117,30 +117,31 @@ class CMecanique():
         bloc_de_lignes_ref = -1
         bloc_de_lignes_cpt = 0
         bloc_traite = False
-
         
-        for y in range(0, VAR.DIMENSION[1]):
-            if self.verifie_la_ligne(y):
-                liste_lignes.append(y)                      # --- Ajoute la ligne a la liste
-                bloc_de_lignes_cpt+=1
-                self.Moteur.Partie.nbLignes +=1
+        for y in range(0, VAR.DIMENSION[1]):                                # --- Parcours chaque ligne dans haut jusqu'en bas
+            if self.verifie_la_ligne(y):                                    # --- --- Est ce que c'est une ligne complete ?
+                liste_lignes.append(y)                                      # --- --- --- Ajoute la ligne a la liste
+                bloc_de_lignes_cpt+=1                                       # --- --- --- Ajoute au bloc +1
+                self.Moteur.Partie.nbLignes +=1                             
                 self.Moteur.Partie.verifie_changement_de_niveau()
-                 
-                if bloc_de_lignes_ref != -1:                # --- premiere ligne traitée
-                    if bloc_de_lignes_ref == y+1:           # --- Si les lignes se touchent
-                        bloc_traite = True
-                    else:                                   # --- Si il y a rupture avec la ligne precedente
-                        self.ajoute_score_lignes(bloc_de_lignes_cpt)
-                        bloc_traite = False
-                        bloc_de_lignes_cpt = 0
-                bloc_de_lignes_ref = y
                 
-        if bloc_traite and bloc_de_lignes_cpt > 0:
-            self.ajoute_score_lignes(bloc_de_lignes_cpt)
+                if bloc_de_lignes_ref != -1:                                # --- --- --- Est-ce que c'est la premiere ligne du bloc ?
+                    if bloc_de_lignes_ref == y-1:                           # --- --- --- --- Est-ce que la ligne courante (y) touche celle du dessus (ref = y-1) ?+1
+                        bloc_traite = True                                  # --- --- --- --- --- C'est toujours un bloc
+
+                    else:                                                   # --- --- --- --- Si il y a rupture avec la ligne precedente
+                        self.ajoute_score_lignes(bloc_de_lignes_cpt)        # --- --- --- --- --- Ajoute le score correspondant au bloc
+                        bloc_traite = False                                 # --- --- --- --- --- Il ne faut plus traiter le bloc
+                        bloc_de_lignes_cpt = 0                              # --- --- --- --- --- Aucune ligne dans le bloc
+                bloc_de_lignes_ref = y                                      # --- --- --- --- Met a jour la reference avec la ligne courante
         
-        if len(liste_lignes) > 0:
-            self.lignesADetruire = liste_lignes
-            self.Moteur.Animation.destLignesActif = True
+        if bloc_traite or bloc_de_lignes_cpt > 0:                          # --- --- --- Le bloc est a traité ou contient plusieurs lignes ?
+            self.ajoute_score_lignes(bloc_de_lignes_cpt)                    # --- --- --- --- Ajoute le score correspondant au bloc
+        
+        if len(liste_lignes) > 0:                                           # --- --- --- Si plusieurs lignes ont été faites ?
+            self.lignesADetruire = liste_lignes                             # --- --- --- --- Ajoute les lignes dans la file a détruire
+            self.Moteur.Animation.destLignesActif = True                    # --- --- --- --- Active l'animation de destruction
+    
     
     def balance_les_lignes(self, nbLignes):
         if self.Moteur.id == VAR.pouvoirId:                 # --- Si le joueur a le pouvoir, il balance a tout le monde
@@ -151,6 +152,10 @@ class CMecanique():
         else:                                               # --- Si un autre joueur a le pouvoir, il recoit la malediction
             if VAR.tetris_joueurs[VAR.pouvoirId].actif:  
                 VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
+                
+        if VAR.limiteModeBalance:                           # --- Retire autant de lignes en attente qu'il y a de lignes a ajouter
+            self.Moteur.Mecanique.lignesAjouter -= nbLignes
+            if self.Moteur.Mecanique.lignesAjouter < 0: self.Moteur.Mecanique.lignesAjouter = 0
     
     
     def traitement_des_lignes_a_ajouter(self):

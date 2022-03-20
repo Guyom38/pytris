@@ -1,7 +1,10 @@
-from pygame.locals import *
 
-RESOLUTION = ((1280, 800),(1920, 1080))[1]
-MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[1]
+from pygame.locals import *
+import fonctions as FCT
+import os, random
+
+RESOLUTION = ((1280, 800),(1920, 1080))[0]
+MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[0]
 DIMENSION = (10, 20)
 TAILLE = 20
 TAILLE_ECRITURE = 20
@@ -10,7 +13,9 @@ ECARTX = 40
 MODE_MENU = 0
 MODE_JEU = 1
 MODE_SCORE = 2
-mode = MODE_JEU
+MODE_SALON = 3
+
+mode = MODE_SALON
 
 
 LISTE_NOMS = ["Groun", "Kazek", "Thinuf", "Vonog", "Grodron", "Dronbok", "Kazdre", "Azgan", "Vondur", "Waelg", "Damval", "Kroncae", "Dronkar", "Ginuf", \
@@ -59,7 +64,7 @@ partie_demarree = False
 
 pouvoirId = 0
 pouvoirCycle = 0
-pouvoirDelais = 7000
+pouvoirDelais = 5000
 
 limitePiecesQuiSeSuivent = 2
 class CBouton:
@@ -79,20 +84,32 @@ fps_cpt = 0
 fps_cycle = 0
 animation_cpt = 0
 
+compteARebours_cycle = -1
+compteARebours_Delais = 5000
+
 fondVideo_cycle = 0
 fondVideo_frequence =  35
 
-limiteLignesEnAttente = 8
-limiteLignesMax = 3
+limiteModeBalance = True            # Si le joueur fait une ligne, cela baisse le nombre de lignes en attente
+limiteLignesEnAttente = 5
+limiteLignesMax = 2
 limiteLignesCycle = 0
 limiteLignesFrequence = 10000
 
 marge = 20
 
+
+        
+        
 def joueurs_actifs():
     for i, joueur in tetris_joueurs.items():
         if joueur.actif: return True
     return False
+
+def joueurs_prets():
+    for i, joueur in tetris_joueurs.items():
+        if not joueur.actif: return False
+    return True
 
 def partie_en_cours():
     return (partie_demarree)
