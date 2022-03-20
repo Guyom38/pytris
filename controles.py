@@ -163,7 +163,7 @@ class CControle():
                 if VAR.manettes[self.manetteId].get_button(CBouton.B_R) == 1:
                     self.Moteur.Avatar.animation_flip = True
                 if VAR.manettes[self.manetteId].get_button(CBouton.B_A) == 1:
-                    self.Moteur.Avatar.changer_expression("MORT", -1)
+                    self.Moteur.Avatar.changer_expression("BISOUS", -1)
                 if VAR.manettes[self.manetteId].get_button(CBouton.B_B) == 1:
                     self.Moteur.Avatar.changer_expression("ENERVE", -1)
                 if VAR.manettes[self.manetteId].get_button(CBouton.B_X) == 1:

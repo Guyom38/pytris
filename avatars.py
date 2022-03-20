@@ -220,9 +220,11 @@ class CAvatars:
     def gestion_pouvoir(self):
         if VAR.pouvoirId == self.Moteur.id:
             if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
+            return True
         elif self.expression == "POUVOIR" :
             if self.expressionOld == "POUVOIR": self.expressionOld = "NORMAL"
             self.remet_expression_precedent()         
+            return False
     
     def gestion_expression(self):
         if self.expression_cycle["global"] > 0 and self.expression_cycle["global"] != -1:
@@ -257,8 +259,8 @@ class CAvatars:
     
     def gestion_personnage(self):
         if self.Moteur.actif:
-            self.gestion_pouvoir()
-            self.gestion_expression()
+            if not self.gestion_pouvoir():
+                self.gestion_expression()
             self.gestion_sens()
             self.gestion_animation()
             self.gestion_visage()    
