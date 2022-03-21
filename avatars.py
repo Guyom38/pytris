@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+
 import time, os
 import variables as VAR
 import fonctions as FCT
@@ -111,11 +112,6 @@ class CAvatars:
         
         
     def changer_expression(self, expression, delais):
-<<<<<<< HEAD
-        return
-        # --- Guyom
-=======
->>>>>>> 2aa68738f3a301ac17aed6b1c71fcb8030054908
         self.expression_cycle["global"] = pygame.time.get_ticks()
         self.expression_frequence["global"] = delais
         
@@ -232,10 +228,6 @@ class CAvatars:
             return False
     
     def gestion_expression(self):
-<<<<<<< HEAD
-        
-=======
->>>>>>> 2aa68738f3a301ac17aed6b1c71fcb8030054908
         if self.expression_cycle["global"] > 0 and self.expression_cycle["global"] != -1:
             if pygame.time.get_ticks() - self.expression_cycle["global"] > self.expression_frequence["global"]:
                 self.expression_cycle["global"] = 0

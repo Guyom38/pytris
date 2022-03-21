@@ -11,6 +11,7 @@ import os
 import variables as VAR
 
 from avatars import *
+from pygame._sdl2.video import Window
 
 
 class CInit():
@@ -19,7 +20,8 @@ class CInit():
 
         # --- initialisation du moteur Pygame
         pygame.init()
-
+ 
+        
         # --- création de la fenetre
         VAR.fenetre = pygame.display.set_mode(VAR.RESOLUTION, MODE_ECRAN, 32) #: DOUBLEBUF
         pygame.display.set_caption("PyTris")

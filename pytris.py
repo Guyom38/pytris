@@ -12,6 +12,7 @@ from salon import *
 import variables as VAR
 import avatars
 
+
 def surveille_demarrage():
     
     if not VAR.partie_demarree and not VAR.fin_partie:
@@ -147,14 +148,7 @@ def jeu_PyTris():
         elif VAR.mode == VAR.MODE_SALON:
             CSalon.afficher()
             
-            
-                
-<<<<<<< HEAD
         elif VAR.mode == VAR.MODE_JEU:
-=======
-        elif VAR.MODE_JEU:
->>>>>>> 2aa68738f3a301ac17aed6b1c71fcb8030054908
-            
             if VAR.pp:
                 
                 CInit.initialiser_fond()
