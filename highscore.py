@@ -3,8 +3,8 @@ from pygame.locals import *
 
 import time, os
 import variables as VAR
-import fonctions as FCT
-
+import COMMUN.fonctions as FCT
+import COMMUN.variables as V
 #     - 
 
 class CHighscore():
@@ -12,8 +12,8 @@ class CHighscore():
     cycle, frequence, start = 0, 200, True
          
     def afficher():
-        CHighscore.dimX = VAR.RESOLUTION[0] * 0.9
-        CHighscore.dimY = VAR.RESOLUTION[1] // 15          # 3 titre + 10 joueurs + 2 bouton 
+        CHighscore.dimX = V.RESOLUTION[0] * 0.9
+        CHighscore.dimY = V.RESOLUTION[1] // 15          # 3 titre + 10 joueurs + 2 bouton 
        
         CHighscore.afficher_cadre_fond()
         CHighscore.afficher_titre()
@@ -33,18 +33,18 @@ class CHighscore():
         CHighscore.afficher_message()
 
     def afficher_cadre_fond():
-        cadre = FCT.image_vide(VAR.RESOLUTION[0] * 0.92, VAR.RESOLUTION[1])
+        cadre = FCT.image_vide(V.RESOLUTION[0] * 0.92, V.RESOLUTION[1])
         pygame.draw.rect(cadre, (16,16,16,150), (0,0, cadre.get_width(), cadre.get_height()), 0)
         pygame.draw.rect(cadre, (255,255,255,150), (0,0, cadre.get_width(), cadre.get_height()), 4)
-        VAR.fenetre.blit(cadre, ((VAR.RESOLUTION[0] - cadre.get_width()) // 2, 0, cadre.get_width(), VAR.RESOLUTION[1]))                 
+        V.fenetre.blit(cadre, ((V.RESOLUTION[0] - cadre.get_width()) // 2, 0, cadre.get_width(), V.RESOLUTION[1]))                 
         
     def afficher_titre():
-        image_titre = VAR.ecritures[80].render("TABLEAU DES SCORES", True, (0,0,0,255)) 
-        x, y = ((VAR.RESOLUTION[0] - image_titre.get_width() ) // 2), ( ((CHighscore.dimY * 3) - image_titre.get_height()) // 2 )
-        VAR.fenetre.blit(image_titre, (x-2, y-2))    
-        image_titre = VAR.ecritures[80].render("TABLEAU DES SCORES", True, (255,255,255,255)) 
-        x, y = ((VAR.RESOLUTION[0] - image_titre.get_width() ) // 2), ( ((CHighscore.dimY * 3) - image_titre.get_height()) // 2 )
-        VAR.fenetre.blit(image_titre, (x, y))      
+        image_titre = V.ecritures[80].render("TABLEAU DES SCORES", True, (0,0,0,255)) 
+        x, y = ((V.RESOLUTION[0] - image_titre.get_width() ) // 2), ( ((CHighscore.dimY * 3) - image_titre.get_height()) // 2 )
+        V.fenetre.blit(image_titre, (x-2, y-2))    
+        image_titre = V.ecritures[80].render("TABLEAU DES SCORES", True, (255,255,255,255)) 
+        x, y = ((V.RESOLUTION[0] - image_titre.get_width() ) // 2), ( ((CHighscore.dimY * 3) - image_titre.get_height()) // 2 )
+        V.fenetre.blit(image_titre, (x, y))      
         
         
     def afficher_message():
@@ -53,39 +53,39 @@ class CHighscore():
             CHighscore.start = not CHighscore.start
         
         if CHighscore.start:            
-            image_continue = VAR.ecritures[40].render("APPUYEZ SUR START", True, (255,255,255,255)) 
-            x, y = ((VAR.RESOLUTION[0] - image_continue.get_width() ) // 2), VAR.RESOLUTION[1] - ( ((CHighscore.dimY * 3) - image_continue.get_height()) // 2 )
-            VAR.fenetre.blit(image_continue, (x, y))      
+            image_continue = V.ecritures[40].render("APPUYEZ SUR START", True, (255,255,255,255)) 
+            x, y = ((V.RESOLUTION[0] - image_continue.get_width() ) // 2), V.RESOLUTION[1] - ( ((CHighscore.dimY * 3) - image_continue.get_height()) // 2 )
+            V.fenetre.blit(image_continue, (x, y))      
 
 
     def afficher_joueur(joueur, i):
-        dimCadreY = ((VAR.RESOLUTION[1] - (5 * CHighscore.dimY)) // VAR.nbJoueurs )        
+        dimCadreY = ((V.RESOLUTION[1] - (5 * CHighscore.dimY)) // VAR.nbJoueurs )        
         cadre = FCT.image_vide(CHighscore.dimX, dimCadreY)
         pygame.draw.rect(cadre, joueur.couleur, (0, 0, CHighscore.dimX, dimCadreY-10))
                 
-        cX = ((VAR.RESOLUTION[0] - CHighscore.dimX) //2)
+        cX = ((V.RESOLUTION[0] - CHighscore.dimX) //2)
         y = (CHighscore.dimY * 3) + (i * (dimCadreY + 10))
         
         # --- Cadre
-        VAR.fenetre.blit(cadre, (cX, y))
+        V.fenetre.blit(cadre, (cX, y))
         
         x = 0
         for titreTxt, info, largeur in (("Rang", joueur.Partie.rang, 1), ("Nom", joueur.nom, 15) , ("Niveau", joueur.Partie.niveau, 30), ("Nb. Lignes", joueur.Partie.nbLignes, 10), ("Score : ", joueur.Partie.score, 20)):
-            x += ((VAR.RESOLUTION[0] / 100) * largeur)
+            x += ((V.RESOLUTION[0] / 100) * largeur)
             
             # --- Titre
             if i == 0:
-                image = VAR.ecritures[20].render(str(titreTxt), True, (0,0,0,255)) 
-                VAR.fenetre.blit(image, (x+cX-2, y-22))
-                image = VAR.ecritures[20].render(str(titreTxt), True, (255,255,255,255)) 
-                VAR.fenetre.blit(image, (x+cX, y-20))
+                image = V.ecritures[20].render(str(titreTxt), True, (0,0,0,255)) 
+                V.fenetre.blit(image, (x+cX-2, y-22))
+                image = V.ecritures[20].render(str(titreTxt), True, (255,255,255,255)) 
+                V.fenetre.blit(image, (x+cX, y-20))
                 
             # --- Info    
-            image = VAR.ecritures[60].render(str(info), True, (0,0,0,255)) 
+            image = V.ecritures[60].render(str(info), True, (0,0,0,255)) 
             cY = ((dimCadreY + 10) - image.get_height()) // 2
-            VAR.fenetre.blit(image, (x+cX-2, y+cY-2))
-            image = VAR.ecritures[60].render(str(info), True, (255,255,255,255)) 
-            VAR.fenetre.blit(image, (x+cX, y+cY))
+            V.fenetre.blit(image, (x+cX-2, y+cY-2))
+            image = V.ecritures[60].render(str(info), True, (255,255,255,255)) 
+            V.fenetre.blit(image, (x+cX, y+cY))
         
         
         # -- AVATAR

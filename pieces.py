@@ -4,8 +4,8 @@ import pygame
 from pygame.locals import *
 
 import variables as VAR
-import fonctions as FCT
-
+import COMMUN.fonctions as FCT
+import COMMUN.variables as V
 import random
 
 
@@ -130,9 +130,9 @@ class CPieces():
                     pX, pY =x+self.pieceX, y+ self.pieceY
                     if pY >= 0:
                         if VAR.mode_bmp:
-                            VAR.fenetre.blit(VAR.IMAGES[pImg][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)  ))
+                            V.fenetre.blit(V.IMAGES[pImg][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)  ))
                         else:
-                            pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t), t, t), 0)
+                            pygame.draw.rect(V.fenetre, couleur, (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t), t, t), 0)
 
 
     def afficher_piece_suivante(self):
@@ -148,9 +148,9 @@ class CPieces():
                     pX = self.Moteur.grille.offX + self.Moteur.grille.cadreHaut[0] + (x * VAR.TAILLE) - VAR.marge
                     pY = self.Moteur.grille.offY + self.Moteur.grille.cadreHaut[1] + (y * VAR.TAILLE) - self.Moteur.grille.cadreHaut[3] - VAR.marge  
                     if VAR.mode_bmp:
-                        VAR.fenetre.blit(VAR.IMAGES[self.pieceSuivante][0], (pX, pY))
+                        V.fenetre.blit(V.IMAGES[self.pieceSuivante][0], (pX, pY))
                     else:
-                        pygame.draw.rect(VAR.fenetre, couleur, (pX, pY , t, t), 0)
+                        pygame.draw.rect(V.fenetre, couleur, (pX, pY , t, t), 0)
 
 
     def hasard(self, forceDifference = ""):

@@ -5,7 +5,8 @@ from pygame.locals import *
 from pieces import CPieces
 
 import variables as VAR
-import fonctions as FCT
+import COMMUN.variables as V
+import COMMUN.fonctions as FCT
 
 class CAnimation:
     def __init__(self, moteur):
@@ -72,7 +73,7 @@ class CAnimation:
             couleur =  (self.Moteur.couleur[0],  self.Moteur.couleur[1],  self.Moteur.couleur[2], self.nivSupAlpha)
             pygame.draw.rect(image, couleur, (0, 0, image.get_width(), image.get_height()), 4)
             
-            image_texte = VAR.ecritures[20].render("NIVEAU " + str(self.Moteur.Partie.niveau), True, (255,255,255,self.nivSupAlpha))
+            image_texte = V.ecritures[20].render("NIVEAU " + str(self.Moteur.Partie.niveau), True, (255,255,255,self.nivSupAlpha))
 
             pX = (image.get_width() - image_texte.get_width()) // 2
             pY = (image.get_height() - image_texte.get_height()) // 2
@@ -80,7 +81,7 @@ class CAnimation:
 
             pX = (largeur - image.get_width()) // 2
             pY = (hauteur - image.get_height()) // 2
-            VAR.fenetre.blit(image, (self.Moteur.grille.offX, self.Moteur.grille.offY+ pY ))
+            V.fenetre.blit(image, (self.Moteur.grille.offX, self.Moteur.grille.offY+ pY ))
 
             if self.anime:
                 self.nivSupAlpha -= 8

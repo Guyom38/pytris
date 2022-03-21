@@ -2,22 +2,46 @@ import pygame
 from pygame.locals import *
 
 
-import time, os
+import os
 import variables as VAR
-import fonctions as FCT
+import COMMUN.fonctions as FCT
 from grille import *
 
 import csv, math, random
 
 class CAvatars:
-    DONNEES = {}
-    LISTE_FICHIER = {}
+
     COLLECTION = {"yeux" :   {"MORT" : ["15"], "NORMAL" : ["03"], "CONTENT" : ["27"], "ENERVE" : ["17"], "CONCENTRE" : ["18"], "EPUISE" : ["25"], "DORT" : ["14"], "POUVOIR" : ["16"], "BISOUS" : ["33"]}, \
                   "bouche" : {"MORT" : ["50"], "NORMAL" : ["55"], "CONTENT" : ["20"], "ENERVE" : ["33"], "CONCENTRE" : ["07"], "EPUISE" : ["24"], "DORT" : ["18"], "POUVOIR" : ["33"], "BISOUS" : ["10"]}}
    
+
+
+    ALPHA = 60
+    COULEUR = ( (232,147,15,ALPHA), \
+                (110,68,216,ALPHA), \
+                (20,163,194,ALPHA), \
+                (216,78,28,ALPHA), \
+                (240,212,72,ALPHA), \
+                (53,53,86,ALPHA), \
+                (216,68,18,ALPHA), \
+                (158,57,34,ALPHA), \
+                (224,224,224,ALPHA), \
+                (59,59,59,ALPHA) )
+    
+    LISTE_NOMS = ["Groun", "Kazek", "Thinuf", "Vonog", "Grodron", "Dronbok", "Kazdre", "Azgan", "Vondur", "Waelg", "Damval", "Kroncae", "Dronkar", "Ginuf", \
+              "Gilsko", "Bokskrarag", "Agcae", "Riltha", "Darnog", "Dron", "Zornthron", "Grogor", "Mingin", "Ekskre", "Golskre", "Kruag", "Throngrin", \
+              "Griaz", "Anag", "Zornmin", "Kaz", "Trolrhun", "Unthron", "Elgril", "Stogriki", "Galag", "Agsko", "Gurfron", "Ginril", "Grinthron", "Rilthin", \
+              "Rhunril", "Caeskra", "Ekgin", "Gurnog", "Ufdam", "Gorgur", "Kazgru", "Zornuz", "Fronelg", "Uzganrin", "Rikgar", "Krukul", "Rilcaeril", "Skogin", \
+              "Lokgil", "Grudag", "Skouf", "Rikdag", "Ogur", "Dregan", "Agval", "Makkim", "Ekazril", "Gardun", "Throngin", "Thronzorn", "Kulum", "Skraag", "Krontol", \
+              "Makril", "Okgan", "Karrag", "Stouz", "Duntha"]
+    
     LISTE_CHEVEUX = []
     LISTE_BARBES = []
-    LISTE_CILS = []
+    LISTE_CILS = []    
+    
+    DONNEES = {}
+    LISTE_FICHIER = {}
+    
     
     def chargement_fichiers_sprites():
         with open('avatars\\avatars.csv', newline='') as csvfile:
@@ -58,9 +82,9 @@ class CAvatars:
     
     # ----------------------------------------------------------------------------------------------------------------------------
     
-    def __init__(self, moteur):
-        self.Moteur = moteur
-        self.IMG_AVATARS = {}
+    def __init__(self, joueur):
+        self.Joueur = joueur
+        #self.IMG_AVATARS = {}
         self.image = None
         
         self.offY = 0
@@ -132,7 +156,7 @@ class CAvatars:
    
        
     def charger_personnage(self, couleurCorps = "", couleurPoiles = "", cheveux = "", cils = "", barbe = "", ratio = ""):
-        couleur = self.Moteur.id +1
+        couleur = self.Joueur.id +1
         if couleur < 10: couleur = "0" + str(couleur)
         
         if couleurCorps == "":   couleurCorps = random.choice(("01", "02", "03", "04", "05", "06"))
@@ -215,11 +239,11 @@ class CAvatars:
             self.image = pygame.transform.flip(self.image, True, False) 
             
         
-        VAR.fenetre.blit(self.image, (x, y))
+        V.fenetre.blit(self.image, (x, y))
         
     
     def gestion_pouvoir(self):
-        if VAR.pouvoirId == self.Moteur.id:
+        if VAR.pouvoirId == self.Joueur.id:
             if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
             return True
         elif self.expression == "POUVOIR" :
@@ -259,7 +283,7 @@ class CAvatars:
                 self.expression_cycle[element] = pygame.time.get_ticks()
     
     def gestion_personnage(self):
-        if self.Moteur.actif:
+        if self.Joueur.actif:
             if not self.gestion_pouvoir():
                 self.gestion_expression()
             self.gestion_sens()
@@ -267,12 +291,10 @@ class CAvatars:
             self.gestion_visage()    
     
                                          
-    def afficher(self):
+    def afficher(self, x, y):
         self.gestion_personnage()
 
-        # --- Les mets au meme niveau
-        x = self.Moteur.grille.offX + self.Moteur.grille.cadreBas[0] - VAR.marge
-        y = self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + self.Moteur.grille.cadreBas[3] + VAR.marge
+        
         # --- Affichage des différents élements du corps   
         
         self.offY = self.pied_droit[3] + self.pied_droit[1].get_height() 

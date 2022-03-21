@@ -4,14 +4,14 @@ from pygame.locals import *
 
 import variables as VAR
 from pieces import *
-
+import COMMUN.variables as V
 import random
 
 class CMecanique():
     def nbJoueursActifs():
         nb = 0
         for i, j in VAR.tetris_joueurs.items():
-            if j.actif and not j.Partie.mort: nb +=1
+            if j.Joueur.actif and not j.Partie.mort: nb +=1
         return nb
     
     def __init__(self, moteur):
@@ -21,7 +21,7 @@ class CMecanique():
     
     def gestion_game_over(self):
         if self.verifier_game_over() and self.Moteur.actif:
-            self.Moteur.Avatar.changer_expression ("MORT", -1)
+            self.Moteur.Joueur.Avatar.changer_expression ("MORT", -1)
             self.Moteur.Animation.meurt()
             self.Moteur.Partie.meurt()
             FCT.jouer_son("game_over")
@@ -47,7 +47,7 @@ class CMecanique():
     def faire_descendre_a_fond_la_piece(self, piece):
         while self.faire_descendre_la_piece(piece):
             pass
-        self.Moteur.Avatar.changer_expression ("CONCENTRE", 200)
+        self.Moteur.Joueur.Avatar.changer_expression ("CONCENTRE", 200)
         
     def controle_choque_piece(self, piece):
         for y in range(4):
@@ -168,7 +168,7 @@ class CMecanique():
                 self.lignesAjouter -= nbLignesMax
                                   
     def ajoute_des_lignes(self, nbLignes):
-        self.Moteur.Avatar.changer_expression("ENERVE", 500)
+        self.Moteur.Joueur.Avatar.changer_expression("ENERVE", 500)
         for i in range(nbLignes):
             for y in range(1, VAR.DIMENSION[1]):
                 for x in range(VAR.DIMENSION[0]): self.Moteur.grille.zones[x][y-1] = self.Moteur.grille.zones[x][y]

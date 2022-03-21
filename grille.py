@@ -5,20 +5,21 @@ from pygame.locals import *
 from pieces import CPieces
 
 import variables as VAR
-import fonctions as FCT
+import COMMUN.variables as V
+import COMMUN.fonctions as FCT
 
 class CGrille():
     
     
     def calcul_offSets_Global():
         j = 0
-        if VAR.joueur_clavier: j = 1
+        if V.joueur_clavier: j = 1
         
-        largeur_grilles = (VAR.nbManettes +j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX) -VAR.ECARTX
+        largeur_grilles = (V.nbManettes +j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX) -VAR.ECARTX
         hauteur = (VAR.DIMENSION[1] * VAR.TAILLE)
         
-        offsetX = (VAR.RESOLUTION[0] - largeur_grilles) //2
-        offsetY = ((VAR.RESOLUTION[1] - hauteur -  int(VAR.RESOLUTION[1] * 0.05)) //2 )  
+        offsetX = (V.RESOLUTION[0] - largeur_grilles) //2
+        offsetY = ((V.RESOLUTION[1] - hauteur -  int(V.RESOLUTION[1] * 0.05)) //2 )  
                  
         return (offsetX, offsetY)
     
@@ -47,9 +48,9 @@ class CGrille():
         offX, offY = CGrille.calcul_offSets_Global()
         
         j = 0
-        if VAR.joueur_clavier: j = 1
+        if V.joueur_clavier: j = 1
         
-        x = (self.Moteur.id+j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX)
+        x = (self.Moteur.Joueur.id+j) * ((VAR.DIMENSION[0] * VAR.TAILLE)+VAR.ECARTX)
         self.offX, self.offY = offX + x, offY
      
     
@@ -61,8 +62,8 @@ class CGrille():
         # --- Cadre piece Suivante
         self.cadreHaut = [self.marges, self.marges, (self.dimX * t) + self.margesL, dimCadre]
         self.cadreBas = [self.marges, self.marges + (self.dimY * t) + dimCadre + self.margesL, (self.dimX * t) + self.margesL, dimCadre]
-        pygame.draw.rect(self.image, self.Moteur.couleur, self.cadreHaut, 0)
-        pygame.draw.rect(self.image, self.Moteur.couleur, self.cadreBas, 0)
+        pygame.draw.rect(self.image, self.Moteur.Joueur.couleur, self.cadreHaut, 0)
+        pygame.draw.rect(self.image, self.Moteur.Joueur.couleur, self.cadreBas, 0)
        
         # --- Grille 
         pygame.draw.rect(self.image, (40,40,40,230), (VAR.marge, VAR.marge + dimCadre, (self.dimX * t)+2, (self.dimY * t)+2), 0)
@@ -73,7 +74,7 @@ class CGrille():
                 pX, pY = (x * t),  (y * t)
            
                 if VAR.mode_bmp:
-                    self.image.blit(VAR.IMAGES["X"][0], (pX + VAR.marge, pY + dimCadre + VAR.marge))
+                    self.image.blit(V.IMAGES["X"][0], (pX + VAR.marge, pY + dimCadre + VAR.marge))
                 else:
                     pygame.draw.rect(self.image, self.couleur_fond_grille, (pX + VAR.marge, pY + dimCadre + VAR.marge, t, t), 0)
                     pygame.draw.rect(self.image, self.couleur_cellule, (pX + VAR.marge, pY + dimCadre + VAR.marge, t, t), 1)
@@ -84,7 +85,7 @@ class CGrille():
         if self.Moteur.Mecanique.lignesAjouter > VAR.limiteLignesEnAttente: self.Moteur.Mecanique.lignesAjouter = VAR.limiteLignesEnAttente
         
         for i in range(self.Moteur.Mecanique.lignesAjouter):
-            VAR.fenetre.blit(VAR.IMAGES["#"][0], (self.offX + (VAR.DIMENSION[0] * VAR.TAILLE) + 4, self.offY + (i * (VAR.TAILLE + 4))))
+            V.fenetre.blit(V.IMAGES["#"][0], (self.offX + (VAR.DIMENSION[0] * VAR.TAILLE) + 4, self.offY + (i * (VAR.TAILLE + 4))))
         
         
     def afficher(self):
@@ -92,13 +93,13 @@ class CGrille():
         if self.image == None : self.dessiner_grille()
         self.calcul_offsets()
         
-        if VAR.pouvoirId == self.Moteur.id:
-            pX, pY, dimX, dimY = self.offX-(VAR.marge-self.marges), 0, (self.dimX * t)+self.margesL, VAR.RESOLUTION[1]
+        if VAR.pouvoirId == self.Moteur.Joueur.id:
+            pX, pY, dimX, dimY = self.offX-(VAR.marge-self.marges), 0, (self.dimX * t)+self.margesL, V.RESOLUTION[1]
             image_pouvoir = FCT.image_vide(dimX, dimY)
             pygame.draw.rect(image_pouvoir, (32, 32, 32, 150), (0, 0, dimX, dimY ),0)
-            VAR.fenetre.blit(image_pouvoir, (pX, pY))
+            V.fenetre.blit(image_pouvoir, (pX, pY))
         
-        VAR.fenetre.blit(self.image, (self.offX-VAR.marge, self.offY-dimCadre-VAR.marge))
+        V.fenetre.blit(self.image, (self.offX-VAR.marge, self.offY-dimCadre-VAR.marge))
        
         for y in range(self.dimY):
             for x in range(self.dimX):
@@ -107,10 +108,10 @@ class CGrille():
                 
                 if self.zones[x][y] != "":
                     if VAR.mode_bmp:
-                        VAR.fenetre.blit(VAR.IMAGES[self.zones[x][y]][0], (pX, pY))
+                        V.fenetre.blit(V.IMAGES[self.zones[x][y]][0], (pX, pY))
                     else:
-                        pygame.draw.rect(VAR.fenetre, CPieces.pieces_couleurs[self.zones[x][y]], (pX, pY, t, t), 0)
-                        pygame.draw.rect(VAR.fenetre, self.couleur_contour_grille, (pX, pY, t, t), 1)
+                        pygame.draw.rect(V.fenetre, CPieces.pieces_couleurs[self.zones[x][y]], (pX, pY, t, t), 0)
+                        pygame.draw.rect(V.fenetre, self.couleur_contour_grille, (pX, pY, t, t), 1)
                         
         self.afficher_lignes_en_attente_detre_ajoutees()
                         

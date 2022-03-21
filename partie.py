@@ -1,10 +1,10 @@
 from grille import *
 from init import *
-from controles import *
+from COMMUN.controles import *
 
-import fonctions as FCT
+import COMMUN.fonctions as FCT
 import random
-
+import COMMUN.variables as V
 from mecanique import CMecanique
 
 class CParties():
@@ -13,7 +13,7 @@ class CParties():
         if VAR.partie_en_cours() :
             if (VAR.duree_partie - CParties.temps_ecoule() <= 0) or VAR.partie_terminee():
                 for i in range(VAR.nbJoueurs):
-                    #VAR.tetris_joueurs[i].actif == False
+                    #VAR.tetris_joueurs[i].Joueur.actif == False
                     VAR.tetris_joueurs[i].mort = True
                     VAR.tetris_joueurs[i].Mecanique.gestion_game_over()
                     
@@ -29,11 +29,11 @@ class CParties():
         return resultat
 
     def gestion_malediction(force = False):
-        if VAR.nbJoueurs > 1 and CMecanique.nbJoueursActifs() > 1:
+        if V.nbJoueurs > 1 and CMecanique.nbJoueursActifs() > 1:
             if (pygame.time.get_ticks() - VAR.pouvoirCycle > VAR.pouvoirDelais) or force:
                 VAR.pouvoirId +=1
-                if VAR.pouvoirId > VAR.nbJoueurs -1: VAR.pouvoirId = 0
-                if not VAR.tetris_joueurs[VAR.pouvoirId].actif: CParties.gestion_malediction()
+                if VAR.pouvoirId > V.nbJoueurs -1: VAR.pouvoirId = 0
+                if not VAR.tetris_joueurs[VAR.pouvoirId].Joueur.actif: CParties.gestion_malediction()
                 VAR.pouvoirCycle = pygame.time.get_ticks()
 
 # -----------------------------------------------------------------------------------------------------------
@@ -60,14 +60,14 @@ class CParties():
         self.memoireDuTemps = 0
         
     def partie_arretee(self):
-        return self.pause or not self.Moteur.actif or self.mort  
+        return self.pause or not self.Moteur.Joueur.actif or self.mort  
     
   
         
     def demarrer(self):
         
             
-        #self.Moteur.actif = False
+        #self.Moteur.Joueur.actif = False
         self.mort = False
         self.pause = False
         
@@ -89,9 +89,9 @@ class CParties():
 
         self.Moteur.Mecanique.lignesADetruire = []
         self.Moteur.Mecanique.lignesAjouter = 0
-        self.Moteur.Avatar.changer_expression ("NORMAL", -1)
+        self.Moteur.Joueur.Avatar.changer_expression ("NORMAL", -1)
         
-        self.Moteur.actif = True
+        self.Moteur.Joueur.actif = True
 
         
                
@@ -108,7 +108,7 @@ class CParties():
             FCT.jouer_son("level_up")
 
     def meurt(self):
-        self.Moteur.actif = False
+        self.Moteur.Joueur.actif = False
         self.mort = True
     
     
@@ -128,23 +128,23 @@ class CParties():
         else:
             return
             
-        image_pause = VAR.ecritures[VAR.TAILLE_ECRITURE].render(texte, True, (255,255,255,255)) 
+        image_pause = V.ecritures[VAR.TAILLE_ECRITURE].render(texte, True, (255,255,255,255)) 
         largeur, hauteur = (VAR.DIMENSION[0] * VAR.TAILLE), (VAR.DIMENSION[1] * VAR.TAILLE)
         cX, cY = self.Moteur.grille.offX + ((largeur - image_pause.get_width())/2) , self.Moteur.grille.offY + int((hauteur - image_pause.get_height()) /2 )
             
         couleur = self.Moteur.couleur
-        pygame.draw.rect(VAR.fenetre, (0,0,0,255), (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 0)
-        pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 2)
-        VAR.fenetre.blit(image_pause, (cX, cY))
+        pygame.draw.rect(V.fenetre, (0,0,0,255), (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 0)
+        pygame.draw.rect(V.fenetre, couleur, (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 2)
+        V.fenetre.blit(image_pause, (cX, cY))
         
     
     def afficher_score(self): 
        
         liste_images = []
         hauteur = 0
-        imageScore = VAR.ecritures[30].render(str(self.score), True, (255,255,255,255)) 
+        imageScore = V.ecritures[30].render(str(self.score), True, (255,255,255,255)) 
         for taille, texte in ((20, "Score : " ), (20, "Lignes : "+str(self.nbLignes)), (20, "Niveau : " + str(self.niveau))) : #+ str(self.score)
-            image = VAR.ecritures[taille].render(texte, True, (255,255,255,255)) 
+            image = V.ecritures[taille].render(texte, True, (255,255,255,255)) 
             liste_images.append(image)
             hauteur += image.get_height()
         
@@ -154,19 +154,19 @@ class CParties():
             pY = self.Moteur.grille.offY - self.Moteur.grille.cadreHaut[3]  - VAR.marge + ((self.Moteur.grille.cadreHaut[3] - hauteur) //2)
             
             if y == 0:
-                VAR.fenetre.blit(imageScore, (pX + image.get_width(), pY + y))
+                V.fenetre.blit(imageScore, (pX + image.get_width(), pY + y))
                 
-            VAR.fenetre.blit(image, (pX, pY + y))
+            V.fenetre.blit(image, (pX, pY + y))
             y += image.get_height() 
         
         
-        image_rang = VAR.ecritures[VAR.TAILLE_ECRITURE * 5].render(str(self.rang), True, (255,255,255,255)) 
+        image_rang = V.ecritures[VAR.TAILLE_ECRITURE * 5].render(str(self.rang), True, (255,255,255,255)) 
         pX = self.Moteur.grille.offX + (VAR.DIMENSION[0] * VAR.TAILLE) - image_rang.get_width()
         pY = self.Moteur.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + ((self.Moteur.grille.cadreBas[3] - image_rang.get_height()) //2) + VAR.marge
-        VAR.fenetre.blit(image_rang, (pX, pY))
+        V.fenetre.blit(image_rang, (pX, pY))
         
-        image_nom = VAR.ecritures[30].render(self.Moteur.nom, True, (255,255,255,255)) 
-        VAR.fenetre.blit(image_nom, (self.Moteur.grille.offX + self.Moteur.Avatar.maxX, pY + VAR.marge))
+        image_nom = V.ecritures[30].render(self.Moteur.Joueur.nom, True, (255,255,255,255)) 
+        V.fenetre.blit(image_nom, (self.Moteur.grille.offX + self.Moteur.Joueur.Avatar.maxX, pY + VAR.marge))
        
 
     

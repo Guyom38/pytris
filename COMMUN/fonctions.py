@@ -2,8 +2,9 @@ import pygame
 from pygame.locals import *
 
 import time, os, random
-import variables as VAR
 
+import variables as VAR
+import COMMUN.variables as V
 
 def GenereMat2D(dimX, dimY, valeurDefaut):
     return [[valeurDefaut for x in range(dimY)] for i in range(dimX)]
@@ -41,7 +42,7 @@ def iif(condition, vrai, faux):
 
 # --- DEPENDANTE DU JEU
 def jouer_musique():
-    if VAR.audio and VAR.musique:
+    if V.audio and V.musique:
         if not pygame.mixer.music.get_busy():
             pygame.mixer.music.play(-1)
 
@@ -50,13 +51,13 @@ def charger_musique(fichier):
 
 
 def arreter_musique():
-    if VAR.audio and VAR.musique:
+    if V.audio and V.musique:
         pygame.mixer.music.stop()
 
 
 def jouer_son(son):
-    if VAR.audio:
-        pygame.mixer.Sound.play(VAR.AUDIOS[son])
+    if V.audio:
+        pygame.mixer.Sound.play(V.AUDIOS[son])
         
 def changer_de_mode(x):
     VAR.mode = x
