@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+
+from pygame.locals import *
+import fonctions as FCT
+import os, random
+>>>>>>> 2aa68738f3a301ac17aed6b1c71fcb8030054908
 
 from pygame.locals import *
 import fonctions as FCT

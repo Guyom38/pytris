@@ -149,7 +149,11 @@ def jeu_PyTris():
             
             
                 
+<<<<<<< HEAD
         elif VAR.mode == VAR.MODE_JEU:
+=======
+        elif VAR.MODE_JEU:
+>>>>>>> 2aa68738f3a301ac17aed6b1c71fcb8030054908
             
             if VAR.pp:
                 
