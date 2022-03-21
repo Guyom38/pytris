@@ -1,4 +1,5 @@
 
+
 import pygame
 from pygame.locals import *
 
@@ -6,6 +7,7 @@ import variables as VAR
 import fonctions as FCT
 
 import random
+
 
 class CPieces():
     pieces_couleurs = {}
@@ -103,7 +105,7 @@ class CPieces():
                      (0, 0, 0, 0) )]
 
     def __init__(self, moteur, simulation):
-        print("        + PIECES")
+
         self.Moteur = moteur
 
         self.pieceSelect = None
@@ -115,7 +117,7 @@ class CPieces():
         self.simulation = simulation
       
     def afficher_piece(self):
-        if self.Moteur.Partie.mort: return 0
+        if self.Moteur.Partie.mort: return 
 
         t = VAR.TAILLE
         piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
@@ -128,7 +130,7 @@ class CPieces():
                     pX, pY =x+self.pieceX, y+ self.pieceY
                     if pY >= 0:
                         if VAR.mode_bmp:
-                            VAR.fenetre.blit(VAR.IMAGES[pImg][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)))
+                            VAR.fenetre.blit(VAR.IMAGES[pImg][1], (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t)  ))
                         else:
                             pygame.draw.rect(VAR.fenetre, couleur, (self.Moteur.grille.offX + ((pX)*t), self.Moteur.grille.offY + (pY*t), t, t), 0)
 
@@ -139,11 +141,12 @@ class CPieces():
         piece = CPieces.pieces[self.pieceSuivante][0]
         couleur = CPieces.pieces_couleurs[self.pieceSuivante]
         t = VAR.TAILLE
-        dim = VAR.TAILLE * 5
+    
         for y in range(4):
             for x in range(4):
                 if piece[x][y] == 1:
-                    pX, pY = self.Moteur.grille.offX + (x*t) - VAR.TAILLE, self.Moteur.grille.offY + (y*t) - dim -5
+                    pX = self.Moteur.grille.offX + self.Moteur.grille.cadreHaut[0] + (x * VAR.TAILLE) - VAR.marge
+                    pY = self.Moteur.grille.offY + self.Moteur.grille.cadreHaut[1] + (y * VAR.TAILLE) - self.Moteur.grille.cadreHaut[3] - VAR.marge  
                     if VAR.mode_bmp:
                         VAR.fenetre.blit(VAR.IMAGES[self.pieceSuivante][0], (pX, pY))
                     else:
@@ -193,6 +196,7 @@ class CPieces():
             self.pieceRotation = ancRot
         else:
             FCT.jouer_son("rotation")
+
 
     def controle_deplacement_lateral(self, valeur):
         if valeur == 0: return False

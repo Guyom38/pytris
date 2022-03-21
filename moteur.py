@@ -8,7 +8,7 @@ from mecanique import *
 from controles import *
 from partie import *
 from animation import *
-
+from avatars import *
 
 import variables as VAR
 from variables import *
@@ -16,12 +16,20 @@ from variables import *
 
 class CMoteur():
     def __init__(self, id, idManette):
-        print("    + Moteur # " + str(id))
-
         self.id = id
+        self.nom = ""
         
         alpha = 60
-        self.couleur = ((210,0,0,alpha),(173,212,0,alpha),(212,194,0,alpha),(210,140,0,alpha),(0,106,203,alpha),(0,212,57,alpha),(0,188,210,alpha),(245,130,244,alpha),(20,81,16,alpha) )[id]
+        self.couleur = ((232,147,15,alpha), \
+                        (110,68,216,alpha), \
+                        (20,163,194,alpha), \
+                        (216,78,28,alpha), \
+                        (240,212,72,alpha), \
+                        (53,53,86,alpha), \
+                        (216,68,18,alpha), \
+                        (158,57,34,alpha), \
+                        (224,224,224,alpha), \
+                        (59,59,59,alpha))[id]
         
         self.idManette = idManette
 
@@ -33,9 +41,9 @@ class CMoteur():
         self.Controle = None
         self.Mecanique = None
         self.Animation = None
-  
+        self.Avatar = None
 
-    def initialiser(self):
+    def initialiser(self, nouveau_perso = True):
         self.Pieces = CPieces(self, False)
         self.PiecesAide = CPieces(self, True)
         self.grille = CGrille(self)
@@ -43,6 +51,9 @@ class CMoteur():
         self.Controle = CControle(self, self.idManette)
         self.Mecanique = CMecanique(self)
         self.Animation = CAnimation(self)
+        if nouveau_perso:
+            self.Avatar = CAvatars(self)
+        
         self.Partie.demarrer()
 
     def gestion_piece_aide(self):
@@ -57,10 +68,9 @@ class CMoteur():
             self.PiecesAide.afficher_piece()  
               
     def afficher(self):
-        self.Controle.gestion_manette()
-        self.Mecanique.gravite()
-        
-        
+        self.Controle.gestion_evenements()
+        self.Mecanique.gestion_mecanique_du_jeu()
+                
         self.grille.afficher()
         self.gestion_piece_aide()
 
@@ -70,6 +80,9 @@ class CMoteur():
         self.Animation.afficher()
         self.Partie.afficher_message()
         self.Partie.afficher_score()
+        
+        
+        self.Avatar.afficher()
 
         
     
