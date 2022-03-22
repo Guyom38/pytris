@@ -19,14 +19,15 @@ class CMecanique:
         self.M = m
         self.lignesADetruire = []
         self.lignesAjouter = 0
-    
+
     def action_a_entreprendre_si_le_joueur_a_perdu(self):
-        if self.M.Joueur.actif:
-            if self.le_joueur_a_til_perdu():
-                self.M.Joueur.Avatar.changer_expression ("MORT", -1)
-                self.M.Animation.meurt()
-                self.M.Partie.meurt()
-                GAUDIO.jouer_son("game_over")
+        if (self.M.Joueur.actif and self.le_joueur_a_til_perdu()) \
+            or self.M.Partie.mort:
+                
+            self.M.Joueur.Avatar.changer_expression ("MORT", -1)
+            self.M.Animation.meurt()
+            self.M.Partie.meurt()
+            GAUDIO.jouer_son("game_over")
     
     def le_joueur_a_til_perdu(self):
         for x in range(VAR.DIMENSION[0]):

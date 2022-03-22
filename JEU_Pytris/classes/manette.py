@@ -26,7 +26,7 @@ class CManette:
 
     
     def action_start(self):
-        if VAR.mode == VAR.MODE_JEU:
+        if VAR.mode == ENUM_MODE.MODE_JEU:
             if self.Moteur.Partie.mort:
                 #self.Moteur.Partie.redemarre()
                 pass            
@@ -39,12 +39,12 @@ class CManette:
             else:
                 self.Moteur.Partie.pause = not self.Moteur.Partie.pause
                 
-        elif VAR.mode == VAR.MODE_SCORE:
+        elif VAR.mode == ENUM_MODE.MODE_SCORE:
             #for i, joueur in VAR.tetris_joueurs.items():
             #    joueur.Partie.redemarre()
-            VAR.pp = True    
+            VAR.relancePartie = True    
            
-            self.Moteur.changer_de_mode(VAR.MODE_JEU)
+            self.Moteur.changer_de_mode(ENUM_MODE.MODE_JEU)
             VAR.partie_demarree = False
             VAR.fin_partie = False
             VAR.compteARebours_cycle = -1

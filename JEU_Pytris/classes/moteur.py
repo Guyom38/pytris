@@ -67,14 +67,7 @@ class CMoteur:
         y = self.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + self.grille.cadreBas[3] + VAR.marge
         self.Joueur.Avatar.afficher(x, y)
 
-    def changer_de_mode(x):
-        VAR.mode = x
-        
-        if x == VAR.MODE_JEU:
-            fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
-            GAUDIO.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)
-        else:
-            GAUDIO.arreter_musique()   
+   
 
         
     

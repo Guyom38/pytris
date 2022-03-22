@@ -5,4 +5,4 @@ if __name__ == '__main__':
     commun.Salon.boucle()
     
     pytris = CPyTris(commun)
-    pytris.jeu_PyTris()
+    pytris.boucle()

@@ -13,12 +13,12 @@ class CParties:
             if (VAR.duree_partie - CParties.temps_ecoule() <= 0) or VAR.partie_terminee():
                 for i in range(V.nbJoueurs):
                     VAR.tetris_joueurs[i].mort = True
-                    VAR.tetris_joueurs[i].Mecanique.gestion_game_over()
+                    VAR.tetris_joueurs[i].Mecanique.action_a_entreprendre_si_le_joueur_a_perdu()
                     
                 VAR.partie_demarree = False
                 VAR.fin_partie = True
                 
-                VAR.changer_de_mode(VAR.MODE_SCORE)
+                VAR.changer_de_mode(ENUM_MODE.MODE_SCORE)
                 
 
     def temps_ecoule():
@@ -83,10 +83,12 @@ class CParties:
         self.score = 0
         self.vitesse = 500
         self.nbLignes = 0
+        
         self.Moteur.grille = CGrille(self.Moteur)
 
         self.Moteur.Mecanique.lignesADetruire = []
         self.Moteur.Mecanique.lignesAjouter = 0
+        
         self.Moteur.Joueur.Avatar.changer_expression ("NORMAL", -1)
         
         self.Moteur.Joueur.actif = True
