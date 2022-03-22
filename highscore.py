@@ -3,7 +3,7 @@ from pygame.locals import *
 
 import time, os
 import variables as VAR
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 import COMMUN.variables as V
 #     - 
 

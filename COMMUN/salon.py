@@ -1,13 +1,13 @@
 
 import pygame
 from pygame.locals import *
-from COMMUN.avatars import CAvatars
+from COMMUN.classes.avatars import CAvatars
 
 import COMMUN.variables as V
 import variables as VAR
 from variables import *
 
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 
 class CSalon:
     
@@ -61,8 +61,7 @@ class CSalon:
        
         pX, pY = (V.RESOLUTION[0] -  CSalon.dimX) // 2, 100
         for i, joueur in V.joueurs.items():
-            
-            joueur.Manette.gestion_evenements()
+
             joueur.Avatar.gestion_personnage()
             joueur.Avatar.dessiner(pX + joueur.Avatar.salonX + 40, pY + joueur.Avatar.salonY + 40)
 
@@ -103,10 +102,47 @@ class CSalon:
                     
     def afficher():
         CSalon.dimX, CSalon.dimY = V.RESOLUTION[0] * 0.9, V.RESOLUTION[1] -400
-                
+
+        CSalon.gestion_evenements_joueurs()       
         CSalon.afficher_zone()
         CSalon.afficher_avatars()
         CSalon.afficher_titre()
         CSalon.afficher_message()
         CSalon.controle_tous_prets()
+
+
+    def gestion_evenements_joueurs():
+        for i, joueur in V.joueurs.items():
+            CSalon.gestion_evenements_salon(joueur)
+
+    def gestion_evenements_salon(joueur):
+        manette = joueur.Manette
+        if manette.boutonL:
+            joueur.Avatar.animation_flip = False
+        if manette.boutonR:
+            joueur.Avatar.animation_flip = True
+        if manette.boutonA:
+            joueur.Avatar.changer_expression("BISOUS", -1)
+        if manette.boutonB:
+            joueur.Avatar.changer_expression("ENERVE", -1)
+        if manette.boutonX:
+            joueur.Avatar.changer_expression("EPUISE", -1)
+        if manette.boutonY:
+            joueur.Avatar.changer_expression("DORT", -1)
+        if manette.boutonSelect:
+            joueur.Avatar.charger_personnage()
+        if manette.boutonStart:    
+            joueur.actif = True
+                                
+        if manette.axeX > 0.9:
+            joueur.Avatar.salonX += 16
+            joueur.Avatar.animation_flip = True
+        elif manette.axeX < -0.9:
+            joueur.Avatar.salonX -= 16
+            joueur.Avatar.animation_flip = False
+        if manette.axeY > 0.9:
+            joueur.Avatar.salonY += 16
+        elif manette.axeY < -0.9:
+            joueur.Avatar.salonY -= 16     
+
         

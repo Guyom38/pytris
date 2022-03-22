@@ -1,5 +1,5 @@
 from pygame.locals import *
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 import COMMUN.variables as V
 
 

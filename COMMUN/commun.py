@@ -3,11 +3,11 @@ import pygame
 from pygame.locals import *
 
 import COMMUN.variables as V
-from COMMUN.controles import *
-from COMMUN.avatars import *
-from COMMUN.joueur import *
+from COMMUN.classes.controles import *
+from COMMUN.classes.avatars import *
+from COMMUN.classes.joueur import *
 
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 import os, random
 
 class CCommun():

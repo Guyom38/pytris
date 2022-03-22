@@ -1,8 +1,8 @@
 from grille import *
 from init import *
-from COMMUN.controles import *
+from COMMUN.classes.controles import *
 
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 import random
 import COMMUN.variables as V
 from mecanique import CMecanique
@@ -132,7 +132,7 @@ class CParties():
         largeur, hauteur = (VAR.DIMENSION[0] * VAR.TAILLE), (VAR.DIMENSION[1] * VAR.TAILLE)
         cX, cY = self.Moteur.grille.offX + ((largeur - image_pause.get_width())/2) , self.Moteur.grille.offY + int((hauteur - image_pause.get_height()) /2 )
             
-        couleur = self.Moteur.couleur
+        couleur = self.Moteur.Joueur.couleur
         pygame.draw.rect(V.fenetre, (0,0,0,255), (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 0)
         pygame.draw.rect(V.fenetre, couleur, (self.Moteur.grille.offX, cY-10, largeur+2, image_pause.get_height()+20), 2)
         V.fenetre.blit(image_pause, (cX, cY))

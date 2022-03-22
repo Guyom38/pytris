@@ -4,13 +4,14 @@ from pygame.locals import *
 
 from moteur import *
 from partie import *
-from COMMUN.controles import *
+from COMMUN.classes.controles import *
 
-from COMMUN.avatars import *
+from COMMUN.classes.avatars import *
 
 import os
 import variables as VAR
 import COMMUN.variables as V
+import moteur
 
 class CInit():
     def page_chargement():

@@ -1,6 +1,5 @@
-from COMMUN.avatars import *
-from COMMUN.controles import *
-from avatars import *
+from COMMUN.classes.avatars import *
+from COMMUN.classes.controles import *
 
 class CJoueur:
     def __init__(self, id):
@@ -9,7 +8,7 @@ class CJoueur:
         self.nom =  CAvatars.LISTE_NOMS[id]
         self.couleur = CAvatars.COULEUR[id]
         
-        self.Manette = CControle(self, id - FCT.iif(V.joueur_clavier, 1, 0))
+        self.Manette = CControle(self)
         self.Avatar = CAvatars(self)
         self.actif = False
         

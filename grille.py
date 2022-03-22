@@ -6,7 +6,7 @@ from pieces import CPieces
 
 import variables as VAR
 import COMMUN.variables as V
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 
 class CGrille():
     

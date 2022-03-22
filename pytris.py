@@ -5,7 +5,7 @@ from pygame.locals import *
 from moteur import *
 from partie import *
 from init import *
-from COMMUN.controles import *
+from COMMUN.classes.controles import *
 
 from highscore import * 
 from COMMUN.salon import *
@@ -18,13 +18,14 @@ class CPyTris():
     def __init__(self):
         
         
+
         self.Commun = CCommun("PyTris")
         
         CInit.page_chargement()
         
         self.Commun.initialiser()
         self.Commun.initialiser_ecritures ([10, 20, 30, 40, 50, 60, 80, 100, 120, 200])
-        
+        BOB = CMoteur(V.joueurs[0])
         CInit.initialiser()
         
     
@@ -47,7 +48,7 @@ class CPyTris():
     def afficher_tetris(self):
         liste_scores = []
         for i in range(V.nbJoueurs):
-            VAR.tetris_joueurs[i].Joueur.Manette.gestion_evenements()
+            VAR.tetris_joueurs[i].Manette.gestion_evenements()
             VAR.tetris_joueurs[i].afficher()    
             liste_scores.append((VAR.tetris_joueurs[i].Partie.score, i))
         
@@ -123,8 +124,8 @@ class CPyTris():
     def jeu_PyTris(self):
         
         
-        VAR.boucle = True
-        while VAR.boucle:
+        V.boucle = True
+        while V.boucle:
             CControle.capture_evements_utilisateurs()
              
             self.Commun.gestion_musique()

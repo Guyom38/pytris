@@ -5,16 +5,18 @@ from pygame.locals import *
 from pieces import *
 from grille import *
 from mecanique import *
-from COMMUN.controles import *
 from partie import *
 from animation import *
-from COMMUN.avatars import *
+from manette import CManette
+
+#from COMMUN.classes.avatars import *
+#from COMMUN.classes.controles import *
 
 import variables as VAR
 from variables import *
 import COMMUN.variables as V
 
-class CMoteur():
+class CMoteur:
     def __init__(self, joueur):
         self.Joueur = joueur
 
@@ -23,6 +25,7 @@ class CMoteur():
         self.Pieces = None
         self.Mecanique = None
         self.Animation = None
+        self.Manette = None
 
         
     def initialiser(self):
@@ -34,9 +37,8 @@ class CMoteur():
         self.Mecanique = CMecanique(self)
         self.Animation = CAnimation(self)
         
-               #self.Controle = CControle(self, self.idManette)
-        #if nouveau_perso:
-        #    self.Avatar = CAvatars(self)
+        self.Manette = CManette(self, self.Joueur.id)
+
         
         self.Partie.demarrer()
 

@@ -6,7 +6,7 @@ from pieces import CPieces
 
 import variables as VAR
 import COMMUN.variables as V
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 
 class CAnimation:
     def __init__(self, moteur):
@@ -70,7 +70,7 @@ class CAnimation:
             image = FCT.image_vide(largeur, 60)
             image.fill((16, 16, 16, self.nivSupAlpha))
 
-            couleur =  (self.Moteur.couleur[0],  self.Moteur.couleur[1],  self.Moteur.couleur[2], self.nivSupAlpha)
+            couleur =  (self.Moteur.Joueur.couleur[0],  self.Moteur.Joueur.couleur[1],  self.Moteur.Joueur.couleur[2], self.nivSupAlpha)
             pygame.draw.rect(image, couleur, (0, 0, image.get_width(), image.get_height()), 4)
             
             image_texte = V.ecritures[20].render("NIVEAU " + str(self.Moteur.Partie.niveau), True, (255,255,255,self.nivSupAlpha))

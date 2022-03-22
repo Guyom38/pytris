@@ -4,7 +4,7 @@ from pygame.locals import *
 
 import os
 import variables as VAR
-import COMMUN.fonctions as FCT
+import COMMUN.classes.fonctions as FCT
 from grille import *
 
 import csv, math, random
