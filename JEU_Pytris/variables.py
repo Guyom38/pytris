@@ -1,10 +1,3 @@
-from pygame.locals import *
-import COMMUN.classes.fonctions as FCT
-import COMMUN.variables as V
-
-
-import os, random
-
 
 TITRE = "PyTris"
 

@@ -1,16 +1,14 @@
 import pygame
 from pygame.locals import *
-
-
-import os
-import variables as VAR
+ 
+import JEU_Pytris.variables as VAR
 import COMMUN.classes.fonctions as FCT
-from grille import *
+#from JEU_Pytris.grille import *
 
-import csv, math, random
+import csv, math, random, os
 
 class CAvatars:
-
+    DOSSIER = "COMMUN\\"
     COLLECTION = {"yeux" :   {"MORT" : ["15"], "NORMAL" : ["03"], "CONTENT" : ["27"], "ENERVE" : ["17"], "CONCENTRE" : ["18"], "EPUISE" : ["25"], "DORT" : ["14"], "POUVOIR" : ["16"], "BISOUS" : ["33"]}, \
                   "bouche" : {"MORT" : ["50"], "NORMAL" : ["55"], "CONTENT" : ["20"], "ENERVE" : ["33"], "CONCENTRE" : ["07"], "EPUISE" : ["24"], "DORT" : ["18"], "POUVOIR" : ["33"], "BISOUS" : ["10"]}}
    
@@ -44,7 +42,7 @@ class CAvatars:
     
     
     def chargement_fichiers_sprites():
-        with open('avatars\\avatars.csv', newline='') as csvfile:
+        with open(CAvatars.DOSSIER + 'avatars\\avatars.csv', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 CAvatars.DONNEES[row['dossier'] + row['fichier']] = (int(row['x']), int(row['y']))
@@ -58,7 +56,7 @@ class CAvatars:
                
                 
     def charger_textures(couleur, dossier, fichier, ratio):
-        chemin = "avatars"
+        chemin = CAvatars.DOSSIER + "avatars"
         
         if couleur == "":
             chemin = chemin + "\\"+dossier+"\\"+fichier+".png"
@@ -88,7 +86,7 @@ class CAvatars:
         self.image = None
         
         self.offY = 0
-        self.chemin = "avatars"
+        self.chemin = CAvatars.DOSSIER + "avatars"
         
         self.animation_cycle = 0
         self.animation_frequence = 50

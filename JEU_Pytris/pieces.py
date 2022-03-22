@@ -3,7 +3,7 @@
 import pygame
 from pygame.locals import *
 
-import variables as VAR
+import JEU_Pytris.variables as VAR
 import COMMUN.classes.fonctions as FCT
 import COMMUN.variables as V
 import random

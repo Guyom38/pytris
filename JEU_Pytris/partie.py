@@ -1,18 +1,19 @@
-from grille import *
-from init import *
+import COMMUN.classes.fonctions as FCT
+import COMMUN.variables as V
 from COMMUN.classes.controles import *
 
-import COMMUN.classes.fonctions as FCT
+from JEU_Pytris.mecanique import CMecanique
+from JEU_Pytris.grille import *
+from JEU_Pytris.init import *
+
 import random
-import COMMUN.variables as V
-from mecanique import CMecanique
 
 class CParties():
 
     def controle_fin_de_partie():
         if VAR.partie_en_cours() :
             if (VAR.duree_partie - CParties.temps_ecoule() <= 0) or VAR.partie_terminee():
-                for i in range(VAR.nbJoueurs):
+                for i in range(V.nbJoueurs):
                     #VAR.tetris_joueurs[i].Joueur.actif == False
                     VAR.tetris_joueurs[i].mort = True
                     VAR.tetris_joueurs[i].Mecanique.gestion_game_over()

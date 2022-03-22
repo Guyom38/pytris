@@ -2,9 +2,9 @@
 import pygame
 from pygame.locals import *
 
-from pieces import CPieces
+from JEU_Pytris.pieces import CPieces
 
-import variables as VAR
+import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
 import COMMUN.classes.fonctions as FCT
 

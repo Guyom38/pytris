@@ -1,17 +1,17 @@
-from multiprocessing.dummy import Value
+
 import pygame
 from pygame.locals import *
 
-from moteur import *
-from partie import *
-from init import *
+from JEU_Pytris.moteur import *
+from JEU_Pytris.partie import *
+from JEU_Pytris.init import *
 from COMMUN.classes.controles import *
 
-from highscore import * 
+from JEU_Pytris.highscore import * 
 from COMMUN.salon import *
 from COMMUN.commun import *
 
-import variables as VAR
+import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
 
 class CPyTris():

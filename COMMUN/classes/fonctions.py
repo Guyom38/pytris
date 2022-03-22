@@ -3,7 +3,7 @@ from pygame.locals import *
 
 import time, os, random
 
-import variables as VAR
+import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
 
 def GenereMat2D(dimX, dimY, valeurDefaut):
@@ -47,7 +47,7 @@ def jouer_musique():
             pygame.mixer.music.play(-1)
 
 def charger_musique(fichier):
-        pygame.mixer.music.load("audios\\" + fichier)
+        pygame.mixer.music.load("JEU_Pytris\\audios\\" + fichier)
 
 
 def arreter_musique():
@@ -63,8 +63,8 @@ def changer_de_mode(x):
     VAR.mode = x
     
     if x == VAR.MODE_JEU:
-        fichier = random.choice(os.listdir("audios\\musics"))
-        charger_musique("musics\\" + fichier)
+        fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
+        charger_musique("JEU_Pytris\\musics\\" + fichier)
         
     elif x == VAR.MODE_SALON:
         charger_musique("attente.mp3")

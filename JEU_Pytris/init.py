@@ -2,21 +2,20 @@
 import pygame
 from pygame.locals import *
 
-from moteur import *
-from partie import *
 from COMMUN.classes.controles import *
-
 from COMMUN.classes.avatars import *
-
-import os
-import variables as VAR
 import COMMUN.variables as V
-import moteur
+
+from JEU_Pytris.moteur import *
+from JEU_Pytris.partie import *
+import JEU_Pytris.variables as VAR
+
+
 
 class CInit():
     def page_chargement():
         # --- initialisation du moteur Pygame
-        titre = pygame.image.load("images\\titre.jpg")
+        titre = pygame.image.load("JEU_Pytris\\images\\titre.jpg")
         titre = pygame.transform.scale(titre, V.RESOLUTION)
         V.fenetre.blit(titre, (0,0))
         pygame.display.flip()
@@ -36,10 +35,9 @@ class CInit():
    
         CInit.initialiser_decors()
         CInit.initialiser_audios()
-        FCT.charger_musique("attente.mp3")
-       
-        
         CInit.initialiser_les_joueurs()
+
+        FCT.charger_musique("attente.mp3")
         
         
         
@@ -50,7 +48,7 @@ class CInit():
                         
         VAR.tetris_joueurs = {}
         for i in range(V.nbManettes+j):
-            VAR.tetris_joueurs[i] = moteur.CMoteur(V.joueurs[i])
+            VAR.tetris_joueurs[i] = CMoteur(V.joueurs[i])
             VAR.tetris_joueurs[i].initialiser()
 
             barre = (200 / V.nbManettes+j) * i
@@ -79,17 +77,17 @@ class CInit():
 
             
     def initialiser_audios():
-        V.AUDIOS["fixe"] = pygame.mixer.Sound("audios\\fall.wav")
-        V.AUDIOS["ligne"] = pygame.mixer.Sound("audios\\full_line.wav")
-        V.AUDIOS["rotation"] = pygame.mixer.Sound("audios\\rotate_block.wav")
-        V.AUDIOS["tetris"] = pygame.mixer.Sound("audios\\tetris.wav")
-        V.AUDIOS["game_over"] = pygame.mixer.Sound("audios\\game_over.wav")
-        V.AUDIOS["level_up"] = pygame.mixer.Sound("audios\\level_up.wav")
-        V.AUDIOS["block"] = pygame.mixer.Sound("audios\\place_block.wav")
+        V.AUDIOS["fixe"] = pygame.mixer.Sound("JEU_Pytris\\audios\\fall.wav")
+        V.AUDIOS["ligne"] = pygame.mixer.Sound("JEU_Pytris\\audios\\full_line.wav")
+        V.AUDIOS["rotation"] = pygame.mixer.Sound("JEU_Pytris\\audios\\rotate_block.wav")
+        V.AUDIOS["tetris"] = pygame.mixer.Sound("JEU_Pytris\\audios\\tetris.wav")
+        V.AUDIOS["game_over"] = pygame.mixer.Sound("JEU_Pytris\\audios\\game_over.wav")
+        V.AUDIOS["level_up"] = pygame.mixer.Sound("JEU_Pytris\\audios\\level_up.wav")
+        V.AUDIOS["block"] = pygame.mixer.Sound("JEU_Pytris\\audios\\place_block.wav")
     
     def initialiser_decors():  
         if VAR.TAILLE >= 25: 
-            imgTmp = pygame.image.load("images\\blocs.png")
+            imgTmp = pygame.image.load("JEU_Pytris\\images\\blocs.png")
             V.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
             V.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
             V.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
@@ -101,7 +99,7 @@ class CInit():
             
             V.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2), FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2))
         else:
-            imgTmp = pygame.image.load("images\\blocs-mini.png")
+            imgTmp = pygame.image.load("JEU_Pytris\\images\\blocs-mini.png")
             V.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
             V.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
             V.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))

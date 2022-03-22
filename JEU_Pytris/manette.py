@@ -3,14 +3,11 @@
 import pygame
 from pygame.locals import *
 
-import moteur
-import random
-
 from COMMUN.classes.controles import CBouton
 
 import COMMUN.variables as V
-import variables as VAR
-from variables import *
+import JEU_Pytris.variables as VAR
+from JEU_Pytris.variables import *
 
 class CManette:
     # ---------------------------------------------------------------------------------------------------------------

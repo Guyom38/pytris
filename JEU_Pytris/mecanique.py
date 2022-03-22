@@ -2,8 +2,8 @@
 import pygame
 from pygame.locals import *
 
-import variables as VAR
-from pieces import *
+import JEU_Pytris.variables as VAR
+from JEU_Pytris.pieces import *
 import COMMUN.variables as V
 import random
 

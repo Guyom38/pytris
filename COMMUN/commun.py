@@ -58,7 +58,7 @@ class CCommun():
     def initialiser_musiques(self, chemin = ""):
         if V.musique:
             pygame.mixer.init()
-            fichier = random.choice(os.listdir("audios\\musics\\" + chemin))
+            fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics\\" + chemin))
             #FCT.charger_musique("musics\\" + chemin + fichier)    
             
     def initialiser_fond(self, chemin = ""):
@@ -68,14 +68,14 @@ class CCommun():
         V.idFond = 0
 
         i = 0
-        dossiers = os.listdir("fonds" + chemin)
+        dossiers = os.listdir("JEU_Pytris\\fonds" + chemin)
         #for dossier in dossiers:
         if 1 == 1:
             dossier = random.choice(dossiers)
-            fichiers = os.listdir("fonds\\"+chemin + dossier)
-            print("FOND : " + dossier)
+            fichiers = os.listdir("JEU_Pytris\\fonds\\"+chemin + dossier)
+
             for fichier in fichiers:
-                tmpImage = pygame.image.load("fonds\\"+chemin + dossier+"\\"+fichier)
+                tmpImage = pygame.image.load("JEU_Pytris\\fonds\\"+chemin + dossier+"\\"+fichier)
                 tmpImage = pygame.transform.scale(tmpImage, (V.RESOLUTION[0], V.RESOLUTION[1]))
                 V.IMG_FOND.append(tmpImage)   
                 barre = ((V.RESOLUTION[0]-200) / (len(fichiers))) * i

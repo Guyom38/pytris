@@ -2,18 +2,19 @@
 import pygame
 from pygame.locals import *
 
-from pieces import *
-from grille import *
-from mecanique import *
-from partie import *
-from animation import *
-from manette import CManette
+from JEU_Pytris.pieces import *
+from JEU_Pytris.grille import *
+from JEU_Pytris.mecanique import *
+from JEU_Pytris.partie import *
+from JEU_Pytris.animation import *
+from JEU_Pytris.manette import *
 
 #from COMMUN.classes.avatars import *
 #from COMMUN.classes.controles import *
 
-import variables as VAR
-from variables import *
+import JEU_Pytris.variables as VAR
+from JEU_Pytris.variables import *
+
 import COMMUN.variables as V
 
 class CMoteur:

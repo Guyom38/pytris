@@ -3,8 +3,8 @@ import pygame
 from pygame.locals import *
 
 import COMMUN.variables as V
-import variables as VAR
-from variables import *
+import JEU_Pytris.variables as VAR
+from JEU_Pytris.variables import *
 
 # ---------------------------------------------------------------------------------------------------------------
 # -
