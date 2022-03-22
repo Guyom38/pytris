@@ -1,9 +1,9 @@
-from JEU_Pytris.pieces import *
-from JEU_Pytris.grille import *
-from JEU_Pytris.mecanique import *
-from JEU_Pytris.partie import *
-from JEU_Pytris.animation import *
-from JEU_Pytris.manette import *
+from JEU_Pytris.classes.pieces import *
+from JEU_Pytris.classes.grille import *
+from JEU_Pytris.classes.mecanique import *
+from JEU_Pytris.classes.partie import *
+from JEU_Pytris.classes.animation import *
+from JEU_Pytris.classes.manette import *
 
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
@@ -72,9 +72,9 @@ class CMoteur:
         
         if x == VAR.MODE_JEU:
             fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
-            FCT.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)
+            GAUDIO.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)
         else:
-            FCT.arreter_musique()   
+            GAUDIO.arreter_musique()   
 
         
     

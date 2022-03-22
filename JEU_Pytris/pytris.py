@@ -2,17 +2,17 @@
 import pygame
 from pygame.locals import *
 
-from JEU_Pytris.moteur import *
-from JEU_Pytris.partie import *
-from JEU_Pytris.init import *
 from COMMUN.classes.controles import *
-
-from JEU_Pytris.highscore import * 
 from COMMUN.salon import *
 from COMMUN.commun import *
-
-import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
+
+from JEU_Pytris.classes.moteur import *
+from JEU_Pytris.classes.partie import *
+from JEU_Pytris.classes.init import *
+from JEU_Pytris.classes.highscore import * 
+import JEU_Pytris.variables as VAR
+
 
 class CPyTris:
     def __init__(self, c):
@@ -20,7 +20,6 @@ class CPyTris:
     
         
         CInit.page_chargement()
-        self.C.initialiser()
         self.C.initialiser_ecritures ([10, 20, 30, 40, 50, 60, 80, 100, 120, 200])
         CInit.initialiser()
         
@@ -41,7 +40,7 @@ class CPyTris:
     
                 
 
-    def afficher_tetris(self):
+    def afficher(self):
         liste_scores = []
         for i in range(V.nbJoueurs):
             VAR.tetris_joueurs[i].Manette.gestion_evenements()
@@ -72,7 +71,7 @@ class CPyTris:
         pygame.draw.rect(V.fenetre, (128,128,128,200), (pX, pY, barre, hauteur_barre),0)
         pygame.draw.rect(V.fenetre, couleur_contour_grille, (pX, pY, largeur_barre, hauteur_barre),2)
         
-        image_temps = V.ecritures[40].render("TEMPS  RESTANT   " + FCT.format_temps((VAR.duree_partie - temps) // 1000) , True, (255,255,255,255)) 
+        image_temps = V.ecritures[40].render("TEMPS  RESTANT   " + GTEMPS.format_temps((VAR.duree_partie - temps) // 1000) , True, (255,255,255,255)) 
         V.fenetre.blit(image_temps, ((V.RESOLUTION[0] - image_temps.get_width()) // 2, pY+((hauteur_barre-image_temps.get_height()) //2)))
 
 
@@ -107,7 +106,7 @@ class CPyTris:
                 
                 for i, joueur in VAR.tetris_joueurs.items():
                     joueur.actif = True
-                
+
             else:
                 
                 reste = (VAR.compteARebours_Delais // 1000) - (pygame.time.get_ticks() - VAR.compteARebours_cycle) // 1000
@@ -127,20 +126,14 @@ class CPyTris:
             self.C.gestion_musique()
             self.C.afficher_fond()
             
-            
             if VAR.mode == VAR.MODE_SCORE:
                 CHighscore.afficher()
                 self.gestion_manettes_minimum()
-            
-            elif VAR.mode == VAR.MODE_SALON:
-                CSalon.afficher()
                 
             elif VAR.mode == VAR.MODE_JEU:
                 if VAR.pp:
                     
                     CInit.initialiser_fond()
-                    CInit.initialiser_musique()
-                    #CControle.initialiser_les_joueurs()
                     
                     j = 0
                     for i in range(VAR.nbManettes):                                        
@@ -149,7 +142,7 @@ class CPyTris:
                     VAR.fin_partie = False  
                     VAR.pp = False
                     
-                self.afficher_tetris()
+                self.afficher()
                 self.afficher_temps()
                             
                 CParties.gestion_malediction()

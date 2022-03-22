@@ -8,7 +8,7 @@ from COMMUN.classes.avatars import *
 from COMMUN.classes.joueur import *
 from COMMUN.salon import *
 
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 import os, random
 
 class CCommun:
@@ -21,11 +21,18 @@ class CCommun:
         V.fenetre = pygame.display.set_mode(V.RESOLUTION, V.MODE_ECRAN, 32) #: DOUBLEBUF
         pygame.display.set_caption(titre)
         
+        self.page_chargement()
         random.shuffle(CAvatars.LISTE_NOMS)
-
-        self.Salon = CSalon()
+        self.Salon = CSalon(self)
         
+    def page_chargement(self):
+        # --- initialisation du moteur Pygame
+        titre = pygame.image.load("JEU_Pytris\\images\\titre.jpg")
+        titre = pygame.transform.scale(titre, V.RESOLUTION)
+        V.fenetre.blit(titre, (0,0))
+        pygame.display.flip()   
         
+        self.initialiser()
         
 # ---------------------------------------------------------------------------------------------------------------
 # -
@@ -33,8 +40,7 @@ class CCommun:
     def get_nbJoueurs():
         return len(CControle.manettes)
     
-    def add_ecriture(self, nom, police, taille):
-        V.ecritures[nom] = pygame.font.SysFont(police, taille)    
+    
         
      
 # ---------------------------------------------------------------------------------------------------------------
@@ -56,7 +62,7 @@ class CCommun:
                     
     def initialiser_ecritures(self, liste_polices):
         for taille in liste_polices:
-            self.add_ecriture(taille, "arial", taille)
+            GFONT.add_ecriture(taille, "arial", taille)
     
     def initialiser_musiques(self, chemin = ""):
         if V.musique:
@@ -107,7 +113,7 @@ class CCommun:
             V.fps_cycle = pygame.time.get_ticks()
         V.fps_cpt +=1
     
-        image_score = V.ecritures[20].render("FPS : " + str(V.fps), True, (255,255,255,255)) 
+        image_score = GFONT.get_image_texte("FPS : " + str(V.fps), 20, (255,255,255,255)) 
         V.fenetre.blit(image_score, (0, 0))
         
     def afficher_rendu(self):
@@ -120,6 +126,6 @@ class CCommun:
 # -
 # ---------------------------------------------------------------------------------------------------------------
     def gestion_musique(self):
-        FCT.jouer_musique()
+        GAUDIO.jouer_musique()
     
     

@@ -44,7 +44,7 @@ class CManette:
             #    joueur.Partie.redemarre()
             VAR.pp = True    
            
-            FCT.changer_de_mode(VAR.MODE_JEU)
+            self.Moteur.changer_de_mode(VAR.MODE_JEU)
             VAR.partie_demarree = False
             VAR.fin_partie = False
             VAR.compteARebours_cycle = -1
@@ -87,7 +87,7 @@ class CManette:
                              
                                        
     def gestion_evenements_joueurs(self, event):
-        if not VAR.partie_en_cours() : return  
+        if not VAR.partie_en_cours() or not self.Moteur.Joueur.actif: return  
 
         manette = self.Moteur.Joueur.Manette
         if manette.boutonL:

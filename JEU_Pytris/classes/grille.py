@@ -2,11 +2,11 @@
 import pygame
 from pygame.locals import *
 
-from JEU_Pytris.pieces import CPieces
-
+from JEU_Pytris.classes.pieces import CPieces
 import JEU_Pytris.variables as VAR
+
 import COMMUN.variables as V
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 
 class CGrille:
     
@@ -28,7 +28,7 @@ class CGrille:
 
         self.offX, self.offY = (0, 0)
         self.dimX, self.dimY = VAR.DIMENSION
-        self.zones = FCT.GenereMat2D(self.dimX, self.dimY, "")
+        self.zones = GBASE.GenereMat2D(self.dimX, self.dimY, "")
 
         self.couleur_fond_grille = (28, 28, 28, 200)
         self.couleur_cellule = (16,16,16,255)
@@ -57,7 +57,7 @@ class CGrille:
     def dessiner_grille(self):
         t = VAR.TAILLE
         grilleDimX, grilleDimY, dimCadre = self.dimX * t, self.dimY * t, VAR.TAILLE * 4
-        self.image = FCT.image_vide(grilleDimX + self.margesDim, grilleDimY + (dimCadre*2) + self.margesDim)
+        self.image = GIMAGE.image_vide(grilleDimX + self.margesDim, grilleDimY + (dimCadre*2) + self.margesDim)
         
         # --- Cadre piece Suivante
         self.cadreHaut = [self.marges, self.marges, (self.dimX * t) + self.margesL, dimCadre]
@@ -95,7 +95,7 @@ class CGrille:
         
         if VAR.pouvoirId == self.Moteur.Joueur.id:
             pX, pY, dimX, dimY = self.offX-(VAR.marge-self.marges), 0, (self.dimX * t)+self.margesL, V.RESOLUTION[1]
-            image_pouvoir = FCT.image_vide(dimX, dimY)
+            image_pouvoir = GIMAGE.image_vide(dimX, dimY)
             pygame.draw.rect(image_pouvoir, (32, 32, 32, 150), (0, 0, dimX, dimY ),0)
             V.fenetre.blit(image_pouvoir, (pX, pY))
         

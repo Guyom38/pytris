@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
  
 import JEU_Pytris.variables as VAR
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
 #from JEU_Pytris.grille import *
 
@@ -149,8 +149,8 @@ class CAvatars:
     def charger_expression(self):
         self.expression_liste = {"yeux" : CAvatars.COLLECTION["yeux"][self.expression], \
                                  "bouche" : CAvatars.COLLECTION["bouche"][self.expression]}
-        self.expression_id = {"yeux" : 0, "bouche" : 0}
-        self.expression_frequence = {"yeux" : 5000, "bouche" : 7000}
+        self.expression_id = {"global" : 0, "yeux" : 0, "bouche" : 0}
+        self.expression_frequence = {"global" : 3000, "yeux" : 5000, "bouche" : 7000}
         
    
        
@@ -158,7 +158,7 @@ class CAvatars:
         couleur = self.Joueur.id +1
         if couleur < 10: couleur = "0" + str(couleur)
         
-        if couleurCorps == "":   couleurCorps = random.choice(("01", "02", "03", "04", "05", "06"))
+        if couleurCorps == "":   couleurCorps = random.choice(("01", "02", "03", "04", "05", "06", "07", "08", "09", "10"))
         if couleurPoiles == "":  couleurPoiles = couleur
         if cheveux == "": cheveux = random.choice(CAvatars.LISTE_CHEVEUX)
         if cils == "": cils = random.choice(CAvatars.LISTE_CILS)
@@ -227,7 +227,7 @@ class CAvatars:
         
 
     def dessiner(self, x, y):
-        self.image = FCT.image_vide(680 * self.ratioX, 720 * self.ratioY)
+        self.image = GIMAGE.image_vide(680 * self.ratioX, 720 * self.ratioY)
         self.afficher_membres((self.bras_gauche, self.pied_gauche, self.corps, self.pied_droit, self.bras_droit), 0, 0 )
         
         # --- Animation et affichage des différents élements de la tete   
@@ -272,7 +272,7 @@ class CAvatars:
     def gestion_visage(self):
         # --- Changement d'expressions du visage
         for element in ("yeux", "bouche"):
-            if pygame.time.get_ticks() - self.expression_cycle[element] > FCT.iif(self.expression_actif, self.expression_frequence[element], 300):
+            if pygame.time.get_ticks() - self.expression_cycle[element] > GBASE.iif(self.expression_actif, self.expression_frequence[element], 300):
                 self.expression_actif[element] = not self.expression_actif[element]
                 
                 if self.expression_actif[element]: 

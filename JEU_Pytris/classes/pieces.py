@@ -4,7 +4,7 @@ import pygame
 from pygame.locals import *
 
 import JEU_Pytris.variables as VAR
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
 import random
 
@@ -121,8 +121,8 @@ class CPieces:
 
         t = VAR.TAILLE
         piece = CPieces.pieces[self.pieceSelect][self.pieceRotation]
-        couleur = CPieces.pieces_couleurs[FCT.iif(self.simulation, "#", self.pieceSelect)]
-        pImg = FCT.iif(self.simulation, "#", self.pieceSelect)
+        couleur = CPieces.pieces_couleurs[GBASE.iif(self.simulation, "#", self.pieceSelect)]
+        pImg = GBASE.iif(self.simulation, "#", self.pieceSelect)
         
         for y in range(4):
             for x in range(4):
@@ -192,10 +192,10 @@ class CPieces:
             if self.pieceRotation < 0:
                 self.pieceRotation = len(CPieces.pieces[self.pieceSelect]) -1
 
-        if self.Moteur.Mecanique.controle_choque_piece(self):
+        if self.Moteur.Mecanique.la_piece_est_elle_bloquee(self):
             self.pieceRotation = ancRot
         else:
-            FCT.jouer_son("rotation")
+            GAUDIO.jouer_son("rotation")
 
 
     def controle_deplacement_lateral(self, valeur):
@@ -203,7 +203,7 @@ class CPieces:
       
         ancX, ancY = self.pieceX, self.pieceY
         self.pieceX +=valeur
-        if self.Moteur.Mecanique.controle_choque_piece(self):
+        if self.Moteur.Mecanique.la_piece_est_elle_bloquee(self):
             self.pieceX, self.pieceY = ancX, ancY
             return True
         return False

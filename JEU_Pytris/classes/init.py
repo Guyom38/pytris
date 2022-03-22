@@ -6,8 +6,8 @@ from COMMUN.classes.controles import *
 from COMMUN.classes.avatars import *
 import COMMUN.variables as V
 
-from JEU_Pytris.moteur import *
-from JEU_Pytris.partie import *
+from JEU_Pytris.classes.moteur import *
+from JEU_Pytris.classes.partie import *
 import JEU_Pytris.variables as VAR
 
 
@@ -89,28 +89,28 @@ class CInit:
     def initialiser_decors():  
         if VAR.TAILLE >= 25: 
             imgTmp = pygame.image.load("JEU_Pytris\\images\\blocs.png")
-            V.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["L"] = (FCT.image_decoupe(imgTmp, 3, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 3, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["J"] = (FCT.image_decoupe(imgTmp, 4, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 4, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["S"] = (FCT.image_decoupe(imgTmp, 5, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 5, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["I"] = (FCT.image_decoupe(imgTmp, 6, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 6, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["#"] = (FCT.image_decoupe(imgTmp, 7, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 7, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["Z"] = (GIMAGE.image_decoupe(imgTmp, 0, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 0, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["T"] = (GIMAGE.image_decoupe(imgTmp, 1, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 1, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["O"] = (GIMAGE.image_decoupe(imgTmp, 2, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 2, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["L"] = (GIMAGE.image_decoupe(imgTmp, 3, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 3, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["J"] = (GIMAGE.image_decoupe(imgTmp, 4, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 4, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["S"] = (GIMAGE.image_decoupe(imgTmp, 5, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 5, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["I"] = (GIMAGE.image_decoupe(imgTmp, 6, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 6, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["#"] = (GIMAGE.image_decoupe(imgTmp, 7, 0, 25, 25, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 7, 2, 25, 25, VAR.TAILLE, VAR.TAILLE))
             
-            V.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2), FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2))
+            V.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2), GIMAGE.image_decoupe(imgTmp, 8, 1, 27, 27, VAR.TAILLE+2, VAR.TAILLE+2))
         else:
             imgTmp = pygame.image.load("JEU_Pytris\\images\\blocs-mini.png")
-            V.IMAGES["Z"] = (FCT.image_decoupe(imgTmp, 0, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 0, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["T"] = (FCT.image_decoupe(imgTmp, 1, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 1, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["O"] = (FCT.image_decoupe(imgTmp, 2, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 2, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["L"] = (FCT.image_decoupe(imgTmp, 3, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 3, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["J"] = (FCT.image_decoupe(imgTmp, 4, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 4, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["S"] = (FCT.image_decoupe(imgTmp, 5, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 5, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["I"] = (FCT.image_decoupe(imgTmp, 6, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 6, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
-            V.IMAGES["#"] = (FCT.image_decoupe(imgTmp, 7, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), FCT.image_decoupe(imgTmp, 7, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["Z"] = (GIMAGE.image_decoupe(imgTmp, 0, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 0, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["T"] = (GIMAGE.image_decoupe(imgTmp, 1, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 1, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["O"] = (GIMAGE.image_decoupe(imgTmp, 2, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 2, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["L"] = (GIMAGE.image_decoupe(imgTmp, 3, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 3, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["J"] = (GIMAGE.image_decoupe(imgTmp, 4, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 4, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["S"] = (GIMAGE.image_decoupe(imgTmp, 5, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 5, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["I"] = (GIMAGE.image_decoupe(imgTmp, 6, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 6, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
+            V.IMAGES["#"] = (GIMAGE.image_decoupe(imgTmp, 7, 0, 20, 20, VAR.TAILLE, VAR.TAILLE), GIMAGE.image_decoupe(imgTmp, 7, 2, 20, 20, VAR.TAILLE, VAR.TAILLE))
             
-            V.IMAGES["X"] = (FCT.image_decoupe(imgTmp, 8, 1, 22, 22, VAR.TAILLE+2, VAR.TAILLE+2), FCT.image_decoupe(imgTmp, 8, 1, 22, 22, VAR.TAILLE+2, VAR.TAILLE+2))
+            V.IMAGES["X"] = (GIMAGE.image_decoupe(imgTmp, 8, 1, 22, 22, VAR.TAILLE+2, VAR.TAILLE+2), GIMAGE.image_decoupe(imgTmp, 8, 1, 22, 22, VAR.TAILLE+2, VAR.TAILLE+2))
 
     
 

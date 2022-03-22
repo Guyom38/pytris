@@ -1,10 +1,9 @@
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
 from COMMUN.classes.controles import *
 
-from JEU_Pytris.mecanique import CMecanique
-from JEU_Pytris.grille import *
-#from JEU_Pytris.init import *
+from JEU_Pytris.classes.mecanique import CMecanique
+from JEU_Pytris.classes.grille import *
 
 import random
 
@@ -19,7 +18,7 @@ class CParties:
                 VAR.partie_demarree = False
                 VAR.fin_partie = True
                 
-                FCT.changer_de_mode(VAR.MODE_SCORE)
+                VAR.changer_de_mode(VAR.MODE_SCORE)
                 
 
     def temps_ecoule():
@@ -104,7 +103,7 @@ class CParties:
             self.ligneNiveau = 0
             
             self.Moteur.Animation.nivSupActif = True
-            FCT.jouer_son("level_up")
+            GAUDIO.jouer_son("level_up")
 
     def meurt(self):
         self.Moteur.Joueur.actif = False

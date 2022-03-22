@@ -5,23 +5,28 @@ from pygame.locals import *
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
 
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
+
 from COMMUN.classes.avatars import CAvatars
+from COMMUN.classes.controles import CControle
 
 import COMMUN.variables as V
 
 class CSalon:
-    def __init__(self):
+    def __init__(self, c):
+        self.C = c
         self.dimX = 0
         self.dimY = 0
+        self.pX, self.pY = 0, 0
         self.init = False
         self.cycle, self.frequence, self.start = 0, 200, True
+        self.boucleSalon = True
     
     def afficher_zone(self):
-        self.dimX, self.dimY = CSalon.dimX, CSalon.dimY
+        self.dimX, self.dimY = self.dimX, self.dimY
         self.pX, self.pY = (V.RESOLUTION[0] - self.dimX) // 2, 200 
         
-        cadre = FCT.image_vide(self.dimX, self.dimY)
+        cadre = GIMAGE.image_vide(self.dimX, self.dimY)
         pygame.draw.rect(cadre, (16,16,16, 150), (0, 0, self.dimX, self.dimY), 0)
         
         pygame.draw.rect(cadre, (64,64,64, 150), (0, 0, self.dimX, self.dimY), 2)
@@ -31,8 +36,8 @@ class CSalon:
         V.fenetre.blit(cadre, (self.pX, self.pY))
     
     def initialisation(self):
-        dX = CSalon.dimX // 5
-        dY = CSalon.dimY // 7
+        dX = self.dimX // 5
+        dY = self.dimY // 7
         x, y = 0, 2
         for i, joueur in V.joueurs.items():
             joueur.Avatar.salonX = x * dX
@@ -44,7 +49,7 @@ class CSalon:
             joueur.Avatar.changer_expression("NORMAL", -1)
             joueur.Avatar.changer_expression("CONTENT", 500)
         self.init = True
-        FCT.charger_musique("COMMUN\\audios\\musics\\attente.mp3")
+        GAUDIO.charger_musique("COMMUN\\audios\\musics\\attente.mp3")
     
     def afficher_message(self):
         if pygame.time.get_ticks() - self.cycle > self.frequence:
@@ -52,7 +57,7 @@ class CSalon:
             self.start = not self.start
         
         if self.start:            
-            image_continue = V.ecritures[40].render("APPUYEZ SUR START", True, (255,255,255,255)) 
+            image_continue = GFONT.get_image_texte("APPUYEZ SUR START", 40, (255,255,255,255)) 
             x, y = ((V.RESOLUTION[0] - image_continue.get_width() ) // 2), V.RESOLUTION[1] - 100 + ((100 - image_continue.get_height()) // 2) 
             V.fenetre.blit(image_continue, (x, y))    
             
@@ -69,8 +74,8 @@ class CSalon:
 
             etiquettes = []
             if joueur.actif:
-                etiquettes.append(V.ecritures[30].render("Je suis prêt(e) !", True, (0,255,0,255)))
-            etiquettes.append(V.ecritures[30].render(joueur.nom, True, (255,255,255,255)))
+                etiquettes.append(GFONT.get_image_texte("Je suis prêt(e) !", 30, (0, 255, 0, 255)))
+            etiquettes.append(GFONT.get_image_texte(joueur.nom, 30, (255, 255, 255, 255)))
                         
             pygame.draw.rect(V.fenetre, CAvatars.COULEUR[joueur.id], (pX + joueur.Avatar.salonX +20, pY + joueur.Avatar.salonY -30, etiquettes[0].get_width() + 40, (etiquettes[0].get_height() * len(etiquettes))), 0)
             
@@ -86,32 +91,47 @@ class CSalon:
     
     def controle_tous_prets(self):
         pret = False
-        for i, joueur in VAR.tetris_joueurs.items():
+        for i, joueur in V.joueurs.items():
             if V.joueurs_prets(): pret = True
         
-        if pret: FCT.changer_de_mode(VAR.MODE_JEU)
+        if pret: 
+            self.boucleSalon = False
                 
         
     def afficher_titre(self):
-        image_titre = V.ecritures[100].render("SALLE D'ATTENTE", True, (0,0,0,0)) 
+        image_titre = GFONT.get_image_texte("SALLE D'ATTENTE", 100, (0,0,0,0)) 
         pX = (V.RESOLUTION[0] -  image_titre.get_width()) // 2
         V.fenetre.blit(image_titre, (pX - 10, ((200 - image_titre.get_height()) //2) +10))
         
-        image_titre = V.ecritures[100].render("SALLE D'ATTENTE", True, (255,255,255,255)) 
+        image_titre = GFONT.get_image_texte("SALLE D'ATTENTE", 100, (255,255,255,255)) 
         pX = (V.RESOLUTION[0] -  image_titre.get_width()) // 2
         V.fenetre.blit(image_titre, (pX , (200 - image_titre.get_height()) //2))
         
                     
-    def afficher(self):
+    def boucle(self):
         self.dimX, self.dimY = V.RESOLUTION[0] * 0.9, V.RESOLUTION[1] -400
+        
+        V.boucle = True
+        while V.boucle and self.boucleSalon:
+            CControle.capture_evements_utilisateurs()
+            self.gestion_evenements_joueurs()    
+            self.controle_tous_prets() 
+            
+            self.C.gestion_musique()
+            self.C.afficher_fond()
+            
+            self.afficher()
+            
+            self.C.afficher_rendu()
+        
+        
+    def afficher(self):
+        
 
-        self.gestion_evenements_joueurs()       
         self.afficher_zone()
         self.afficher_avatars()
         self.afficher_titre()
         self.afficher_message()
-        self.controle_tous_prets()
-
 
     def gestion_evenements_joueurs(self):
         for i, joueur in V.joueurs.items():
@@ -137,14 +157,22 @@ class CSalon:
             joueur.actif = True
                                 
         if manette.axeX > 0.9:
-            joueur.Avatar.salonX += 16
+            joueur.Avatar.salonX += 2
             joueur.Avatar.animation_flip = True
         elif manette.axeX < -0.9:
-            joueur.Avatar.salonX -= 16
+            joueur.Avatar.salonX -= 2
             joueur.Avatar.animation_flip = False
         if manette.axeY > 0.9:
-            joueur.Avatar.salonY += 16
+            joueur.Avatar.salonY += 2
         elif manette.axeY < -0.9:
-            joueur.Avatar.salonY -= 16     
+            joueur.Avatar.salonY -= 2  
+            
+        if joueur.Avatar.salonX<0: joueur.Avatar.salonX = 0
+        if joueur.Avatar.salonX>self.dimX: joueur.Avatar.salonX =  self.dimX
+        if joueur.Avatar.salonY<0: joueur.Avatar.salonY = 0
+        if joueur.Avatar.salonY>self.dimY: joueur.Avatar.salonY =  self.dimY
+        
+            
+        
 
         

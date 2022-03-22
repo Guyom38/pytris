@@ -3,11 +3,11 @@ from re import M
 import pygame
 from pygame.locals import *
 
-from JEU_Pytris.pieces import CPieces
-
+from JEU_Pytris.classes.pieces import CPieces
 import JEU_Pytris.variables as VAR
+
 import COMMUN.variables as V
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 
 class CAnimation:
     def __init__(self, m):
@@ -68,7 +68,7 @@ class CAnimation:
         if self.nivSupActif:
             largeur, hauteur = (VAR.DIMENSION[0] * VAR.TAILLE), (VAR.DIMENSION[1] * VAR.TAILLE)
 
-            image = FCT.image_vide(largeur, 60)
+            image = GIMAGE.image_vide(largeur, 60)
             image.fill((16, 16, 16, self.nivSupAlpha))
 
             couleur =  (self.Moteur.Joueur.couleur[0],  self.Moteur.Joueur.couleur[1],  self.Moteur.Joueur.couleur[2], self.nivSupAlpha)

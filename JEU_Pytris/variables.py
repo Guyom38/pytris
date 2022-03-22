@@ -11,18 +11,7 @@ MODE_JEU = 1
 MODE_SCORE = 2
 MODE_SALON = 3
 
-mode = MODE_SALON
-
-
-
-
-
-
-
-
-
-
-
+mode = MODE_JEU
 
 tetris_joueurs = {}
 poseRapideDelais = 200
@@ -30,16 +19,9 @@ vitesseDeplacement = 50
 
 fonts = {}
 
-
-
-
-
 mode_bmp = True
 
-
 nbLignesNiveauSuivant = 10
-
-
 
 cycle_partie = 0
 duree_partie = 180000
@@ -51,9 +33,6 @@ pouvoirCycle = 0
 pouvoirDelais = 5000
 
 limitePiecesQuiSeSuivent = 2
-
-
-
 
 
 compteARebours_cycle = -1

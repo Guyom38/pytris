@@ -2,7 +2,8 @@ from pygame.locals import *
 
 RESOLUTION = ((1280, 800),(1920, 1080))[0]
 MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[0]
-    
+ECRITURE_PAR_DEFAULT = "Arial"
+
 horloge = None
 fenetre = None
 boucle = True
@@ -23,6 +24,7 @@ audio = True
 musique = True
 
 IMAGES = {}
+temps = {}
 
 cycle = 0
 fps = 0

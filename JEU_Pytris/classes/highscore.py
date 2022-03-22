@@ -2,9 +2,9 @@ import pygame
 from pygame.locals import *
 
 import JEU_Pytris.variables as VAR
-import COMMUN.classes.fonctions as FCT
+from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
-#     - 
+
 
 class CHighscore():
     dimX, dimY = 0, 0
@@ -32,7 +32,7 @@ class CHighscore():
         CHighscore.afficher_message()
 
     def afficher_cadre_fond():
-        cadre = FCT.image_vide(V.RESOLUTION[0] * 0.92, V.RESOLUTION[1])
+        cadre = GIMAGE.image_vide(V.RESOLUTION[0] * 0.92, V.RESOLUTION[1])
         pygame.draw.rect(cadre, (16,16,16,150), (0,0, cadre.get_width(), cadre.get_height()), 0)
         pygame.draw.rect(cadre, (255,255,255,150), (0,0, cadre.get_width(), cadre.get_height()), 4)
         V.fenetre.blit(cadre, ((V.RESOLUTION[0] - cadre.get_width()) // 2, 0, cadre.get_width(), V.RESOLUTION[1]))                 
