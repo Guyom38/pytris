@@ -1,7 +1,3 @@
-
-import pygame
-from pygame.locals import *
-
 from JEU_Pytris.pieces import *
 from JEU_Pytris.grille import *
 from JEU_Pytris.mecanique import *
@@ -9,16 +5,15 @@ from JEU_Pytris.partie import *
 from JEU_Pytris.animation import *
 from JEU_Pytris.manette import *
 
-#from COMMUN.classes.avatars import *
-#from COMMUN.classes.controles import *
-
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
 
 import COMMUN.variables as V
+import os
 
 class CMoteur:
     def __init__(self, joueur):
+
         self.Joueur = joueur
 
         self.grille = None
@@ -39,7 +34,6 @@ class CMoteur:
         self.Animation = CAnimation(self)
         
         self.Manette = CManette(self, self.Joueur.id)
-
         
         self.Partie.demarrer()
 
@@ -72,6 +66,15 @@ class CMoteur:
         x = self.grille.offX + self.grille.cadreBas[0] - VAR.marge
         y = self.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + self.grille.cadreBas[3] + VAR.marge
         self.Joueur.Avatar.afficher(x, y)
+
+    def changer_de_mode(x):
+        VAR.mode = x
+        
+        if x == VAR.MODE_JEU:
+            fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
+            FCT.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)
+        else:
+            FCT.arreter_musique()   
 
         
     

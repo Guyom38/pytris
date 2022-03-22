@@ -3,6 +3,7 @@ from pygame.locals import *
  
 import JEU_Pytris.variables as VAR
 import COMMUN.classes.fonctions as FCT
+import COMMUN.variables as V
 #from JEU_Pytris.grille import *
 
 import csv, math, random, os

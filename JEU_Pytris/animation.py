@@ -1,4 +1,5 @@
 
+from re import M
 import pygame
 from pygame.locals import *
 
@@ -9,8 +10,8 @@ import COMMUN.variables as V
 import COMMUN.classes.fonctions as FCT
 
 class CAnimation:
-    def __init__(self, moteur):
-        self.Moteur = moteur
+    def __init__(self, m):
+        self.Moteur = m
 
         self.cycle = 0
         self.frequence = 20

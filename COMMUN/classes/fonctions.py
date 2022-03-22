@@ -43,11 +43,14 @@ def iif(condition, vrai, faux):
 # --- DEPENDANTE DU JEU
 def jouer_musique():
     if V.audio and V.musique:
-        if not pygame.mixer.music.get_busy():
-            pygame.mixer.music.play(-1)
+        try:
+            if not pygame.mixer.music.get_busy():
+                pygame.mixer.music.play(-1)
+        except Exception:
+            print("Erreur")
 
 def charger_musique(fichier):
-        pygame.mixer.music.load("JEU_Pytris\\audios\\" + fichier)
+    pygame.mixer.music.load(fichier)
 
 
 def arreter_musique():
@@ -59,16 +62,4 @@ def jouer_son(son):
     if V.audio:
         pygame.mixer.Sound.play(V.AUDIOS[son])
         
-def changer_de_mode(x):
-    VAR.mode = x
-    
-    if x == VAR.MODE_JEU:
-        fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
-        charger_musique("JEU_Pytris\\musics\\" + fichier)
-        
-    elif x == VAR.MODE_SALON:
-        charger_musique("attente.mp3")
-    elif x == VAR.MODE_SCORE:
-        charger_musique("score.mp3")
-    else:
-        arreter_musique()   
+

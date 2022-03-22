@@ -14,18 +14,14 @@ from COMMUN.commun import *
 import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
 
-class CPyTris():
-    def __init__(self):
-        
-        
-
-        self.Commun = CCommun("PyTris")
+class CPyTris:
+    def __init__(self, c):
+        self.C = c
+    
         
         CInit.page_chargement()
-        
-        self.Commun.initialiser()
-        self.Commun.initialiser_ecritures ([10, 20, 30, 40, 50, 60, 80, 100, 120, 200])
-        BOB = CMoteur(V.joueurs[0])
+        self.C.initialiser()
+        self.C.initialiser_ecritures ([10, 20, 30, 40, 50, 60, 80, 100, 120, 200])
         CInit.initialiser()
         
     
@@ -128,8 +124,8 @@ class CPyTris():
         while V.boucle:
             CControle.capture_evements_utilisateurs()
              
-            self.Commun.gestion_musique()
-            self.Commun.afficher_fond()
+            self.C.gestion_musique()
+            self.C.afficher_fond()
             
             
             if VAR.mode == VAR.MODE_SCORE:
@@ -162,7 +158,7 @@ class CPyTris():
                 self.compte_a_rebours_partie()
                 #surveille_demarrage()
     
-            self.Commun.afficher_rendu()
+            self.C.afficher_rendu()
         pygame.quit() 
 
 

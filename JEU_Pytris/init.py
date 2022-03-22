@@ -12,7 +12,8 @@ import JEU_Pytris.variables as VAR
 
 
 
-class CInit():
+class CInit:
+    
     def page_chargement():
         # --- initialisation du moteur Pygame
         titre = pygame.image.load("JEU_Pytris\\images\\titre.jpg")
@@ -37,7 +38,7 @@ class CInit():
         CInit.initialiser_audios()
         CInit.initialiser_les_joueurs()
 
-        FCT.charger_musique("attente.mp3")
+        #FCT.charger_musique("attente.mp3")
         
         
         
@@ -48,7 +49,7 @@ class CInit():
                         
         VAR.tetris_joueurs = {}
         for i in range(V.nbManettes+j):
-            VAR.tetris_joueurs[i] = CMoteur(V.joueurs[i])
+            VAR.tetris_joueurs[i] =  CMoteur(V.joueurs[i])
             VAR.tetris_joueurs[i].initialiser()
 
             barre = (200 / V.nbManettes+j) * i

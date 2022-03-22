@@ -11,26 +11,26 @@ from COMMUN.classes.avatars import CAvatars
 import COMMUN.variables as V
 
 class CSalon:
+    def __init__(self):
+        self.dimX = 0
+        self.dimY = 0
+        self.init = False
+        self.cycle, self.frequence, self.start = 0, 200, True
     
-    dimX = 0
-    dimY = 0
-    init = False
-    cycle, frequence, start = 0, 200, True
+    def afficher_zone(self):
+        self.dimX, self.dimY = CSalon.dimX, CSalon.dimY
+        self.pX, self.pY = (V.RESOLUTION[0] - self.dimX) // 2, 200 
+        
+        cadre = FCT.image_vide(self.dimX, self.dimY)
+        pygame.draw.rect(cadre, (16,16,16, 150), (0, 0, self.dimX, self.dimY), 0)
+        
+        pygame.draw.rect(cadre, (64,64,64, 150), (0, 0, self.dimX, self.dimY), 2)
+        pygame.draw.rect(cadre, (128,128,128, 150), (4, 4, self.dimX-8, self.dimY-8), 4)
+        pygame.draw.rect(cadre, (64,64,64, 150), (10, 10, self.dimX-20, self.dimY-20), 2)
+        
+        V.fenetre.blit(cadre, (self.pX, self.pY))
     
-    def afficher_zone():
-        dimX, dimY = CSalon.dimX, CSalon.dimY
-        pX, pY = (V.RESOLUTION[0] - dimX) // 2, 200 
-        
-        cadre = FCT.image_vide(dimX, dimY)
-        pygame.draw.rect(cadre, (16,16,16, 150), (0, 0, dimX, dimY), 0)
-        
-        pygame.draw.rect(cadre, (64,64,64, 150), (0, 0, dimX, dimY), 2)
-        pygame.draw.rect(cadre, (128,128,128, 150), (4, 4, dimX-8, dimY-8), 4)
-        pygame.draw.rect(cadre, (64,64,64, 150), (10, 10, dimX-20, dimY-20), 2)
-        
-        V.fenetre.blit(cadre, (pX, pY))
-    
-    def initialisation():
+    def initialisation(self):
         dX = CSalon.dimX // 5
         dY = CSalon.dimY // 7
         x, y = 0, 2
@@ -43,24 +43,25 @@ class CSalon:
                 x = 0
             joueur.Avatar.changer_expression("NORMAL", -1)
             joueur.Avatar.changer_expression("CONTENT", 500)
-        CSalon.init = True
+        self.init = True
+        FCT.charger_musique("COMMUN\\audios\\musics\\attente.mp3")
     
-    def afficher_message():
-        if pygame.time.get_ticks() - CSalon.cycle > CSalon.frequence:
-            CSalon.cycle = pygame.time.get_ticks()
-            CSalon.start = not CSalon.start
+    def afficher_message(self):
+        if pygame.time.get_ticks() - self.cycle > self.frequence:
+            self.cycle = pygame.time.get_ticks()
+            self.start = not self.start
         
-        if CSalon.start:            
+        if self.start:            
             image_continue = V.ecritures[40].render("APPUYEZ SUR START", True, (255,255,255,255)) 
             x, y = ((V.RESOLUTION[0] - image_continue.get_width() ) // 2), V.RESOLUTION[1] - 100 + ((100 - image_continue.get_height()) // 2) 
             V.fenetre.blit(image_continue, (x, y))    
             
                   
-    def afficher_avatars():
-        if not CSalon.init:
-            CSalon.initialisation()
+    def afficher_avatars(self):
+        if not self.init:
+            self.initialisation()
        
-        pX, pY = (V.RESOLUTION[0] -  CSalon.dimX) // 2, 100
+        pX, pY = (V.RESOLUTION[0] -  self.dimX) // 2, 100
         for i, joueur in V.joueurs.items():
 
             joueur.Avatar.gestion_personnage()
@@ -83,7 +84,7 @@ class CSalon:
             
            
     
-    def controle_tous_prets():
+    def controle_tous_prets(self):
         pret = False
         for i, joueur in VAR.tetris_joueurs.items():
             if V.joueurs_prets(): pret = True
@@ -91,7 +92,7 @@ class CSalon:
         if pret: FCT.changer_de_mode(VAR.MODE_JEU)
                 
         
-    def afficher_titre():
+    def afficher_titre(self):
         image_titre = V.ecritures[100].render("SALLE D'ATTENTE", True, (0,0,0,0)) 
         pX = (V.RESOLUTION[0] -  image_titre.get_width()) // 2
         V.fenetre.blit(image_titre, (pX - 10, ((200 - image_titre.get_height()) //2) +10))
@@ -101,22 +102,22 @@ class CSalon:
         V.fenetre.blit(image_titre, (pX , (200 - image_titre.get_height()) //2))
         
                     
-    def afficher():
-        CSalon.dimX, CSalon.dimY = V.RESOLUTION[0] * 0.9, V.RESOLUTION[1] -400
+    def afficher(self):
+        self.dimX, self.dimY = V.RESOLUTION[0] * 0.9, V.RESOLUTION[1] -400
 
-        CSalon.gestion_evenements_joueurs()       
-        CSalon.afficher_zone()
-        CSalon.afficher_avatars()
-        CSalon.afficher_titre()
-        CSalon.afficher_message()
-        CSalon.controle_tous_prets()
+        self.gestion_evenements_joueurs()       
+        self.afficher_zone()
+        self.afficher_avatars()
+        self.afficher_titre()
+        self.afficher_message()
+        self.controle_tous_prets()
 
 
-    def gestion_evenements_joueurs():
+    def gestion_evenements_joueurs(self):
         for i, joueur in V.joueurs.items():
-            CSalon.gestion_evenements_salon(joueur)
+            self.gestion_evenements_salon(joueur)
 
-    def gestion_evenements_salon(joueur):
+    def gestion_evenements_salon(self, joueur):
         manette = joueur.Manette
         if manette.boutonL:
             joueur.Avatar.animation_flip = False

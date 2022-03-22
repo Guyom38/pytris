@@ -6,11 +6,12 @@ import COMMUN.variables as V
 from COMMUN.classes.controles import *
 from COMMUN.classes.avatars import *
 from COMMUN.classes.joueur import *
+from COMMUN.salon import *
 
 import COMMUN.classes.fonctions as FCT
 import os, random
 
-class CCommun():
+class CCommun:
 # ---------------------------------------------------------------------------------------------------------------
 # -
 # ---------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,8 @@ class CCommun():
         pygame.display.set_caption(titre)
         
         random.shuffle(CAvatars.LISTE_NOMS)
+
+        self.Salon = CSalon()
         
         
         
@@ -58,7 +61,7 @@ class CCommun():
     def initialiser_musiques(self, chemin = ""):
         if V.musique:
             pygame.mixer.init()
-            fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics\\" + chemin))
+            #fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics\\" + chemin))
             #FCT.charger_musique("musics\\" + chemin + fichier)    
             
     def initialiser_fond(self, chemin = ""):

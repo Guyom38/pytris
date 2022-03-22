@@ -9,7 +9,7 @@ import COMMUN.variables as V
 import random
 
 
-class CPieces():
+class CPieces:
     pieces_couleurs = {}
     pieces_couleurs["O"] = (0, 0, 36)
     pieces_couleurs["I"] = (104, 107, 55)

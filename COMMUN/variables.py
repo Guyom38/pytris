@@ -19,7 +19,7 @@ joueur_clavier = False
 
 
 AUDIOS = {}
-audio = False
+audio = True
 musique = True
 
 IMAGES = {}

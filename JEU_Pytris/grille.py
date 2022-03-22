@@ -8,7 +8,7 @@ import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
 import COMMUN.classes.fonctions as FCT
 
-class CGrille():
+class CGrille:
     
     
     def calcul_offSets_Global():
@@ -23,8 +23,8 @@ class CGrille():
                  
         return (offsetX, offsetY)
     
-    def __init__(self, moteur):
-        self.Moteur = moteur
+    def __init__(self, m):
+        self.Moteur = m
 
         self.offX, self.offY = (0, 0)
         self.dimX, self.dimY = VAR.DIMENSION

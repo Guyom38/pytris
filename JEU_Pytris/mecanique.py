@@ -7,7 +7,7 @@ from JEU_Pytris.pieces import *
 import COMMUN.variables as V
 import random
 
-class CMecanique():
+class CMecanique:
     def nbJoueursActifs():
         nb = 0
         for i, j in VAR.tetris_joueurs.items():
