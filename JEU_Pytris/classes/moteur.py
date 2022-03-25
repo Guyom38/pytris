@@ -13,9 +13,7 @@ import os
 
 class CMoteur:
     def __init__(self, joueur):
-
         self.Joueur = joueur
-
         self.grille = None
         self.Partie = None
         self.Pieces = None
@@ -32,9 +30,7 @@ class CMoteur:
         
         self.Mecanique = CMecanique(self)
         self.Animation = CAnimation(self)
-        
         self.Manette = CManette(self, self.Joueur.id)
-        
         self.Partie.demarrer()
 
     def gestion_piece_aide(self):
@@ -47,6 +43,7 @@ class CMoteur:
             self.PiecesAide.pieceY = -2
             self.Mecanique.faire_descendre_a_fond_la_piece(self.PiecesAide)
             self.PiecesAide.afficher_piece()  
+              
               
     def afficher(self):
         

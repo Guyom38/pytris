@@ -11,6 +11,8 @@ from COMMUN.salon import *
 from COMMUN.classes.fonctions import *
 import os, random
 
+from JEU_Pytris.init import CInit
+
 class CCommun:
 # ---------------------------------------------------------------------------------------------------------------
 # -
@@ -48,6 +50,7 @@ class CCommun:
 # ---------------------------------------------------------------------------------------------------------------
     def initialiser(self):
         CControle.initialiser_manettes()
+        CInit.afficher_nombres_manettes()
         CAvatars.chargement_fichiers_sprites()
         
         self.initialiser_joueurs()
@@ -120,7 +123,7 @@ class CCommun:
         self.afficher_fps()
         
         pygame.display.update()
-        V.horloge.tick(0)
+        V.horloge.tick(V.fps_max)
         
 # ---------------------------------------------------------------------------------------------------------------
 # -

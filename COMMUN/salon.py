@@ -2,6 +2,8 @@
 import pygame
 from pygame.locals import *
 
+import COMMUN.classes.fonctions as FCT
+
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
 
@@ -26,7 +28,7 @@ class CSalon:
         self.dimX, self.dimY = self.dimX, self.dimY
         self.pX, self.pY = (V.RESOLUTION[0] - self.dimX) // 2, 200 
         
-        cadre = GIMAGE.image_vide(self.dimX, self.dimY)
+        cadre = FCT.GIMAGE.image_vide(self.dimX, self.dimY)
         pygame.draw.rect(cadre, (16,16,16, 150), (0, 0, self.dimX, self.dimY), 0)
         
         pygame.draw.rect(cadre, (64,64,64, 150), (0, 0, self.dimX, self.dimY), 2)

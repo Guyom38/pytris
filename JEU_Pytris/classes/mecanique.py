@@ -9,11 +9,7 @@ from COMMUN.classes.fonctions import *
 import random
 
 class CMecanique:
-    def nbJoueursActifs():
-        nb = 0
-        for i, j in VAR.tetris_joueurs.items():
-            if j.Joueur.actif and not j.Partie.mort: nb +=1
-        return nb
+    
     
     def __init__(self, m):
         self.M = m
@@ -83,10 +79,10 @@ class CMecanique:
 
     
     def gestion_mecanique_du_jeu(self):
-        partie_arretee = not VAR.partie_en_cours
+        partie_arretee = not VAR.partie_en_cours()
         partie_en_pause = self.M.Partie.pause
         joueur_inactif = not self.M.Joueur.actif
-        
+       
         if not(partie_arretee or partie_en_pause or joueur_inactif):
             self.gravite() 
             self.traitement_des_lignes_a_ajouter()
@@ -94,9 +90,9 @@ class CMecanique:
     
             
     def gravite(self):
-        if pygame.time.get_ticks() - self.M.Partie.cycle > self.M.Partie.vitesse:
+        if self.M.Partie.vitesse_partie.controle():
             self.faire_descendre_la_piece(self.M.Pieces)
-            self.M.Partie.cycle = pygame.time.get_ticks()
+            self.M.Partie.vitesse_partie.reset()
                    
     def verifie_la_ligne(self, ligne):
         cpt = 0
@@ -159,19 +155,18 @@ class CMecanique:
             if VAR.tetris_joueurs[VAR.pouvoirId].Joueur.actif:  
                 VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
                 
-        if VAR.limiteModeBalance:                           # --- Retire autant de lignes en attente qu'il y a de lignes a ajouter
+        if VAR.mode_balance:                           # --- Retire autant de lignes en attente qu'il y a de lignes a ajouter
             self.M.Mecanique.lignesAjouter -= nbLignes
             if self.M.Mecanique.lignesAjouter < 0: self.M.Mecanique.lignesAjouter = 0
     
     
     def traitement_des_lignes_a_ajouter(self):
         if self.lignesAjouter > 0:
-            if pygame.time.get_ticks() - VAR.limiteLignesCycle > VAR.limiteLignesFrequence:
-                VAR.limiteLignesCycle = pygame.time.get_ticks()
-                      
-                nbLignesMax = GBASE.iif(self.lignesAjouter > VAR.limiteLignesMax, VAR.limiteLignesMax,self.lignesAjouter)
+            if VAR.temps_ajout_de_lignes.controle():
+                nbLignesMax = GBASE.iif(self.lignesAjouter > VAR.lignes_ajout_max, VAR.lignes_ajout_max,self.lignesAjouter)
                 self.M.Mecanique.ajoute_des_lignes(nbLignesMax)    
                 self.lignesAjouter -= nbLignesMax
+
 
     def ajoute_des_lignes(self, nbLignes):
         self.M.Joueur.Avatar.changer_expression("ENERVE", 500)                                                          # Change l'expression de l'avatar

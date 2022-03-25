@@ -1,13 +1,11 @@
-
-
 import pygame
 from pygame.locals import *
 
 from COMMUN.classes.controles import CBouton
 
 import COMMUN.variables as V
-import JEU_Pytris.variables as VAR
-from JEU_Pytris.variables import *
+import JEU_Pylander.variables as VAR
+from JEU_Pylander.variables import *
 
 class CManette:
     # ---------------------------------------------------------------------------------------------------------------
@@ -16,31 +14,8 @@ class CManette:
     def __init__(self, moteur, idManette):
         self.Moteur = moteur
         self.manetteId = self.Moteur.Joueur.id
-        self.cyclePoseRapide = pygame.time.get_ticks()
-        
-        self.direction = 0
-        self.chute = False
-        self.cycleDirection = pygame.time.get_ticks()
-    
-    
+      
 
-    
-    def action_start(self):
-        if VAR.mode == ENUM_MODE.MODE_JEU:
-            if self.Moteur.Partie.mort:
-                pass            
-            elif not self.Moteur.Joueur.actif:
-                self.Moteur.Avatar.changer_expression ("NORMAL", -1)
-            else:
-                self.Moteur.Partie.pause = not self.Moteur.Partie.pause
-                
-        elif VAR.mode == ENUM_MODE.MODE_SCORE:
-            VAR.relancePartie = True    
-           
-            VAR.changer_de_mode(ENUM_MODE.MODE_JEU)
-            VAR.partie_demarree = False
-            VAR.fin_partie = False
-            VAR.temps_de_partie.reset(-1)
             
             
     
@@ -49,13 +24,7 @@ class CManette:
     
     
     def executer_actions(self):
-        if pygame.time.get_ticks() - self.cycleDirection > vitesseDeplacement:
-            self.Moteur.Pieces.controle_deplacement_lateral(self.direction)
-            if self.chute:
-                self.Moteur.Mecanique.faire_descendre_la_piece(self.Moteur.Pieces)
-            self.cycleDirection = pygame.time.get_ticks()
-            
-    
+        pass    
     
     def gestion_evenements_start(self):
         for event in V.evenements:
@@ -87,38 +56,42 @@ class CManette:
 
         manette = self.Moteur.Joueur.Manette
         if manette.boutonL:
-            self.Moteur.Pieces.faire_tourner_la_piece(False)
+            pass
         if manette.boutonR:
-            self.Moteur.Pieces.faire_tourner_la_piece(True)
+            pass
         if manette.boutonA:
-            self.Moteur.Pieces.faire_tourner_la_piece(True)
+            self.V_CHUTE = self.V_CHUTE-2
+            self.ESSENCE = self.ESSENCE-5
+            self.FUSEE_C = True
+
         if manette.boutonB:
-            if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
-                self.cyclePoseRapide = pygame.time.get_ticks()
-                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
+            pass
         #if manette.boutonX:
         #if manette.boutonY:
            
         if manette.boutonSelect:
-            self.Moteur.Partie.aide = not self.Moteur.Partie.aide
+            pass
         #if manette.boutonStart:    
             
                                 
         if manette.axeX > 0.9:
-            self.direction = 1
-            print((self.direction, manette.axeX))
+            self.V_DECAL = self.V_DECAL +2
+            self.ESSENCE = self.ESSENCE -5
+            self.FUSEE_G = True
+            
         elif manette.axeX < -0.9:
-            self.direction = -1
-            print((self.direction, manette.axeX))
+            self.V_DECAL = self.V_DECAL-2
+            self.ESSENCE = self.ESSENCE-5
+            self.FUSEE_D = True
+            
         else:
-            self.direction = 0
-            print((self.direction, manette.axeX))
+            pass
+            
 
         if manette.axeY > 0.9:
-            self.chute = True
+            pass
         else:
-            self.chute = False
-
+            pass
 
                             
         

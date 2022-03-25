@@ -30,7 +30,7 @@ cycle = 0
 fps = 0
 fps_cpt = 0
 fps_cycle = 0
-
+fps_max = 0
 
 joueurs = {}
 nbManettes = 0
@@ -48,3 +48,7 @@ def joueurs_prets():
     for i, joueur in joueurs.items():
         if not joueur.actif: return False
     return True
+
+
+
+

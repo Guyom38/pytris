@@ -18,14 +18,50 @@ class GBASE:
             return faux
     
 class GTEMPS:
-    def init(nom):
-        V.temps[nom] = [pygame.time.get_ticks(), 0]
     
-    def est_il_temps(nom):
-        if pygame.time.get_ticks() - V.temps[nom][0] > V.temps[nom][1] :
-            V.temps[nom][0] = pygame.time.get_ticks()
-            return True
-        return False
+    class chrono:
+        def __init__(self, _frequence, _cycle = None, _defaut_cycle = None):
+            #print("Initialisation " + str(_frequence) + str(_cycle) + str(_defaut_cycle))
+            self.defaut = _defaut_cycle
+            self.cycle = 0
+            self.frequence = _frequence
+            self.bascule = False
+
+            self.reset(_cycle)
+
+
+        def reset(self, _cycle = None):
+            #print("Reset "+str(_cycle))
+            if _cycle == None:
+                self.cycle = pygame.time.get_ticks()   
+            else:
+                self.cycle = _cycle
+
+        def controle(self):
+            #print("Controle")
+            return self.verification(self.frequence)
+        
+        def verification(self, _frequence):
+            if pygame.time.get_ticks() - self.cycle > _frequence:
+                self.bascule = not self.bascule
+
+                if self.defaut == None :
+                    self.cycle = pygame.time.get_ticks()
+                else:
+                    self.cycle = self.defaut
+
+                return True
+            return False
+
+        def get_temps_restant(self):
+            #print("Restant : " + str(pygame.time.get_ticks() - self.cycle) )
+            return (pygame.time.get_ticks() - self.cycle)
+
+        
+
+
+
+   
     
     def format_temps(temps):
         return time.strftime('%H:%M:%S', time.gmtime(temps))     
@@ -39,6 +75,21 @@ class GTEMPS:
         
         return "%d:%02d:%02d" % (hour, minutes, seconds) 
            
+
+
+class GFONT:
+    def add_ecriture( nom, police, taille):
+        V.ecritures[nom] = pygame.font.SysFont(police, taille)    
+
+    @classmethod    
+    def get_image_texte(cls, message, taille, couleur = (255,255,255,255), police = ""):
+        if police == "": police = V.ECRITURE_PAR_DEFAULT
+        if not taille in V.ecritures:
+            cls.add_ecriture(police+str(taille), police, taille)
+        return V.ecritures[police+str(taille)].render(message, True, couleur)
+
+
+
 class GIMAGE:
     def image_vide(dimx, dimy):
         return pygame.Surface((dimx, dimy),pygame.SRCALPHA,32)
@@ -46,26 +97,25 @@ class GIMAGE:
     def image_decoupe(img, x, y, dimx, dimy, dimxZ = -1, dimyZ = -1):
         tmp = pygame.Surface((dimx, dimy),pygame.SRCALPHA,32)
         tmp.blit(img, (0,0), (int(x) * dimx, int(y) * dimy, dimx, dimy))
-                            
+                                
         # --- Colle le decors 
         if dimxZ != -1 and dimyZ != -1:   
             tmp = pygame.transform.scale(tmp, (dimxZ, dimyZ))
         return tmp
 
-class GFONT:
-    def add_ecriture( nom, police, taille):
-        V.ecritures[nom] = pygame.font.SysFont(police, taille)    
+    class point:
+        def __init__(self, x, y):
+            self.x, self.y = x, y
 
-    @classmethod    
-    def get_image_texte(cls, message, taille, couleur = (255,255,255,255)):
-        if not taille in V.ecritures:
-            cls.add_ecriture(taille, V.ECRITURE_PAR_DEFAULT, taille)
-        return V.ecritures[taille].render(message, True, couleur)
-
-
-
-
-
+    class rectangle:
+        def __init__(self, x, y, largeur, hauteur):
+            self.x, self.y, self.largeur, self.hauteur = x, y, largeur, hauteur
+        
+        def get_x2(self):
+            return self.x + self.largeur
+        
+        def get_y2(self):
+            return self.y + self.hauteur
 
 
 # --- DEPENDANTE DU JEU

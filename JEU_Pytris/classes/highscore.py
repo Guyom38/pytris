@@ -4,6 +4,7 @@ from pygame.locals import *
 import JEU_Pytris.variables as VAR
 from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
+import COMMUN.classes.fonctions as FCT
 
 
 class CHighscore():
@@ -18,7 +19,7 @@ class CHighscore():
         CHighscore.afficher_titre()
         
         liste_scores = []
-        for i in range(VAR.nbJoueurs):
+        for i in range(VAR.get_nb_joueurs()):
             liste_scores.append((VAR.tetris_joueurs[i].Partie.score, i))
 
         liste_triee = sorted(liste_scores, reverse=True)
@@ -38,10 +39,10 @@ class CHighscore():
         V.fenetre.blit(cadre, ((V.RESOLUTION[0] - cadre.get_width()) // 2, 0, cadre.get_width(), V.RESOLUTION[1]))                 
         
     def afficher_titre():
-        image_titre = V.ecritures[80].render("TABLEAU DES SCORES", True, (0,0,0,255)) 
+        image_titre = FCT.GFONT.get_image_texte("TABLEAU DES SCORES", 80, (0,0,0,255)) 
         x, y = ((V.RESOLUTION[0] - image_titre.get_width() ) // 2), ( ((CHighscore.dimY * 3) - image_titre.get_height()) // 2 )
         V.fenetre.blit(image_titre, (x-2, y-2))    
-        image_titre = V.ecritures[80].render("TABLEAU DES SCORES", True, (255,255,255,255)) 
+        image_titre = FCT.GFONT.get_image_texte("TABLEAU DES SCORES", 80, (255,255,255,255)) 
         x, y = ((V.RESOLUTION[0] - image_titre.get_width() ) // 2), ( ((CHighscore.dimY * 3) - image_titre.get_height()) // 2 )
         V.fenetre.blit(image_titre, (x, y))      
         
@@ -52,15 +53,15 @@ class CHighscore():
             CHighscore.start = not CHighscore.start
         
         if CHighscore.start:            
-            image_continue = V.ecritures[40].render("APPUYEZ SUR START", True, (255,255,255,255)) 
+            image_continue = FCT.GFONT.get_image_texte("APPUYEZ SUR START", 40, (255,255,255,255)) 
             x, y = ((V.RESOLUTION[0] - image_continue.get_width() ) // 2), V.RESOLUTION[1] - ( ((CHighscore.dimY * 3) - image_continue.get_height()) // 2 )
             V.fenetre.blit(image_continue, (x, y))      
 
 
-    def afficher_joueur(joueur, i):
-        dimCadreY = ((V.RESOLUTION[1] - (5 * CHighscore.dimY)) // VAR.nbJoueurs )        
-        cadre = FCT.image_vide(CHighscore.dimX, dimCadreY)
-        pygame.draw.rect(cadre, joueur.couleur, (0, 0, CHighscore.dimX, dimCadreY-10))
+    def afficher_joueur(m, i):
+        dimCadreY = ((V.RESOLUTION[1] - (5 * CHighscore.dimY)) // VAR.get_nb_joueurs() )        
+        cadre = FCT.GIMAGE.image_vide(CHighscore.dimX, dimCadreY)
+        pygame.draw.rect(cadre, m.Joueur.couleur, (0, 0, CHighscore.dimX, dimCadreY-10))
                 
         cX = ((V.RESOLUTION[0] - CHighscore.dimX) //2)
         y = (CHighscore.dimY * 3) + (i * (dimCadreY + 10))
@@ -69,27 +70,27 @@ class CHighscore():
         V.fenetre.blit(cadre, (cX, y))
         
         x = 0
-        for titreTxt, info, largeur in (("Rang", joueur.Partie.rang, 1), ("Nom", joueur.nom, 15) , ("Niveau", joueur.Partie.niveau, 30), ("Nb. Lignes", joueur.Partie.nbLignes, 10), ("Score : ", joueur.Partie.score, 20)):
+        for titreTxt, info, largeur in (("Rang", m.Partie.rang, 1), ("Nom", m.Joueur.nom, 15) , ("Niveau", m.Partie.niveau, 30), ("Nb. Lignes", m.Partie.nbLignes, 10), ("Score : ", m.Partie.score, 20)):
             x += ((V.RESOLUTION[0] / 100) * largeur)
             
             # --- Titre
             if i == 0:
-                image = V.ecritures[20].render(str(titreTxt), True, (0,0,0,255)) 
+                image = FCT.GFONT.get_image_texte(str(titreTxt), 20, (0,0,0,255)) 
                 V.fenetre.blit(image, (x+cX-2, y-22))
-                image = V.ecritures[20].render(str(titreTxt), True, (255,255,255,255)) 
+                image = FCT.GFONT.get_image_texte(str(titreTxt), 20, (255,255,255,255)) 
                 V.fenetre.blit(image, (x+cX, y-20))
                 
             # --- Info    
-            image = V.ecritures[60].render(str(info), True, (0,0,0,255)) 
+            image = FCT.GFONT.get_image_texte(str(info), 60, (0,0,0,255)) 
             cY = ((dimCadreY + 10) - image.get_height()) // 2
             V.fenetre.blit(image, (x+cX-2, y+cY-2))
-            image = V.ecritures[60].render(str(info), True, (255,255,255,255)) 
+            image = FCT.GFONT.get_image_texte(str(info), 60, (255,255,255,255)) 
             V.fenetre.blit(image, (x+cX, y+cY))
         
         
         # -- AVATAR
-        cY = (y + dimCadreY) - (780 * joueur.Avatar.ratioY)
-        joueur.Avatar.dessiner(cX + 50, cY)
+        cY = (y + dimCadreY) - (780 * m.Joueur.Avatar.ratioY)
+        m.Joueur.Avatar.dessiner(cX + 50, cY)
         
         
         

@@ -1,5 +1,7 @@
+
+from COMMUN.classes.fonctions import * 
 from enum import *
-from COMMUN.classes.fonctions import *
+import random, os
 
 # █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
 # █  PARAMETRES DU JEU                                                      █
@@ -19,10 +21,14 @@ mode_bmp = True
 nbLignesNiveauSuivant = 10
 limitePiecesQuiSeSuivent = 2
 
-limiteModeBalance = True            # Si le joueur fait une ligne, cela baisse le nombre de lignes en attente
-limiteLignesEnAttente = 5
-limiteLignesMax = 2
-limiteLignesFrequence = 10000
+mode_balance = True            # Si le joueur fait une ligne, cela baisse le nombre de lignes en attente
+lignes_en_attente = 5
+lignes_ajout_max = 2
+lignes_ajout_delais = 10000
+
+duree_partie = 180000
+pouvoir_delais = 5000
+vitesse_par_defaut = 500
 
 marge = 20
 
@@ -53,17 +59,20 @@ mode = ENUM_MODE.MODE_JEU
 tetris_joueurs = {}
 fonts = {}
 
-cycle_partie = 0
-duree_partie = 10000
+
+temps_de_partie = GTEMPS.chrono(duree_partie)
+compte_a_rebours = GTEMPS.chrono(pouvoir_delais, -1)
+temps_ajout_de_lignes = GTEMPS.chrono(lignes_ajout_delais)
+
 fin_partie = False
 
-pouvoirId = 0
-pouvoirCycle = 0
-pouvoirDelais = 5000
+LISTE_DES_PIECES = ["O", "I", "S", "Z", "L", "J", "T"]
 
-compteARebours_cycle = -1
-compteARebours_Delais = 5000
-limiteLignesCycle = 0
+pouvoirId = 0
+
+temps_pouvoir = GTEMPS.chrono(duree_partie)
+#pouvoirCycle = 0
+#limiteLignesCycle = 0
 
 relancePartie = False # recharge les classes
         
@@ -74,7 +83,16 @@ animation_cpt = 0
 # █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
 # █  METHODES DU JEU                                                        █
 # █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
-    
+
+def get_nb_joueurs():
+    return (len(tetris_joueurs))
+
+def nbJoueursActifs():
+        nb = 0
+        for i, m in tetris_joueurs.items():
+            if m.Joueur.actif and not m.Partie.mort: nb +=1
+        return nb
+
 def partie_en_cours():
     return (partie_demarree)
 
@@ -89,13 +107,14 @@ def partie_terminee():
     return True
 
 def changer_de_mode(x):
-        mode = x
+    global mode
+    mode = x
         
-        if x == ENUM_MODE.MODE_JEU:
-            fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
-            GAUDIO.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)
-        else:
-            GAUDIO.arreter_musique()   
+    if x == ENUM_MODE.MODE_JEU:
+        fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics"))
+        GAUDIO.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)
+    else:
+        GAUDIO.arreter_musique()   
 
         
    

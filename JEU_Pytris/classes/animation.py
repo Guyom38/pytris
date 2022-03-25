@@ -8,6 +8,8 @@ import JEU_Pytris.variables as VAR
 
 import COMMUN.variables as V
 from COMMUN.classes.fonctions import *
+import COMMUN.classes.fonctions as FCT
+
 
 class CAnimation:
     def __init__(self, m):
@@ -74,7 +76,7 @@ class CAnimation:
             couleur =  (self.Moteur.Joueur.couleur[0],  self.Moteur.Joueur.couleur[1],  self.Moteur.Joueur.couleur[2], self.nivSupAlpha)
             pygame.draw.rect(image, couleur, (0, 0, image.get_width(), image.get_height()), 4)
             
-            image_texte = V.ecritures[20].render("NIVEAU " + str(self.Moteur.Partie.niveau), True, (255,255,255,self.nivSupAlpha))
+            image_texte =FCT.GFONT.get_image_texte("NIVEAU " + str(self.Moteur.Partie.niveau), 20, (255,255,255,self.nivSupAlpha))
 
             pX = (image.get_width() - image_texte.get_width()) // 2
             pY = (image.get_height() - image_texte.get_height()) // 2
