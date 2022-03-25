@@ -19,14 +19,14 @@ class CHighscore():
         CHighscore.afficher_titre()
         
         liste_scores = []
-        for i in range(VAR.get_nb_joueurs()):
-            liste_scores.append((VAR.tetris_joueurs[i].Partie.score, i))
+        for i, moteur in V.moteurs:
+            liste_scores.append((moteur.Partie.score, i))
 
         liste_triee = sorted(liste_scores, reverse=True)
 
         u = 0
         for score, i in liste_triee:
-            CHighscore.afficher_joueur(VAR.tetris_joueurs[i], u)
+            CHighscore.afficher_joueur(V.moteurs[i], u)
             u += 1
             
             
@@ -59,7 +59,7 @@ class CHighscore():
 
 
     def afficher_joueur(m, i):
-        dimCadreY = ((V.RESOLUTION[1] - (5 * CHighscore.dimY)) // VAR.get_nb_joueurs() )        
+        dimCadreY = ((V.RESOLUTION[1] - (5 * CHighscore.dimY)) // V.get_nb_joueurs() )        
         cadre = FCT.GIMAGE.image_vide(CHighscore.dimX, dimCadreY)
         pygame.draw.rect(cadre, m.Joueur.couleur, (0, 0, CHighscore.dimX, dimCadreY-10))
                 

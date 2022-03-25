@@ -53,10 +53,10 @@ class CInit:
         j = 0
         if V.joueur_clavier: j = 1    
                         
-        VAR.tetris_joueurs = {}
+        V.moteurs = {}
         for i in range(V.nbManettes+j):
-            VAR.tetris_joueurs[i] =  CMoteur(V.joueurs[i])
-            VAR.tetris_joueurs[i].initialiser()
+            V.moteurs[i] =  CMoteur(V.joueurs[i])
+            V.moteurs[i].initialiser()
 
             barre = (200 / V.nbManettes+j) * i
             pygame.draw.rect(V.fenetre, (255,255,0,255), (0, V.RESOLUTION[1]-30, barre, 30), 0)

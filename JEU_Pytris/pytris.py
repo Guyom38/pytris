@@ -32,13 +32,13 @@ class CPyTris:
 
     def calcul_du_rang(self):
         liste_scores = []
-        for id in range(VAR.get_nb_joueurs()):
-            liste_scores.append((VAR.tetris_joueurs[id].Partie.score, id))
+        for id in range(V.get_nb_joueurs()):
+            liste_scores.append((V.moteurs[id].Partie.score, id))
         
-        rang = VAR.get_nb_joueurs()
+        rang = V.get_nb_joueurs()
         liste_triee = sorted(liste_scores)
         for score, id in liste_triee:
-            VAR.tetris_joueurs[id].Partie.rang = rang
+            V.moteurs[id].Partie.rang = rang
             rang-=1
 
     def compte_a_rebours_partie(self):
@@ -52,23 +52,23 @@ class CPyTris:
                 VAR.partie_demarree = True
                 VAR.temps_de_partie.reset(-1)
                 
-                for i, pytris_moteur in VAR.tetris_joueurs.items():
-                    pytris_moteur.Joueur.actif = True
+                for i, moteur in V.moteurs.items():
+                    moteur.Joueur.actif = True
 
             else:
                 self.afficher_compte_a_rebours()      
 
     def gestion_manettes_minimum(self):
-        for i, pytris_moteur in VAR.tetris_joueurs.items():
-            pytris_moteur.Manette.gestion_evenements_start()
+        for i, moteur in VAR.moteurs.items():
+            moteur.Manette.gestion_evenements_start()
     
     def relance_la_partie(self):
         VAR.relancePartie = False       
 
         self.C.initialiser_fond()
                     
-        for i, pytris_moteur in VAR.tetris_joueurs.items():                                        
-            pytris_moteur.initialiser()
+        for i, moteur in V.moteurs.items():                                        
+            moteur.initialiser()
         
         VAR.temps_de_partie.reset(-1)
         VAR.fin_partie = False  
@@ -81,9 +81,9 @@ class CPyTris:
     # ---
     # --- Traitement des actions joueurs et affichage des joueurs
     def afficher_les_joueurs(self):
-        for i, pytris_moteur in VAR.tetris_joueurs.items():
-            pytris_moteur.Manette.gestion_evenements()
-            pytris_moteur.afficher()    
+        for i, moteur in V.moteurs.items():
+            moteur.Manette.gestion_evenements()
+            moteur.afficher()    
 
     # ---
     # --- Affichage du temps restant de la partie

@@ -9,6 +9,7 @@ fenetre = None
 boucle = True
     
 ecritures = {}
+moteurs = {}
 
 fond = True
 idFond = 0
@@ -49,6 +50,7 @@ def joueurs_prets():
         if not joueur.actif: return False
     return True
 
-
+def get_nb_joueurs():
+    return (len(moteurs))
 
 

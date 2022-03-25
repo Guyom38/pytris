@@ -56,10 +56,6 @@ class ENUM_MODE(Enum):
 partie_demarree = False
 mode = ENUM_MODE.MODE_JEU
 
-tetris_joueurs = {}
-fonts = {}
-
-
 temps_de_partie = GTEMPS.chrono(duree_partie)
 compte_a_rebours = GTEMPS.chrono(pouvoir_delais, -1)
 temps_ajout_de_lignes = GTEMPS.chrono(lignes_ajout_delais)
@@ -84,26 +80,25 @@ animation_cpt = 0
 # █  METHODES DU JEU                                                        █
 # █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
 
-def get_nb_joueurs():
-    return (len(tetris_joueurs))
+
 
 def nbJoueursActifs():
         nb = 0
-        for i, m in tetris_joueurs.items():
-            if m.Joueur.actif and not m.Partie.mort: nb +=1
+        for i, moteur in V.moteurs.items():
+            if moteur.Joueur.actif and not moteur.Partie.mort: nb +=1
         return nb
 
 def partie_en_cours():
     return (partie_demarree)
 
 def partie_en_pause():
-    for i, joueur in tetris_joueurs.items():
-        if not joueur.pause: return False
+    for i, moteur in V.moteurs.items():
+        if not moteur.pause: return False
     return True 
 
 def partie_terminee():
-    for i, joueur in tetris_joueurs.items():
-        if not joueur.Partie.mort: return False
+    for i, moteur in V.moteurs.items():
+        if not moteur.Partie.mort: return False
     return True
 
 def changer_de_mode(x):

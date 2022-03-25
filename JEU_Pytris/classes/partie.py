@@ -13,9 +13,9 @@ class CParties:
     def controle_fin_de_partie():
         if VAR.partie_en_cours() :
             if (VAR.temps_de_partie.get_temps_restant() <= 0) or VAR.partie_terminee():
-                for i, pytris_moteur in VAR.tetris_joueurs.items():
-                    pytris_moteur.mort = True
-                    pytris_moteur.Mecanique.action_a_entreprendre_si_le_joueur_a_perdu()
+                for i, moteur in V.moteurs.items():
+                    moteur.mort = True
+                    moteur.Mecanique.action_a_entreprendre_si_le_joueur_a_perdu()
                     
                 VAR.partie_demarree = False
                 VAR.fin_partie = True
@@ -24,11 +24,11 @@ class CParties:
                 
 
     def gestion_malediction(force = False):
-        if VAR.partie_demarree and VAR.get_nb_joueurs() > 1 and VAR.nbJoueursActifs() > 1:
+        if VAR.partie_demarree and V.get_nb_joueurs() > 1 and VAR.nbJoueursActifs() > 1:
             if VAR.temps_pouvoir.controle() or force:
                 VAR.pouvoirId +=1
-                if VAR.pouvoirId > VAR.get_nb_joueurs() -1: VAR.pouvoirId = 0
-                if not VAR.tetris_joueurs[VAR.pouvoirId].Joueur.actif: CParties.gestion_malediction()
+                if VAR.pouvoirId > V.get_nb_joueurs() -1: VAR.pouvoirId = 0
+                if not V.moteurs[VAR.pouvoirId].Joueur.actif: CParties.gestion_malediction()
 
 # -----------------------------------------------------------------------------------------------------------
 # -

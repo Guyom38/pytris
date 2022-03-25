@@ -82,7 +82,7 @@ class CGrille:
       
     def afficher_lignes_en_attente_detre_ajoutees(self):
         if self.Moteur.Mecanique.lignesAjouter == 0: return
-        if self.Moteur.Mecanique.lignesAjouter > VAR.limiteLignesEnAttente: self.Moteur.Mecanique.lignesAjouter = VAR.limiteLignesEnAttente
+        if self.Moteur.Mecanique.lignesAjouter > VAR.lignes_en_attente: self.Moteur.Mecanique.lignesAjouter = VAR.lignes_en_attente
         
         for i in range(self.Moteur.Mecanique.lignesAjouter):
             V.fenetre.blit(V.IMAGES["#"][0], (self.offX + (VAR.DIMENSION[0] * VAR.TAILLE) + 4, self.offY + (i * (VAR.TAILLE + 4))))

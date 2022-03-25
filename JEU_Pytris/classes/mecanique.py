@@ -147,13 +147,13 @@ class CMecanique:
     
     def balance_les_lignes(self, nbLignes):
         if self.M.Joueur.id == VAR.pouvoirId:                 # --- Si le joueur a le pouvoir, il balance a tout le monde
-            for id, moteur in VAR.tetris_joueurs.items():
-                if VAR.tetris_joueurs[moteur.Joueur.id].Joueur.actif:  
+            for id, moteur in V.moteurs.items():
+                if V.moteurs[moteur.Joueur.id].Joueur.actif:  
                     if moteur.Joueur.id != self.M.Joueur.id: moteur.Mecanique.lignesAjouter += nbLignes 
          
         else:                                               # --- Si un autre joueur a le pouvoir, il recoit la malediction
-            if VAR.tetris_joueurs[VAR.pouvoirId].Joueur.actif:  
-                VAR.tetris_joueurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
+            if V.moteurs[VAR.pouvoirId].Joueur.actif:  
+                V.moteurs[VAR.pouvoirId].Mecanique.lignesAjouter += nbLignes 
                 
         if VAR.mode_balance:                           # --- Retire autant de lignes en attente qu'il y a de lignes a ajouter
             self.M.Mecanique.lignesAjouter -= nbLignes
