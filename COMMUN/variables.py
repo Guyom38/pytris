@@ -31,7 +31,7 @@ cycle = 0
 fps = 0
 fps_cpt = 0
 fps_cycle = 0
-fps_max = 0
+fps_max = 50
 
 joueurs = {}
 nbManettes = 0
@@ -39,6 +39,8 @@ nbBoutons = 0
 manettes = {}
     
 evenements = None
+partie_demarree = False
+fin_partie = False
 
 def joueurs_actifs():
     for i, joueur in joueurs.items():

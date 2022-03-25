@@ -79,9 +79,9 @@ class CMecanique:
 
     
     def gestion_mecanique_du_jeu(self):
-        partie_arretee = not VAR.partie_en_cours()
+        partie_arretee = not V.partie_demarree
         partie_en_pause = self.M.Partie.pause
-        joueur_inactif = not self.M.Joueur.actif
+        joueur_inactif = not self.M.Joueur.actif or self.M.Partie.mort
        
         if not(partie_arretee or partie_en_pause or joueur_inactif):
             self.gravite() 

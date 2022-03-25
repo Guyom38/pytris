@@ -42,14 +42,14 @@ class CPyTris:
             rang-=1
 
     def compte_a_rebours_partie(self):
-        if not VAR.partie_demarree:
+        if not V.partie_demarree:
             if VAR.compte_a_rebours.cycle == -1:     # --- Initialise le compte a rebours de debut de partie  
                 VAR.compte_a_rebours.reset()        
                 
             if VAR.compte_a_rebours.controle():      # --- Demarre la partie en fin de compte a rebours
                 VAR.compte_a_rebours.reset(-1)
                 
-                VAR.partie_demarree = True
+                V.partie_demarree = True
                 VAR.temps_de_partie.reset(-1)
                 
                 for i, moteur in V.moteurs.items():
@@ -59,7 +59,7 @@ class CPyTris:
                 self.afficher_compte_a_rebours()      
 
     def gestion_manettes_minimum(self):
-        for i, moteur in VAR.moteurs.items():
+        for i, moteur in V.moteurs.items():
             moteur.Manette.gestion_evenements_start()
     
     def relance_la_partie(self):
@@ -71,7 +71,8 @@ class CPyTris:
             moteur.initialiser()
         
         VAR.temps_de_partie.reset(-1)
-        VAR.fin_partie = False  
+        V.fin_partie = False  
+        #self.changer_musique()
         
 
     # █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
@@ -88,7 +89,7 @@ class CPyTris:
     # ---
     # --- Affichage du temps restant de la partie
     def afficher_temps(self):
-        if not VAR.partie_en_cours(): return
+        if not V.partie_demarree: return
         
         temps = VAR.temps_de_partie.get_temps_restant()
         if temps <=0: temps = 0
@@ -141,8 +142,13 @@ class CPyTris:
         CParties.gestion_malediction()
         CParties.controle_fin_de_partie()
 
-
+    def changer_musique(self):
+        fichier = random.choice(os.listdir("JEU_Pytris\\audios\\musics" ))
+        FCT.GAUDIO.charger_musique("JEU_Pytris\\audios\\musics\\" + fichier)    
+        
     def boucle(self):
+        self.changer_musique()
+            
         V.boucle = True
         while V.boucle:
             CControle.capture_evements_utilisateurs()

@@ -38,8 +38,8 @@ class CManette:
             VAR.relancePartie = True    
            
             VAR.changer_de_mode(ENUM_MODE.MODE_JEU)
-            VAR.partie_demarree = False
-            VAR.fin_partie = False
+            V.partie_demarree = False
+            V.fin_partie = False
             VAR.temps_de_partie.reset(-1)
             
             
@@ -83,7 +83,7 @@ class CManette:
                              
                                        
     def gestion_evenements_joueurs(self, event):
-        if not VAR.partie_en_cours() or not self.Moteur.Joueur.actif: return  
+        if not V.partie_demarree or not self.Moteur.Joueur.actif: return  
 
         manette = self.Moteur.Joueur.Manette
         if manette.boutonL:
@@ -106,14 +106,11 @@ class CManette:
                                 
         if manette.axeX > 0.9:
             self.direction = 1
-            print((self.direction, manette.axeX))
         elif manette.axeX < -0.9:
             self.direction = -1
-            print((self.direction, manette.axeX))
         else:
             self.direction = 0
-            print((self.direction, manette.axeX))
-
+      
         if manette.axeY > 0.9:
             self.chute = True
         else:

@@ -19,7 +19,7 @@ class CHighscore():
         CHighscore.afficher_titre()
         
         liste_scores = []
-        for i, moteur in V.moteurs:
+        for i, moteur in V.moteurs.items():
             liste_scores.append((moteur.Partie.score, i))
 
         liste_triee = sorted(liste_scores, reverse=True)

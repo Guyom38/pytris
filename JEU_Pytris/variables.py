@@ -24,11 +24,12 @@ limitePiecesQuiSeSuivent = 2
 mode_balance = True            # Si le joueur fait une ligne, cela baisse le nombre de lignes en attente
 lignes_en_attente = 5
 lignes_ajout_max = 2
-lignes_ajout_delais = 10000
 
+lignes_ajout_delais = 10000
 duree_partie = 180000
-pouvoir_delais = 5000
+compte_a_rebours_delais = 5000
 vitesse_par_defaut = 500
+pouvoir_delais = 7000
 
 marge = 20
 
@@ -53,20 +54,20 @@ class ENUM_MODE(Enum):
 # █  VARIABLES DU JEU                                                       █
 # █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
 
-partie_demarree = False
+
 mode = ENUM_MODE.MODE_JEU
 
 temps_de_partie = GTEMPS.chrono(duree_partie)
-compte_a_rebours = GTEMPS.chrono(pouvoir_delais, -1)
+compte_a_rebours = GTEMPS.chrono(compte_a_rebours_delais, -1)
 temps_ajout_de_lignes = GTEMPS.chrono(lignes_ajout_delais)
+temps_pouvoir = GTEMPS.chrono(pouvoir_delais)
 
-fin_partie = False
 
 LISTE_DES_PIECES = ["O", "I", "S", "Z", "L", "J", "T"]
 
 pouvoirId = 0
 
-temps_pouvoir = GTEMPS.chrono(duree_partie)
+
 #pouvoirCycle = 0
 #limiteLignesCycle = 0
 
@@ -87,9 +88,6 @@ def nbJoueursActifs():
         for i, moteur in V.moteurs.items():
             if moteur.Joueur.actif and not moteur.Partie.mort: nb +=1
         return nb
-
-def partie_en_cours():
-    return (partie_demarree)
 
 def partie_en_pause():
     for i, moteur in V.moteurs.items():

@@ -11,25 +11,32 @@ import random
 
 class CParties:
     def controle_fin_de_partie():
-        if VAR.partie_en_cours() :
+        if V.partie_demarree :
             if (VAR.temps_de_partie.get_temps_restant() <= 0) or VAR.partie_terminee():
                 for i, moteur in V.moteurs.items():
                     moteur.mort = True
                     moteur.Mecanique.action_a_entreprendre_si_le_joueur_a_perdu()
                     
-                VAR.partie_demarree = False
-                VAR.fin_partie = True
+                V.partie_demarree = False
+                V.fin_partie = True
                 
                 VAR.changer_de_mode(ENUM_MODE.MODE_SCORE)
+                FCT.GAUDIO.charger_musique("JEU_Pytris\\audios\\score.mp3")
                 
 
     def gestion_malediction(force = False):
-        if VAR.partie_demarree and V.get_nb_joueurs() > 1 and VAR.nbJoueursActifs() > 1:
+     
+        if V.partie_demarree and V.get_nb_joueurs() > 1 and VAR.nbJoueursActifs() > 1:
             if VAR.temps_pouvoir.controle() or force:
                 VAR.pouvoirId +=1
                 if VAR.pouvoirId > V.get_nb_joueurs() -1: VAR.pouvoirId = 0
                 if not V.moteurs[VAR.pouvoirId].Joueur.actif: CParties.gestion_malediction()
 
+        for i, moteur in V.moteurs.items():
+            if moteur.Joueur.id > VAR.pouvoirId:
+                moteur.Joueur.Avatar.animation_flip.bascule = False
+            elif moteur.Joueur.id < VAR.pouvoirId:
+                moteur.Joueur.Avatar.animation_flip.bascule = True
 # -----------------------------------------------------------------------------------------------------------
 # -
 # -     CLASSE PARTIE

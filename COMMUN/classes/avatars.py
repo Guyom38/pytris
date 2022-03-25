@@ -4,6 +4,7 @@ from pygame.locals import *
 import JEU_Pytris.variables as VAR
 from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
+import COMMUN.classes.fonctions as FCT
 #from JEU_Pytris.grille import *
 
 import csv, math, random, os
@@ -83,20 +84,16 @@ class CAvatars:
     
     def __init__(self, joueur):
         self.Joueur = joueur
-        #self.IMG_AVATARS = {}
         self.image = None
         
         self.offY = 0
         self.chemin = CAvatars.DOSSIER + "avatars"
         
-        self.animation_cycle = 0
-        self.animation_frequence = 50
+        self.animation = FCT.GTEMPS.chrono(50)
         self.animation_cpt = 0
         
-        self.animation_flip_cycle = 0
-        self.animation_flip_frequence = 3000
-        self.animation_flip = False
-        
+        self.animation_flip = FCT.GTEMPS.chrono(3000)
+      
         self.expression = "DORT"
         self.expressionOld = "DORT"
         
@@ -234,7 +231,7 @@ class CAvatars:
         yP = (math.cos(self.animation_cpt) * 1) 
         self.afficher_membres((self.tete, self.oreille, self.yeux, self.cheveux, self.cils, self.barbe, self.bouche, self.nez), 0, yP)
         
-        if self.animation_flip:
+        if self.animation_flip.bascule:
             self.image = pygame.transform.flip(self.image, True, False) 
             
         
@@ -258,16 +255,14 @@ class CAvatars:
                 
     def gestion_sens(self):
          # --- Rythme d'animation du flip
-        if pygame.time.get_ticks() - self.animation_flip_cycle > self.animation_flip_frequence:
-            self.animation_flip = not self.animation_flip
-            self.animation_flip_frequence = random.randint(2000, 30000)
-            self.animation_flip_cycle = pygame.time.get_ticks()
+        if self.animation_flip.controle():
+            self.animation_flip.frequence = random.randint(2000, 30000)
+
      
     def gestion_animation(self):
         # --- Rythme d'animation
-        if pygame.time.get_ticks() - self.animation_cycle > self.animation_frequence:
-            self.animation_cpt +=1
-            self.animation_cycle = pygame.time.get_ticks()
+        if self.animation.controle(): self.animation_cpt +=1
+            
     
     def gestion_visage(self):
         # --- Changement d'expressions du visage

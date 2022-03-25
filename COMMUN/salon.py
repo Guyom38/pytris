@@ -159,15 +159,15 @@ class CSalon:
             joueur.actif = True
                                 
         if manette.axeX > 0.9:
-            joueur.Avatar.salonX += 2
+            joueur.Avatar.salonX += 4
             joueur.Avatar.animation_flip = True
         elif manette.axeX < -0.9:
-            joueur.Avatar.salonX -= 2
+            joueur.Avatar.salonX -= 4
             joueur.Avatar.animation_flip = False
         if manette.axeY > 0.9:
-            joueur.Avatar.salonY += 2
+            joueur.Avatar.salonY += 4
         elif manette.axeY < -0.9:
-            joueur.Avatar.salonY -= 2  
+            joueur.Avatar.salonY -= 4  
             
         if joueur.Avatar.salonX<0: joueur.Avatar.salonX = 0
         if joueur.Avatar.salonX>self.dimX: joueur.Avatar.salonX =  self.dimX

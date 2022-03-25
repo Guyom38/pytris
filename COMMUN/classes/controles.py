@@ -40,8 +40,8 @@ class CControle:
         V.nbBoutons = V.manettes[0].get_numbuttons()
 
     def remise_a_zero_des_boutons():
-        for i, joueur in V.joueurs.items():
-            joueur.Manette.initialiser()
+        for i, moteur in V.moteurs.items():
+            moteur.Manette.initialiser()
 
 
     def capture_evements_utilisateurs():
