@@ -140,11 +140,7 @@ class CPyTris:
 
         CParties.gestion_malediction()
         CParties.controle_fin_de_partie()
-        
-        
 
-    
-        
 
     def boucle(self):
         V.boucle = True

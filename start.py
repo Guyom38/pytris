@@ -1,12 +1,13 @@
-from JEU_Pytris.pytris import *
+import COMMUN.commun as C
+import JEU_Pytris.pytris as PT
 import JEU_Pylander.pylander as PL
 
 if __name__ == '__main__':       
-    commun = CCommun("Pytris") 
+    commun = C.CCommun("Pytris") 
     commun.Salon.boucle()
     
-    #pytris = CPyTris(commun)
-    #pytris.boucle()
+    pytris = PT.CPyTris(commun)
+    pytris.boucle()
 
-    pylander = PL.pylander(commun)
-    pylander.boucle()
+    #pylander = PL.pylander(commun)
+    #pylander.boucle()

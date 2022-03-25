@@ -46,7 +46,7 @@ class CControle:
 
     def capture_evements_utilisateurs():
         V.evenements = pygame.event.get()
-       
+
         for event in V.evenements:        
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 V.boucle = False
