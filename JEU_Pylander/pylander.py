@@ -13,7 +13,7 @@ from COMMUN.classes.controles import *
 
 class pylander:
     def __init__(self, c):
-        V.fps_max = 5
+        V.fps_max = 10
 
         self.C = c
         self.initialiser_les_joueurs()
@@ -22,17 +22,17 @@ class pylander:
         j = 0
         if V.joueur_clavier: j = 1    
                         
-        VAR.pylander_joueurs = {}
+        VAR.joueurs = {}
         for i in range(V.nbManettes+j):
-            VAR.pylander_joueurs[i] =  CMoteur(V.joueurs[i])
-            VAR.pylander_joueurs[i].initialiser()
+            VAR.joueurs[i] =  CMoteur(V.joueurs[i])
+            VAR.joueurs[i].initialiser()
 
             barre = (200 / V.nbManettes+j) * i
             pygame.draw.rect(V.fenetre, (255,255,0,255), (0, V.RESOLUTION[1]-30, barre, 30), 0)
             pygame.display.flip()
 
     def afficher_les_joueurs(self):
-        for i, pylander_moteur in VAR.pylander_joueurs.items():
+        for i, pylander_moteur in VAR.joueurs.items():
             pylander_moteur.FUSEE_C, pylander_moteur.FUSEE_D, pylander_moteur.FUSEE_G = False, False, False
             pylander_moteur.Manette.gestion_evenements()
             pylander_moteur.afficher()    
@@ -49,6 +49,9 @@ class pylander:
             self.C.afficher_fond()
             self.afficher_les_joueurs()
 
+            if self.C.compte_a_rebours_partie():
+                V.partie_demarree = True
+                
             self.C.afficher_rendu()
             
             

@@ -233,8 +233,6 @@ class CAvatars:
         
         if self.animation_flip.bascule:
             self.image = pygame.transform.flip(self.image, True, False) 
-            
-        
         V.fenetre.blit(self.image, (x, y))
         
     

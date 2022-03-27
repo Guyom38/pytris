@@ -1,8 +1,11 @@
 from pygame.locals import *
 
+
+
 RESOLUTION = ((1280, 800),(1920, 1080))[0]
 MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[0]
 ECRITURE_PAR_DEFAULT = "Arial"
+compte_a_rebours_delais = 5000
 
 horloge = None
 fenetre = None
@@ -41,6 +44,8 @@ manettes = {}
 evenements = None
 partie_demarree = False
 fin_partie = False
+
+
 
 def joueurs_actifs():
     for i, joueur in joueurs.items():

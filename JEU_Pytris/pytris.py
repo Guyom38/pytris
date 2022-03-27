@@ -10,7 +10,7 @@ import COMMUN.variables as V
 from JEU_Pytris.classes.moteur import *
 from JEU_Pytris.classes.partie import *
 from JEU_Pytris.init import *
-from JEU_Pytris.classes.highscore import * 
+from COMMUN.highscore import * 
 
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
@@ -41,22 +41,7 @@ class CPyTris:
             V.moteurs[id].Partie.rang = rang
             rang-=1
 
-    def compte_a_rebours_partie(self):
-        if not V.partie_demarree:
-            if VAR.compte_a_rebours.cycle == -1:     # --- Initialise le compte a rebours de debut de partie  
-                VAR.compte_a_rebours.reset()        
-                
-            if VAR.compte_a_rebours.controle():      # --- Demarre la partie en fin de compte a rebours
-                VAR.compte_a_rebours.reset(-1)
-                
-                V.partie_demarree = True
-                VAR.temps_de_partie.reset(-1)
-                
-                for i, moteur in V.moteurs.items():
-                    moteur.Joueur.actif = True
-
-            else:
-                self.afficher_compte_a_rebours()      
+    
 
     def gestion_manettes_minimum(self):
         for i, moteur in V.moteurs.items():
@@ -110,15 +95,7 @@ class CPyTris:
         image_temps = FCT.GFONT.get_image_texte("TEMPS  RESTANT   " + GTEMPS.format_temps((VAR.duree_partie - temps) // 1000) , 40, (255,255,255,255)) 
         V.fenetre.blit(image_temps, ((V.RESOLUTION[0] - image_temps.get_width()) // 2, pY+((hauteur_barre-image_temps.get_height()) //2)))
 
-    # ---
-    # --- Affichage du compte a rebours de début de partie
-    def afficher_compte_a_rebours(self):
-        reste = (VAR.compte_a_rebours.frequence // 1000) - (VAR.compte_a_rebours.get_temps_restant()) // 1000
-        image_temps = FCT.GFONT.get_image_texte(str(reste), 200, (0,0,0,255)) 
-        pX, pY = (V.RESOLUTION[0] - image_temps.get_width()) //2, (V.RESOLUTION[1] - image_temps.get_height()) //2
-        V.fenetre.blit(image_temps, (pX-10, pY+10))
-        image_temps = FCT.GFONT.get_image_texte(str(reste), 200, (255,255,255,255)) 
-        V.fenetre.blit(image_temps, (pX, pY))
+    
         
         
     # █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
@@ -127,7 +104,7 @@ class CPyTris:
 
     def boucle_score(self):
         self.gestion_manettes_minimum()
-        CHighscore.afficher()
+        self.C.Highscore.afficher()
 
 
     def boucle_jeu(self):
@@ -137,7 +114,9 @@ class CPyTris:
         self.calcul_du_rang()
         self.afficher_les_joueurs()
         self.afficher_temps()
-        self.compte_a_rebours_partie()
+        
+        if self.C.compte_a_rebours_partie():
+            VAR.temps_de_partie.reset(-1)
 
         CParties.gestion_malediction()
         CParties.controle_fin_de_partie()

@@ -141,29 +141,29 @@ class CSalon:
 
     def gestion_evenements_salon(self, joueur):
         manette = joueur.Manette
-        if manette.boutonL:
-            joueur.Avatar.animation_flip = False
-        if manette.boutonR:
-            joueur.Avatar.animation_flip = True
-        if manette.boutonA:
+        if manette.boutonL.get_etat():
+            joueur.Avatar.animation_flip.bascule = False
+        if manette.boutonR.get_etat():
+            joueur.Avatar.animation_flip.bascule = True
+        if manette.boutonA.get_etat():
             joueur.Avatar.changer_expression("BISOUS", -1)
-        if manette.boutonB:
+        if manette.boutonB.get_etat():
             joueur.Avatar.changer_expression("ENERVE", -1)
-        if manette.boutonX:
+        if manette.boutonX.get_etat():
             joueur.Avatar.changer_expression("EPUISE", -1)
-        if manette.boutonY:
+        if manette.boutonY.get_etat():
             joueur.Avatar.changer_expression("DORT", -1)
-        if manette.boutonSelect:
+        if manette.boutonSelect.get_etat():
             joueur.Avatar.charger_personnage()
-        if manette.boutonStart:    
+        if manette.boutonStart.get_etat():    
             joueur.actif = True
                                 
         if manette.axeX > 0.9:
             joueur.Avatar.salonX += 4
-            joueur.Avatar.animation_flip = True
+            joueur.Avatar.animation_flip.bascule = True
         elif manette.axeX < -0.9:
             joueur.Avatar.salonX -= 4
-            joueur.Avatar.animation_flip = False
+            joueur.Avatar.animation_flip.bascule = False
         if manette.axeY > 0.9:
             joueur.Avatar.salonY += 4
         elif manette.axeY < -0.9:

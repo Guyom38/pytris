@@ -27,7 +27,7 @@ lignes_ajout_max = 2
 
 lignes_ajout_delais = 10000
 duree_partie = 180000
-compte_a_rebours_delais = 5000
+
 vitesse_par_defaut = 500
 pouvoir_delais = 7000
 
@@ -58,7 +58,7 @@ class ENUM_MODE(Enum):
 mode = ENUM_MODE.MODE_JEU
 
 temps_de_partie = GTEMPS.chrono(duree_partie)
-compte_a_rebours = GTEMPS.chrono(compte_a_rebours_delais, -1)
+
 temps_ajout_de_lignes = GTEMPS.chrono(lignes_ajout_delais)
 temps_pouvoir = GTEMPS.chrono(pouvoir_delais)
 

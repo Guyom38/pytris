@@ -179,7 +179,7 @@ class CPieces:
     
 
     def faire_tourner_la_piece(self, sensAiguille):
-        
+           
         ancRot = self.pieceRotation
 
         if sensAiguille:

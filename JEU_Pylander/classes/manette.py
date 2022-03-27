@@ -11,17 +11,10 @@ class CManette:
     # ---------------------------------------------------------------------------------------------------------------
     # -
     # ---------------------------------------------------------------------------------------------------------------
-    def __init__(self, moteur, idManette):
-        self.Moteur = moteur
-        self.manetteId = self.Moteur.Joueur.id
-      
-
-            
-            
-    
-    
-    
-    
+    def __init__(self, m, idManette):
+        self.M = m
+        self.manetteId = self.M.Joueur.id
+     
     
     def executer_actions(self):
         pass    
@@ -44,54 +37,55 @@ class CManette:
                 if event.key == 13: self.action_start()
                         
         elif V.manettes[self.manetteId].get_button(CBouton.B_START) == 1:
-                if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
-                    self.cyclePoseRapide = pygame.time.get_ticks()
-                    self.action_start()   
+                #if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
+                #    self.cyclePoseRapide = pygame.time.get_ticks()
+            self.action_start()   
                                    
     
                              
                                        
     def gestion_evenements_joueurs(self, event):
-        if not VAR.partie_en_cours() or not self.Moteur.Joueur.actif: return  
+        if not V.partie_demarree or not self.M.Joueur.actif: return  
 
-        manette = self.Moteur.Joueur.Manette
-        if manette.boutonL:
-            pass
-        if manette.boutonR:
-            pass
-        if manette.boutonA:
-            self.V_CHUTE = self.V_CHUTE-2
-            self.ESSENCE = self.ESSENCE-5
-            self.FUSEE_C = True
+        manette = self.M.Joueur.Manette
+        #if manette.boutonL.get_etat():
+        #    pass
+        #if manette.boutonR.get_etat():
+        #    pass
+        if manette.boutonA.get_etat():
+            self.M.V_CHUTE = self.M.V_CHUTE-2
+            self.M.ESSENCE = self.M.ESSENCE-5
+            self.M.FUSEE_C = True
 
-        if manette.boutonB:
-            pass
+        #if manette.boutonB.get_etat():
+        #    pass
         #if manette.boutonX:
         #if manette.boutonY:
            
-        if manette.boutonSelect:
-            pass
+        #if manette.boutonSelect.get_etat():
+        #    pass
         #if manette.boutonStart:    
             
                                 
         if manette.axeX > 0.9:
-            self.V_DECAL = self.V_DECAL +2
-            self.ESSENCE = self.ESSENCE -5
-            self.FUSEE_G = True
+            self.M.V_DECAL = self.M.V_DECAL-2
+            self.M.ESSENCE = self.M.ESSENCE-5
+            self.M.FUSEE_D = True            
             
         elif manette.axeX < -0.9:
-            self.V_DECAL = self.V_DECAL-2
-            self.ESSENCE = self.ESSENCE-5
-            self.FUSEE_D = True
             
-        else:
-            pass
+            self.M.V_DECAL = self.M.V_DECAL +2
+            self.M.ESSENCE = self.M.ESSENCE -5
+            self.M.FUSEE_G = True
+            
+        #else:
+        #    pass
             
 
-        if manette.axeY > 0.9:
-            pass
-        else:
-            pass
+        #if manette.axeY > 0.9:
+        #    pass
+        #else:
+        #    pass
 
                             
         

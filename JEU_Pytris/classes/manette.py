@@ -6,10 +6,13 @@ from pygame.locals import *
 from COMMUN.classes.controles import CBouton
 
 import COMMUN.variables as V
+import COMMUN.classes.fonctions as FCT
+
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
 
 class CManette:
+    
     # ---------------------------------------------------------------------------------------------------------------
     # -
     # ---------------------------------------------------------------------------------------------------------------
@@ -22,7 +25,7 @@ class CManette:
         self.chute = False
         self.cycleDirection = pygame.time.get_ticks()
     
-    
+        #self.anti_rebond = FCT.GTEMPS.chrono(30)
 
     
     def action_start(self):
@@ -78,28 +81,35 @@ class CManette:
                 if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
                     self.cyclePoseRapide = pygame.time.get_ticks()
                     self.action_start()   
-                                   
-    
                              
-                                       
+        return
+                           
     def gestion_evenements_joueurs(self, event):
         if not V.partie_demarree or not self.Moteur.Joueur.actif: return  
 
         manette = self.Moteur.Joueur.Manette
-        if manette.boutonL:
+        
+        if manette.boutonL.get_etat():                
             self.Moteur.Pieces.faire_tourner_la_piece(False)
-        if manette.boutonR:
+        if manette.boutonR.get_etat():                
             self.Moteur.Pieces.faire_tourner_la_piece(True)
-        if manette.boutonA:
+        if manette.boutonA.get_etat():                
             self.Moteur.Pieces.faire_tourner_la_piece(True)
-        if manette.boutonB:
-            if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
-                self.cyclePoseRapide = pygame.time.get_ticks()
-                self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
+        if manette.boutonB.get_etat():                 
+            self.Moteur.Mecanique.faire_descendre_a_fond_la_piece(self.Moteur.Pieces)
+                
+                
+            #    if pygame.time.get_ticks() - self.cyclePoseRapide > VAR.poseRapideDelais: 
+            #        self.cyclePoseRapide = pygame.time.get_ticks()
+                    
+        
+        #elif not manette.boutonL and not manette.boutonR and not manette.boutonA and not manette.boutonB:
+        #    self.anti_rebond = False
+            
         #if manette.boutonX:
         #if manette.boutonY:
            
-        if manette.boutonSelect:
+        if manette.boutonSelect.get_etat():
             self.Moteur.Partie.aide = not self.Moteur.Partie.aide
         #if manette.boutonStart:    
             

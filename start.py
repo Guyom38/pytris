@@ -9,8 +9,8 @@ if __name__ == '__main__':
     commun.Salon.boucle()
     
     if V.boucle:
-        pytris = PT.CPyTris(commun)
-        pytris.boucle()
+        #pytris = PT.CPyTris(commun)
+        #pytris.boucle()
 
-    #pylander = PL.pylander(commun)
-    #pylander.boucle()
+        pylander = PL.pylander(commun)
+        pylander.boucle()

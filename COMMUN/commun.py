@@ -1,6 +1,7 @@
 
 import pygame
 from pygame.locals import *
+from COMMUN.highscore import CHighscore
 
 import COMMUN.variables as V
 from COMMUN.classes.controles import *
@@ -25,7 +26,11 @@ class CCommun:
         
         self.page_chargement()
         random.shuffle(CAvatars.LISTE_NOMS)
+        
+        self.compte_a_rebours = FCT.GTEMPS.chrono(V.compte_a_rebours_delais, -1)
+        
         self.Salon = CSalon(self)
+        self.Highscore = CHighscore(self)
         
     def page_chargement(self):
         # --- initialisation du moteur Pygame
@@ -95,10 +100,40 @@ class CCommun:
                 
                 pygame.draw.rect(V.fenetre, (255,255,0,255), (0, V.RESOLUTION[1]-30, barre, 30), 0)
                 pygame.display.flip()
-        
+
+
+    def compte_a_rebours_partie(self):
+        relance_partie = False
+        if not V.partie_demarree:
+            if self.compte_a_rebours.cycle == -1:     # --- Initialise le compte a rebours de debut de partie  
+                self.compte_a_rebours.reset()        
+                
+            if self.compte_a_rebours.controle():      # --- Demarre la partie en fin de compte a rebours
+                self.compte_a_rebours.reset(-1)
+                
+                V.partie_demarree = True
+                relance_partie = True
+                
+                for i, moteur in V.moteurs.items():
+                    moteur.Joueur.actif = True
+
+            else:
+                self.afficher_compte_a_rebours()    
+        return relance_partie          
 # ---------------------------------------------------------------------------------------------------------------
 # -
 # ---------------------------------------------------------------------------------------------------------------
+
+    # ---
+    # --- Affichage du compte a rebours de début de partie
+    def afficher_compte_a_rebours(self):
+        reste = (self.compte_a_rebours.frequence // 1000) - (self.compte_a_rebours.get_temps_restant()) // 1000
+        image_temps = FCT.GFONT.get_image_texte(str(reste), 200, (0,0,0,255)) 
+        pX, pY = (V.RESOLUTION[0] - image_temps.get_width()) //2, (V.RESOLUTION[1] - image_temps.get_height()) //2
+        V.fenetre.blit(image_temps, (pX-10, pY+10))
+        image_temps = FCT.GFONT.get_image_texte(str(reste), 200, (255,255,255,255)) 
+        V.fenetre.blit(image_temps, (pX, pY))
+        
     def afficher_fond(self):
         if not V.fond:
             V.fenetre.fill((96,96,96))

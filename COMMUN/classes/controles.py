@@ -5,6 +5,7 @@ from pygame.locals import *
 import COMMUN.variables as V
 import JEU_Pytris.variables as VAR
 from JEU_Pytris.variables import *
+import COMMUN.classes.fonctions as FCT
 
 # ---------------------------------------------------------------------------------------------------------------
 # -
@@ -19,7 +20,24 @@ class CBouton:
     B_START = 9
     B_SELECT = 8
     
+
+class CTouche:
+    def __init__(self):
+        #self.cycle = FCT.GTEMPS.chrono(100)
+        self.etat = False
     
+    def pression(self):
+        self.etat = True
+        
+    def relache(self):
+        self.etat = False
+        
+    def get_etat(self):
+        etat = self.etat
+        if etat: self.etat = False
+        return etat
+        
+        
 # ---------------------------------------------------------------------------------------------------------------
 # -
 # ---------------------------------------------------------------------------------------------------------------
@@ -38,6 +56,8 @@ class CControle:
             V.manettes[idManette] = pygame.joystick.Joystick(idManette) 
             V.manettes[idManette].init()
         V.nbBoutons = V.manettes[0].get_numbuttons()
+        
+        
 
     def remise_a_zero_des_boutons():
         for i, moteur in V.moteurs.items():
@@ -59,27 +79,27 @@ class CControle:
             elif event.type == pygame.JOYBUTTONDOWN :
                 idManette = event.joy
 
-                if event.button == CBouton.B_A: V.joueurs[idManette].Manette.boutonA = True
-                if event.button == CBouton.B_B: V.joueurs[idManette].Manette.boutonB = True
-                if event.button == CBouton.B_X: V.joueurs[idManette].Manette.boutonX = True
-                if event.button == CBouton.B_Y: V.joueurs[idManette].Manette.boutonY = True
-                if event.button == CBouton.B_L: V.joueurs[idManette].Manette.boutonL = True
-                if event.button == CBouton.B_R: V.joueurs[idManette].Manette.boutonR = True
-                if event.button == CBouton.B_START: V.joueurs[idManette].Manette.boutonStart = True
-                if event.button == CBouton.B_SELECT: V.joueurs[idManette].Manette.boutonSelect = True        
+                if event.button == CBouton.B_A: V.joueurs[idManette].Manette.boutonA.pression()
+                if event.button == CBouton.B_B: V.joueurs[idManette].Manette.boutonB.pression()
+                if event.button == CBouton.B_X: V.joueurs[idManette].Manette.boutonX.pression()
+                if event.button == CBouton.B_Y: V.joueurs[idManette].Manette.boutonY.pression()
+                if event.button == CBouton.B_L: V.joueurs[idManette].Manette.boutonL.pression()
+                if event.button == CBouton.B_R: V.joueurs[idManette].Manette.boutonR.pression()
+                if event.button == CBouton.B_START: V.joueurs[idManette].Manette.boutonStart.pression()
+                if event.button == CBouton.B_SELECT: V.joueurs[idManette].Manette.boutonSelect.pression() 
 
  
             elif event.type == pygame.JOYBUTTONUP:
                 idManette = event.joy
 
-                if event.button == CBouton.B_A: V.joueurs[idManette].Manette.boutonA = False
-                if event.button == CBouton.B_B: V.joueurs[idManette].Manette.boutonB = False
-                if event.button == CBouton.B_X: V.joueurs[idManette].Manette.boutonX = False
-                if event.button == CBouton.B_Y: V.joueurs[idManette].Manette.boutonY = False
-                if event.button == CBouton.B_L: V.joueurs[idManette].Manette.boutonL = False
-                if event.button == CBouton.B_R: V.joueurs[idManette].Manette.boutonR = False
-                if event.button == CBouton.B_START: V.joueurs[idManette].Manette.boutonStart = False
-                if event.button == CBouton.B_SELECT: V.joueurs[idManette].Manette.boutonSelect = False  
+                if event.button == CBouton.B_A: V.joueurs[idManette].Manette.boutonA.relache()
+                if event.button == CBouton.B_B: V.joueurs[idManette].Manette.boutonB.relache()
+                if event.button == CBouton.B_X: V.joueurs[idManette].Manette.boutonX.relache()
+                if event.button == CBouton.B_Y: V.joueurs[idManette].Manette.boutonY.relache()
+                if event.button == CBouton.B_L: V.joueurs[idManette].Manette.boutonL.relache()
+                if event.button == CBouton.B_R: V.joueurs[idManette].Manette.boutonR.relache()
+                if event.button == CBouton.B_START: V.joueurs[idManette].Manette.boutonStart.relache()
+                if event.button == CBouton.B_SELECT: V.joueurs[idManette].Manette.boutonSelect.relache()
    
 
 
@@ -88,14 +108,14 @@ class CControle:
         self.initialiser()
     
     def initialiser(self):
-        self.boutonA = False
-        self.boutonB = False
-        self.boutonX = False
-        self.boutonY = False
-        self.boutonL = False
-        self.boutonR = False
-        self.boutonStart = False
-        self.boutonSelect = False
+        self.boutonA = CTouche()
+        self.boutonB = CTouche()
+        self.boutonX = CTouche()
+        self.boutonY = CTouche()
+        self.boutonL = CTouche()
+        self.boutonR = CTouche()
+        self.boutonStart = CTouche()
+        self.boutonSelect = CTouche()
         self.axeX = 0.0
         self.axeY = 0.0
 
