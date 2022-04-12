@@ -60,6 +60,10 @@ class CMoteur:
         self.Partie.afficher_score()
         
         # --- Les mets au meme niveau
+        if self.Joueur.actif:
+            if not self.Mecanique.gestion_pouvoir():
+                self.Joueur.Avatar.gestion_expression()
+
         x = self.grille.offX + self.grille.cadreBas[0] - VAR.marge
         y = self.grille.offY + (VAR.DIMENSION[1] * VAR.TAILLE) + self.grille.cadreBas[3] + VAR.marge
         self.Joueur.Avatar.afficher(x, y)

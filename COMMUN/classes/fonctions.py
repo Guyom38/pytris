@@ -2,8 +2,6 @@ import pygame
 from pygame.locals import *
 
 import time, os, random
-
-import JEU_Pytris.variables as VAR
 import COMMUN.variables as V
 
 
@@ -86,7 +84,7 @@ class GFONT:
         if police == "": police = V.ECRITURE_PAR_DEFAULT
         if not taille in V.ecritures:
             cls.add_ecriture(police+str(taille), police, taille)
-        return V.ecritures[police+str(taille)].render(message, True, couleur)
+        return V.ecritures[police+str(taille)].render(str(message), True, couleur)
 
 
 

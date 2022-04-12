@@ -48,44 +48,29 @@ class CManette:
         if not V.partie_demarree or not self.M.Joueur.actif: return  
 
         manette = self.M.Joueur.Manette
-        #if manette.boutonL.get_etat():
-        #    pass
-        #if manette.boutonR.get_etat():
-        #    pass
-        if manette.boutonA.get_etat():
-            self.M.V_CHUTE = self.M.V_CHUTE-2
-            self.M.ESSENCE = self.M.ESSENCE-5
-            self.M.FUSEE_C = True
 
-        #if manette.boutonB.get_etat():
-        #    pass
-        #if manette.boutonX:
-        #if manette.boutonY:
-           
-        #if manette.boutonSelect.get_etat():
-        #    pass
-        #if manette.boutonStart:    
-            
-                                
-        if manette.axeX > 0.9:
-            self.M.V_DECAL = self.M.V_DECAL-2
-            self.M.ESSENCE = self.M.ESSENCE-5
-            self.M.FUSEE_D = True            
-            
-        elif manette.axeX < -0.9:
-            
-            self.M.V_DECAL = self.M.V_DECAL +2
-            self.M.ESSENCE = self.M.ESSENCE -5
-            self.M.FUSEE_G = True
-            
-        #else:
-        #    pass
-            
+        if manette.boutonStart.get_etat():   
+            self.M.redemarre() 
 
-        #if manette.axeY > 0.9:
-        #    pass
-        #else:
-        #    pass
+        if self.M.carburant > 0:
+            if manette.boutonA.get_etat():
+                self.M.vitesse_de_chute = self.M.vitesse_de_chute-2
+                self.M.carburant = self.M.carburant-5
+                self.M.propulseur_central = True
+
+            if manette.axeX > 0.9:
+                self.M.deport_lateral = self.M.deport_lateral-2
+                self.M.carburant = self.M.carburant-5
+                self.M.propulseur_droit = True            
+                
+            elif manette.axeX < -0.9:            
+                self.M.deport_lateral = self.M.deport_lateral +2
+                self.M.carburant = self.M.carburant -5
+                self.M.propulseur_gauche = True
+
+            
+            
+    
 
                             
         

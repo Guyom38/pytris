@@ -13,6 +13,7 @@ boucle = True
     
 ecritures = {}
 moteurs = {}
+joueurs = {}
 
 fond = True
 idFond = 0
@@ -36,7 +37,7 @@ fps_cpt = 0
 fps_cycle = 0
 fps_max = 50
 
-joueurs = {}
+
 nbManettes = 0
 nbBoutons = 0
 manettes = {}

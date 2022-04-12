@@ -1,11 +1,9 @@
 import pygame
 from pygame.locals import *
  
-import JEU_Pytris.variables as VAR
-from COMMUN.classes.fonctions import *
 import COMMUN.variables as V
 import COMMUN.classes.fonctions as FCT
-#from JEU_Pytris.grille import *
+
 
 import csv, math, random, os
 
@@ -103,7 +101,7 @@ class CAvatars:
         self.expression_cycle = {"global" : 0, "yeux" : 0, "bouche" : 0}
         self.expression_frequence = {"global" : 0, "yeux" : 0, "bouche" : 0}    
 
-        self.ratioX, self.ratioY = VAR.TAILLE * 0.007, VAR.TAILLE * 0.007
+        self.ratioX, self.ratioY = 0.175, 0.175
         self.maxX, self.maxY = 0, 0
         
         self.salonX, self.salonY = 0, 0
@@ -224,7 +222,7 @@ class CAvatars:
         
 
     def dessiner(self, x, y):
-        self.image = GIMAGE.image_vide(680 * self.ratioX, 720 * self.ratioY)
+        self.image = FCT.GIMAGE.image_vide(680 * self.ratioX, 720 * self.ratioY)
         self.afficher_membres((self.bras_gauche, self.pied_gauche, self.corps, self.pied_droit, self.bras_droit), 0, 0 )
         
         # --- Animation et affichage des différents élements de la tete   
@@ -236,14 +234,7 @@ class CAvatars:
         V.fenetre.blit(self.image, (x, y))
         
     
-    def gestion_pouvoir(self):
-        if VAR.pouvoirId == self.Joueur.id:
-            if self.expression != "POUVOIR": self.changer_expression("POUVOIR", -1)
-            return True
-        elif self.expression == "POUVOIR" :
-            if self.expressionOld == "POUVOIR": self.expressionOld = "NORMAL"
-            self.remet_expression_precedent()         
-            return False
+    
     
     def gestion_expression(self):
         if self.expression_cycle["global"] > 0 and self.expression_cycle["global"] != -1:
@@ -265,7 +256,7 @@ class CAvatars:
     def gestion_visage(self):
         # --- Changement d'expressions du visage
         for element in ("yeux", "bouche"):
-            if pygame.time.get_ticks() - self.expression_cycle[element] > GBASE.iif(self.expression_actif, self.expression_frequence[element], 300):
+            if pygame.time.get_ticks() - self.expression_cycle[element] > FCT.GBASE.iif(self.expression_actif, self.expression_frequence[element], 300):
                 self.expression_actif[element] = not self.expression_actif[element]
                 
                 if self.expression_actif[element]: 
@@ -276,8 +267,7 @@ class CAvatars:
     
     def gestion_personnage(self):
         if self.Joueur.actif:
-            if not self.gestion_pouvoir():
-                self.gestion_expression()
+            
             self.gestion_sens()
             self.gestion_animation()
             self.gestion_visage()    

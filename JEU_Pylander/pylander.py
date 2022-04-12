@@ -13,7 +13,7 @@ from COMMUN.classes.controles import *
 
 class pylander:
     def __init__(self, c):
-        V.fps_max = 10
+        V.fps_max = 0
 
         self.C = c
         self.initialiser_les_joueurs()
@@ -22,20 +22,21 @@ class pylander:
         j = 0
         if V.joueur_clavier: j = 1    
                         
-        VAR.joueurs = {}
+        V.moteurs = {}
         for i in range(V.nbManettes+j):
-            VAR.joueurs[i] =  CMoteur(V.joueurs[i])
-            VAR.joueurs[i].initialiser()
-
+            V.moteurs[i] =  CMoteur(V.joueurs[i])
+            V.moteurs[i].initialiser()
+            V.moteurs[i].offX = (V.moteurs[i].image.get_width() + 10 ) * i
+            
             barre = (200 / V.nbManettes+j) * i
             pygame.draw.rect(V.fenetre, (255,255,0,255), (0, V.RESOLUTION[1]-30, barre, 30), 0)
             pygame.display.flip()
 
     def afficher_les_joueurs(self):
-        for i, pylander_moteur in VAR.joueurs.items():
-            pylander_moteur.FUSEE_C, pylander_moteur.FUSEE_D, pylander_moteur.FUSEE_G = False, False, False
-            pylander_moteur.Manette.gestion_evenements()
-            pylander_moteur.afficher()    
+        for i, moteur in V.moteurs.items():
+            moteur.propulseur_central, moteur.propulseur_droit, moteur.propulseur_gauche = False, False, False
+            moteur.Manette.gestion_evenements()
+            moteur.afficher()    
 
     def boucle(self):
 

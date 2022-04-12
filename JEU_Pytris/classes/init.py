@@ -51,6 +51,7 @@ class CInit:
         for i in range(V.nbManettes+j):
             V.moteurs[i] =  CMoteur(V.joueurs[i])
             V.moteurs[i].initialiser()
+            V.moteurs[i].Joueur.Avatar.ratioX, V.moteurs[i].Joueur.Avatar.ratioY = VAR.TAILLE * 0.007, VAR.TAILLE * 0.007
 
             barre = (200 / V.nbManettes+j) * i
             pygame.draw.rect(V.fenetre, (255,255,0,255), (0, V.RESOLUTION[1]-30, barre, 30), 0)

@@ -16,6 +16,15 @@ class CMecanique:
         self.lignesADetruire = []
         self.lignesAjouter = 0
 
+    def gestion_pouvoir(self):
+        if VAR.pouvoirId == self.M.Joueur.id:
+            if self.M.Joueur.Avatar.expression != "POUVOIR": self.M.Joueur.Avatar.changer_expression("POUVOIR", -1)
+            return True
+        elif self.M.Joueur.Avatar.expression == "POUVOIR" :
+            if self.M.Joueur.Avatar.expressionOld == "POUVOIR": self.M.Joueur.Avatar.expressionOld = "NORMAL"
+            self.M.Joueur.Avatar.remet_expression_precedent()         
+            return False
+
     def action_a_entreprendre_si_le_joueur_a_perdu(self):
         if (self.M.Joueur.actif and self.le_joueur_a_til_perdu()) \
             or self.M.Partie.mort:
