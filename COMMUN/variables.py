@@ -1,6 +1,11 @@
 from pygame.locals import *
+import string
+import random
 
-
+def generate_short_id(length=6):
+    characters = string.ascii_uppercase + string.digits
+    short_id = ''.join(random.choice(characters) for _ in range(length))
+    return short_id
 
 RESOLUTION = ((1280, 800),(1920, 1080))[0]
 MODE_ECRAN = (DOUBLEBUF,FULLSCREEN)[0]
@@ -14,6 +19,7 @@ boucle = True
 ecritures = {}
 moteurs = {}
 joueurs = {}
+JOUEURS_WEBSOCKET = {}
 
 fond = True
 idFond = 0
@@ -21,8 +27,11 @@ IMG_FOND = []
 fondVideo_cycle = 0
 fondVideo_frequence =  35
 
-joueur_clavier = False
+joueur_clavier = True
 
+urlWss = "wss://ws.ladnet.net"
+web_socket = False
+web_socket_id_partie = generate_short_id()
 
 AUDIOS = {}
 audio = True

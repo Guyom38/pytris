@@ -13,6 +13,7 @@ from COMMUN.classes.avatars import CAvatars
 from COMMUN.classes.controles import CControle
 
 import COMMUN.variables as V
+import COMMUN.classes.qr_code as QR
 
 class CSalon:
     def __init__(self, c):
@@ -23,6 +24,7 @@ class CSalon:
         self.init = False
         self.cycle, self.frequence, self.start = 0, 200, True
         self.boucleSalon = True
+        self.imageQrCode = None
     
     def afficher_zone(self):
         self.dimX, self.dimY = self.dimX, self.dimY
@@ -79,11 +81,11 @@ class CSalon:
                 etiquettes.append(GFONT.get_image_texte("Je suis prêt(e) !", 30, (0, 255, 0, 255)))
             etiquettes.append(GFONT.get_image_texte(joueur.nom, 30, (255, 255, 255, 255)))
                         
-            pygame.draw.rect(V.fenetre, CAvatars.COULEUR[joueur.id], (pX + joueur.Avatar.salonX +20, pY + joueur.Avatar.salonY -30, etiquettes[0].get_width() + 40, (etiquettes[0].get_height() * len(etiquettes))), 0)
+            pygame.draw.rect(V.fenetre, CAvatars.COULEUR[joueur.id], (pX + joueur.Avatar.salonX +20, pY + joueur.Avatar.salonY -10, etiquettes[0].get_width() + 40, (etiquettes[0].get_height() * len(etiquettes))), 0)
             
             y = 0
             for etiquette in etiquettes:
-                V.fenetre.blit(etiquette, (pX + joueur.Avatar.salonX + 40, pY + joueur.Avatar.salonY + y - 30))
+                V.fenetre.blit(etiquette, (pX + joueur.Avatar.salonX + 40, pY + joueur.Avatar.salonY + y - 10))
                 y += etiquette.get_height()
                 
        
@@ -116,6 +118,9 @@ class CSalon:
         V.boucle = True
         while V.boucle and self.boucleSalon:
             CControle.capture_evements_utilisateurs()
+            CControle.capture_evenements_websockets(self.C.actions_websocket)
+            
+            
             self.gestion_evenements_joueurs()    
             self.controle_tous_prets() 
             
@@ -126,7 +131,13 @@ class CSalon:
             
             self.C.afficher_rendu()
         
-        
+    def Dessiner_QrCode(self):
+        if self.imageQrCode == None:         
+            # Génère le QR Code et le convertit en surface Pygame
+            qrcode_image = QR.generate_qr_code("http://ladnet.net/joystick/?id_game=" + str(V.web_socket_id_partie))
+            self.imageQrCode = QR.qr_image_to_pygame_surface(qrcode_image)
+        V.fenetre.blit( self.imageQrCode, (10, V.RESOLUTION[1] - self.imageQrCode.get_height()-10))
+         
     def afficher(self):
         
 
@@ -134,8 +145,11 @@ class CSalon:
         self.afficher_avatars()
         self.afficher_titre()
         self.afficher_message()
-
+        self.Dessiner_QrCode()
+        
     def gestion_evenements_joueurs(self):
+        
+        
         for i, joueur in V.joueurs.items():
             self.gestion_evenements_salon(joueur)
 

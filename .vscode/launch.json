@@ -8,7 +8,7 @@
             "name": "Python : Fichier actuel",
             "type": "python",
             "request": "launch",
-            "program": "start.py",
+            "program": "main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

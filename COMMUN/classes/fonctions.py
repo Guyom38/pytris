@@ -3,7 +3,7 @@ from pygame.locals import *
 
 import time, os, random
 import COMMUN.variables as V
-
+import string
 
 class GBASE:
     def GenereMat2D(dimX, dimY, valeurDefaut):
@@ -14,6 +14,8 @@ class GBASE:
             return vrai
         else:
             return faux
+        
+
     
 class GTEMPS:
     

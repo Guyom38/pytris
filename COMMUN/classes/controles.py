@@ -4,7 +4,7 @@ from pygame.locals import *
 
 import COMMUN.variables as V
 import COMMUN.classes.fonctions as FCT
-
+import COMMUN.classes.joueur as CJ
 # ---------------------------------------------------------------------------------------------------------------
 # -
 # ---------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,54 @@ class CControle:
         for i, moteur in V.moteurs.items():
             moteur.Manette.initialiser()
 
-
+    def capture_evenements_websockets(actions_websocket):
+        if not V.web_socket: return 0
+    
+        while not actions_websocket.empty():
+            try:                    
+                data = actions_websocket.get_nowait()
+                if 'playerId' in data:                                            
+                    idJoueurWS = int(data['playerId'])
+                        
+                    if idJoueurWS not in V.JOUEURS_WEBSOCKET:
+                        V.JOUEURS_WEBSOCKET[idJoueurWS] = len(V.JOUEURS_WEBSOCKET) 
+                        print("Nouveau Joueur #"+str(idJoueurWS)+" => id:" + str(V.JOUEURS_WEBSOCKET[idJoueurWS]))
+                        i =  V.JOUEURS_WEBSOCKET[idJoueurWS]
+                        V.joueurs[i] = CJ.CJoueur(i)
+                        
+                    idJoueur = V.JOUEURS_WEBSOCKET[idJoueurWS]
+                        
+                        
+                    #axis_x, axis_y, mouvementJoy = 0.0, 0.0, False                
+                    if 'joystick' in data['data']:
+                        if 'direction' in data['data']['joystick']:                        
+                            if data['data']['joystick']['direction']['angle'] == "left":
+                                V.joueurs[idJoueur].Manette.axeX = -1
+                            elif data['data']['joystick']['direction']['angle'] == "right":
+                                V.joueurs[idJoueur].Manette.axeX = 1
+                            elif data['data']['joystick']['direction']['angle'] == "up":
+                                V.joueurs[idJoueur].Manette.axeY = -1
+                            elif data['data']['joystick']['direction']['angle'] == "down":
+                                V.joueurs[idJoueur].Manette.axeX = 1
+                            
+                        if 'state' in data['data']['joystick']:                     
+                            if ( data['data']['joystick']['state']) == 'end':   
+                                print("Relache"+ str(idJoueur))
+  
+                        if 'button' in data['data']: 
+                            if (data['data']['button'] == 'B'):
+                                V.joueurs[idJoueur].Manette.boutonB.pression()
+                            if (data['data']['button'] == 'A'):
+                                V.joueurs[idJoueur].Manette.boutonA.pression()
+                            if (data['data']['button'] == 'start'):
+                                V.joueurs[idJoueur].Manette.boutonStart.pression()
+                            if (data['data']['button'] == 'select'):
+                                V.joueurs[idJoueur].Manette.boutonSelect.pression()
+                            
+                                     
+            except Exception as e:
+                print(f"Erreur: {e}")
+                
     def capture_evements_utilisateurs():
         V.evenements = pygame.event.get()
 

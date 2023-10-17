@@ -18,7 +18,9 @@ class CCommun:
 # ---------------------------------------------------------------------------------------------------------------
 # -
 # ---------------------------------------------------------------------------------------------------------------
-    def __init__(self, titre):
+    def __init__(self, titre, actions_websocket):
+        self.actions_websocket = actions_websocket
+        
         pygame.init()
          
         V.fenetre = pygame.display.set_mode(V.RESOLUTION, V.MODE_ECRAN, 32) #: DOUBLEBUF
@@ -31,7 +33,8 @@ class CCommun:
         
         self.Salon = CSalon(self)
         self.Highscore = CHighscore(self)
-        
+       
+
     def page_chargement(self):
         # --- initialisation du moteur Pygame
         titre = pygame.image.load("JEU_Pytris\\images\\titre.jpg")
@@ -56,6 +59,7 @@ class CCommun:
     def initialiser(self):
         CControle.initialiser_manettes()
         CInit.afficher_nombres_manettes()
+        
         CAvatars.chargement_fichiers_sprites()
         
         self.initialiser_joueurs()
@@ -65,8 +69,10 @@ class CCommun:
         V.horloge = pygame.time.Clock()
           
     def initialiser_joueurs(self):
-        for i in range(V.nbManettes):
+        for i in range(0, 8):
             V.joueurs[i] = CJoueur(i)
+            
+       
                     
     def initialiser_ecritures(self, liste_polices):
         for taille in liste_polices:
