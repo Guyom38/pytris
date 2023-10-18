@@ -69,6 +69,7 @@ class CCommun:
         V.horloge = pygame.time.Clock()
           
     def initialiser_joueurs(self):
+        return 0
         for i in range(0, 8):
             V.joueurs[i] = CJoueur(i)
             

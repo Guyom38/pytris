@@ -134,7 +134,7 @@ class CSalon:
     def Dessiner_QrCode(self):
         if self.imageQrCode == None:         
             # Génère le QR Code et le convertit en surface Pygame
-            qrcode_image = QR.generate_qr_code("http://ladnet.net/joystick/?id_game=" + str(V.web_socket_id_partie))
+            qrcode_image = QR.generate_qr_code("http://gamepad.ladnet.net/?id_game=" + str(V.web_socket_id_partie))
             self.imageQrCode = QR.qr_image_to_pygame_surface(qrcode_image)
         V.fenetre.blit( self.imageQrCode, (10, V.RESOLUTION[1] - self.imageQrCode.get_height()-10))
          

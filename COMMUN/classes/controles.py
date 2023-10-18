@@ -81,29 +81,63 @@ class CControle:
                         
                     #axis_x, axis_y, mouvementJoy = 0.0, 0.0, False                
                     if 'joystick' in data['data']:
-                        if 'direction' in data['data']['joystick']:                        
-                            if data['data']['joystick']['direction']['angle'] == "left":
-                                V.joueurs[idJoueur].Manette.axeX = -1
-                            elif data['data']['joystick']['direction']['angle'] == "right":
-                                V.joueurs[idJoueur].Manette.axeX = 1
-                            elif data['data']['joystick']['direction']['angle'] == "up":
-                                V.joueurs[idJoueur].Manette.axeY = -1
-                            elif data['data']['joystick']['direction']['angle'] == "down":
-                                V.joueurs[idJoueur].Manette.axeX = 1
-                            
-                        if 'state' in data['data']['joystick']:                     
-                            if ( data['data']['joystick']['state']) == 'end':   
-                                print("Relache"+ str(idJoueur))
+                        if 'direction' in data['data']['joystick']:  
+                            if ( data['data']['joystick']['state'] == 'end' ):
+                                V.joueurs[idJoueur].Manette.axeX = 0.0
+                                V.joueurs[idJoueur].Manette.axeY = 0.0
+                            else:  
+                                            
+                                if data['data']['joystick']['direction']['angle'] == "left":
+                                    V.joueurs[idJoueur].Manette.axeX = -1
+                                elif data['data']['joystick']['direction']['angle'] == "right":
+                                    V.joueurs[idJoueur].Manette.axeX = 1
+                                elif data['data']['joystick']['direction']['angle'] == "up":
+                                    V.joueurs[idJoueur].Manette.axeY = -1
+                                elif data['data']['joystick']['direction']['angle'] == "down":
+                                    V.joueurs[idJoueur].Manette.axeY = 1
+                                
+                        
+                        
   
                         if 'button' in data['data']: 
+                            pression = ( data['data']['state'] == 'pressed' )
+                           
+                            
                             if (data['data']['button'] == 'B'):
-                                V.joueurs[idJoueur].Manette.boutonB.pression()
-                            if (data['data']['button'] == 'A'):
-                                V.joueurs[idJoueur].Manette.boutonA.pression()
-                            if (data['data']['button'] == 'start'):
-                                V.joueurs[idJoueur].Manette.boutonStart.pression()
-                            if (data['data']['button'] == 'select'):
-                                V.joueurs[idJoueur].Manette.boutonSelect.pression()
+                                if pression:
+                                    V.joueurs[idJoueur].Manette.boutonB.pression()
+                                else:
+                                    V.joueurs[idJoueur].Manette.boutonB.relache()
+                                    
+                            elif (data['data']['button'] == 'A'):
+                                if pression:
+                                    V.joueurs[idJoueur].Manette.boutonA.pression()
+                                else:
+                                    V.joueurs[idJoueur].Manette.boutonA.relache()
+                                    
+                            elif (data['data']['button'] == 'X'):
+                                if pression:
+                                    V.joueurs[idJoueur].Manette.boutonX.pression()
+                                else:
+                                    V.joueurs[idJoueur].Manette.boutonX.relache()
+                                    
+                            elif (data['data']['button'] == 'Y'):
+                                if pression:
+                                    V.joueurs[idJoueur].Manette.boutonY.pression()
+                                else:
+                                    V.joueurs[idJoueur].Manette.boutonY.relache()
+
+                            elif (data['data']['button'] == 'START'):
+                                if pression:
+                                    V.joueurs[idJoueur].Manette.boutonStart.pression()
+                                else:
+                                    V.joueurs[idJoueur].Manette.boutonStart.relache()
+                                    
+                            elif (data['data']['button'] == 'SELECT'):
+                                if pression:
+                                    V.joueurs[idJoueur].Manette.boutonSelect.pression()
+                                else:
+                                    V.joueurs[idJoueur].Manette.boutonSelect.relache()
                             
                                      
             except Exception as e:
