@@ -20,9 +20,8 @@ from JEU_Pytris.variables import *
 # █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
 
 class CPyTris:
-    def __init__(self, c, websocket):
+    def __init__(self, c):
         self.C = c
-        self.actions_websocket = websocket
         
         CInit.page_chargement()
         CInit.initialiser()

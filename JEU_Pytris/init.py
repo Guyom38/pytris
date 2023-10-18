@@ -52,13 +52,15 @@ class CInit:
     def initialiser_les_joueurs():
         j = 0
         if V.joueur_clavier: j = 1    
-                        
+        if len(V.JOUEURS_WEBSOCKET) > 0: j += len(V.JOUEURS_WEBSOCKET)
+                     
         V.moteurs = {}
-        for i in range(V.nbManettes+j):
+        for i in range(V.nbManettes + j):
             V.moteurs[i] =  CMoteur(V.joueurs[i])
             V.moteurs[i].initialiser()
 
-            barre = (200 / V.nbManettes+j) * i
+            barre = (200 / (V.nbManettes+j)) * i
+            
             pygame.draw.rect(V.fenetre, (255,255,0,255), (0, V.RESOLUTION[1]-30, barre, 30), 0)
             pygame.display.flip()
         

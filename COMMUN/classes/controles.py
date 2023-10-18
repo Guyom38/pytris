@@ -61,102 +61,29 @@ class CControle:
         for i, moteur in V.moteurs.items():
             moteur.Manette.initialiser()
 
-    def capture_evenements_websockets(actions_websocket):
-        if not V.web_socket: return 0
-    
-        while not actions_websocket.empty():
-            try:                    
-                data = actions_websocket.get_nowait()
-                if 'playerId' in data:                                            
-                    idJoueurWS = int(data['playerId'])
-                        
-                    if idJoueurWS not in V.JOUEURS_WEBSOCKET:
-                        V.JOUEURS_WEBSOCKET[idJoueurWS] = len(V.JOUEURS_WEBSOCKET) 
-                        print("Nouveau Joueur #"+str(idJoueurWS)+" => id:" + str(V.JOUEURS_WEBSOCKET[idJoueurWS]))
-                        i =  V.JOUEURS_WEBSOCKET[idJoueurWS]
-                        V.joueurs[i] = CJ.CJoueur(i)
-                        
-                    idJoueur = V.JOUEURS_WEBSOCKET[idJoueurWS]
-                        
-                        
-                    #axis_x, axis_y, mouvementJoy = 0.0, 0.0, False                
-                    if 'joystick' in data['data']:
-                        if 'direction' in data['data']['joystick']:  
-                            if ( data['data']['joystick']['state'] == 'end' ):
-                                V.joueurs[idJoueur].Manette.axeX = 0.0
-                                V.joueurs[idJoueur].Manette.axeY = 0.0
-                            else:  
-                                            
-                                if data['data']['joystick']['direction']['angle'] == "left":
-                                    V.joueurs[idJoueur].Manette.axeX = -1
-                                elif data['data']['joystick']['direction']['angle'] == "right":
-                                    V.joueurs[idJoueur].Manette.axeX = 1
-                                elif data['data']['joystick']['direction']['angle'] == "up":
-                                    V.joueurs[idJoueur].Manette.axeY = -1
-                                elif data['data']['joystick']['direction']['angle'] == "down":
-                                    V.joueurs[idJoueur].Manette.axeY = 1
-                                
-                        
-                        
-  
-                        if 'button' in data['data']: 
-                            pression = ( data['data']['state'] == 'pressed' )
-                           
-                            
-                            if (data['data']['button'] == 'B'):
-                                if pression:
-                                    V.joueurs[idJoueur].Manette.boutonB.pression()
-                                else:
-                                    V.joueurs[idJoueur].Manette.boutonB.relache()
-                                    
-                            elif (data['data']['button'] == 'A'):
-                                if pression:
-                                    V.joueurs[idJoueur].Manette.boutonA.pression()
-                                else:
-                                    V.joueurs[idJoueur].Manette.boutonA.relache()
-                                    
-                            elif (data['data']['button'] == 'X'):
-                                if pression:
-                                    V.joueurs[idJoueur].Manette.boutonX.pression()
-                                else:
-                                    V.joueurs[idJoueur].Manette.boutonX.relache()
-                                    
-                            elif (data['data']['button'] == 'Y'):
-                                if pression:
-                                    V.joueurs[idJoueur].Manette.boutonY.pression()
-                                else:
-                                    V.joueurs[idJoueur].Manette.boutonY.relache()
-
-                            elif (data['data']['button'] == 'START'):
-                                if pression:
-                                    V.joueurs[idJoueur].Manette.boutonStart.pression()
-                                else:
-                                    V.joueurs[idJoueur].Manette.boutonStart.relache()
-                                    
-                            elif (data['data']['button'] == 'SELECT'):
-                                if pression:
-                                    V.joueurs[idJoueur].Manette.boutonSelect.pression()
-                                else:
-                                    V.joueurs[idJoueur].Manette.boutonSelect.relache()
-                            
-                                     
-            except Exception as e:
-                print(f"Erreur: {e}")
-                
+                   
     def capture_evements_utilisateurs():
         V.evenements = pygame.event.get()
 
-        for event in V.evenements:        
+        for event in V.evenements:   
+            
+            
+                 
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 V.boucle = False
 
             elif event.type == pygame.JOYAXISMOTION:
                 idManette = event.joy
+                if idManette not in V.joueurs: V.joueurs[idManette] = CJ.CJoueur(idManette)  
+                
                 if event.axis == 0: V.joueurs[idManette].Manette.axeX = event.value
                 if event.axis == 1: V.joueurs[idManette].Manette.axeY = event.value
 
             elif event.type == pygame.JOYBUTTONDOWN :
                 idManette = event.joy
+                if idManette not in V.joueurs: V.joueurs[idManette] = CJ.CJoueur(idManette)  
+                
+                
 
                 if event.button == CBouton.B_A: V.joueurs[idManette].Manette.boutonA.pression()
                 if event.button == CBouton.B_B: V.joueurs[idManette].Manette.boutonB.pression()
@@ -169,8 +96,11 @@ class CControle:
 
  
             elif event.type == pygame.JOYBUTTONUP:
+                
+                
                 idManette = event.joy
-
+                if idManette not in V.joueurs: V.joueurs[idManette] = CJ.CJoueur(idManette)  
+                
                 if event.button == CBouton.B_A: V.joueurs[idManette].Manette.boutonA.relache()
                 if event.button == CBouton.B_B: V.joueurs[idManette].Manette.boutonB.relache()
                 if event.button == CBouton.B_X: V.joueurs[idManette].Manette.boutonX.relache()

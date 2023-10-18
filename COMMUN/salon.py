@@ -118,7 +118,7 @@ class CSalon:
         V.boucle = True
         while V.boucle and self.boucleSalon:
             CControle.capture_evements_utilisateurs()
-            CControle.capture_evenements_websockets(self.C.actions_websocket)
+          #  CControle.capture_evenements_websockets(self.C.actions_websocket)
             
             
             self.gestion_evenements_joueurs()    

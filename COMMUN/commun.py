@@ -18,9 +18,8 @@ class CCommun:
 # ---------------------------------------------------------------------------------------------------------------
 # -
 # ---------------------------------------------------------------------------------------------------------------
-    def __init__(self, titre, actions_websocket):
-        self.actions_websocket = actions_websocket
-        
+    def __init__(self, titre):
+         
         pygame.init()
          
         V.fenetre = pygame.display.set_mode(V.RESOLUTION, V.MODE_ECRAN, 32) #: DOUBLEBUF

@@ -27,7 +27,7 @@ IMG_FOND = []
 fondVideo_cycle = 0
 fondVideo_frequence =  35
 
-joueur_clavier = True
+joueur_clavier = False
 
 urlWss = "wss://ws.ladnet.net"
 web_socket = False

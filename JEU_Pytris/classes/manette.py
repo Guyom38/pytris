@@ -65,6 +65,7 @@ class CManette:
             self.gestion_evenements_demarrage_partie(event)
            
     def gestion_evenements(self):
+        
         for event in V.evenements:
             self.gestion_evenements_demarrage_partie(event)
             self.gestion_evenements_joueurs(event)
@@ -73,6 +74,8 @@ class CManette:
             
     
     def gestion_evenements_demarrage_partie(self, event):
+        if len(V.manettes) == 0: return
+        
         if self.manetteId == -1 and V.joueur_clavier:
             if event.type == KEYDOWN:  
                 if event.key == 13: self.action_start()
@@ -86,7 +89,7 @@ class CManette:
                            
     def gestion_evenements_joueurs(self, event):
         if not V.partie_demarree or not self.Moteur.Joueur.actif: return  
-
+ 
         manette = self.Moteur.Joueur.Manette
         
         if manette.boutonL.get_etat():                

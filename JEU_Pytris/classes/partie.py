@@ -20,7 +20,7 @@ class CParties:
                 V.partie_demarree = False
                 V.fin_partie = True
                 
-                VAR.changer_de_mode(ENUM_MODE.MODE_SCORE)
+                VAR.changer_de_mode(VAR.ENUM_MODE.MODE_SCORE)
                 FCT.GAUDIO.charger_musique("JEU_Pytris\\audios\\score.mp3")
                 
 
